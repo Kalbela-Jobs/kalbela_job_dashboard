@@ -4,6 +4,7 @@ import ScrollToTop from "../hooks/ScrollToTop";
 import HomeLayout from "../layouts/HomeLayout";
 import HomeRoute from "./HomeRoute";
 import Not_Found from "../pages/Not_Found";
+import AdminRouter from "./AdminRouter";
 
 const Router = createBrowserRouter([
       {
@@ -16,6 +17,17 @@ const Router = createBrowserRouter([
             ),
             children: HomeRoute,
       },
+      {
+            path: '/admin',
+            element: (
+                  <>
+                        <ScrollToTop />
+                        <HomeLayout />
+                  </>
+            ),
+            children: AdminRouter,
+      },
+
       {
             path: '*',
             element: (
