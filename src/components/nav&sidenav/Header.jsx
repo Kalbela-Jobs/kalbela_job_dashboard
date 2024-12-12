@@ -4,7 +4,7 @@ import { Menu } from "lucide-react";
 
 const Header = () => {
   //   const { open, setOpen } = useContext(Provider);
-  const { open, setOpen } = useContext(MyContext);
+  const { open, setOpen, setSearchQuery } = useContext(MyContext);
   return (
     <header className="bg-white border-b border-gray-200">
       <div className="px-4 mx-auto">
@@ -79,6 +79,7 @@ const Header = () => {
                 type="search"
                 name=""
                 id=""
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="block w-full py-2 pl-10 border border-gray-300 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm"
                 placeholder="Type to search"
               />

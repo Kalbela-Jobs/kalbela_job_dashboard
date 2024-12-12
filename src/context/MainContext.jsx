@@ -11,6 +11,7 @@ import {
 } from "firebase/auth";
 import React, { createContext, useEffect, useState } from "react";
 import app from "../hooks/firebase.js";
+
 export const Kalbela_AuthProvider = createContext();
 
 const Provider = ({ children }) => {
@@ -21,23 +22,15 @@ const Provider = ({ children }) => {
 
   const googleProvider = new GoogleAuthProvider();
 
-  const Google = () => {
+  const googleLogin = () => {
     setLoading(true);
-    signInWithPopup(auth, googleProvider)
-      .then((result) => {
-        // Extract user information
-        const user = result.user;
+    return signInWithPopup(auth, googleProvider);
+  };
 
-        console.log(user, "user");
-
-        // update_on_database(user);
-      })
-      .catch((error) => {
-        console.error("Error during Google login:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  // singOut
+  const loginOut = () => {
+    setLoading(true);
+    return signOut(auth);
   };
 
   const sign_up = (
@@ -60,7 +53,7 @@ const Provider = ({ children }) => {
     };
   }, []);
 
-  const provider_object = { user, setUser, Google };
+  const provider_object = { user, setUser, googleLogin, loading, loginOut };
 
   return (
     <Kalbela_AuthProvider.Provider value={provider_object}>

@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Header from "../../components/nav&sidenav/Header";
 import Sidebar from "../../components/nav&sidenav/Sidebar";
+import { Kalbela_AuthProvider } from "../../context/MainContext";
+
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
+  const { user, loginOut } = useContext(Kalbela_AuthProvider);
   const [salesData] = useState({
     todaySale: 12426,
     totalSales: 238485,
@@ -54,15 +58,37 @@ const Dashboard = () => {
     // Add more recent customers here
   ]);
 
+  const SignOut = () => {
+    loginOut().then(() => {
+      console.log("succes full");
+    });
+  };
   const [openDropdown, setOpenDropdown] = useState(null);
-
+  console.log("checked user.....", user?.email);
   return (
     <div className="flex flex-col flex-1 overflow-x-hidden">
       <main>
         <div className="py-6">
           <div className="px-4 mx-auto sm:px-6 md:px-8">
             <div className="md:items-center md:flex">
-              <p className="text-base font-bold text-gray-900">Hey Mariana -</p>
+              <Link className="px-10 text-blue-600" to="/admin">
+                Admin
+              </Link>
+              <div>
+                {user ? (
+                  <button onClick={SignOut} className="text-orange-600">
+                    Sign out
+                  </button>
+                ) : (
+                  <Link to="/login" className="text-orange-600">
+                    Login
+                  </Link>
+                )}
+              </div>
+
+              <p className="text-base font-bold text-gray-900 pl-6">
+                Hey Mariana{" "}
+              </p>
               <p className="mt-1 text-base font-medium text-gray-500 md:mt-0 md:ml-2">
                 here's what's happening with your store today
               </p>

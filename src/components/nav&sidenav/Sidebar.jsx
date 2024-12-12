@@ -1,11 +1,11 @@
 import { LogOut, SearchCheck } from "lucide-react";
 import { useContext, useEffect } from "react";
 import MyContext from "../../context/Dashboard_context";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { navitems } from "../../utils/dashboard_menu";
 
 const Sidebar = () => {
-  const { open, setOpen } = useContext(MyContext);
+  const { open, setOpen, searchQuery } = useContext(MyContext);
 
   useEffect(() => {
     const handleResize = () => {
@@ -21,9 +21,13 @@ const Sidebar = () => {
     return () => window.removeEventListener("resize", handleResize); // Cleanup
   }, [setOpen]);
 
+  const filteredItems = navitems?.filter((item) =>
+    item?.title?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div
-      className={`bg-blue-500 xl:flex h-screen  xl:flex-col relative ${
+      className={`bg-blue-500 xl:flex  xl:flex-col relative ${
         open ? "px-6" : "px-10"
       } `}
     >
@@ -33,7 +37,7 @@ const Sidebar = () => {
             <nav className="flex-1 space-y-1">
               <div>
                 <Link
-                  to="#"
+                  to="/"
                   className="flex items-center text-white gap-2  space-x-2 p-2  py-2.5 text-sm font-medium "
                 >
                   <div>
@@ -42,14 +46,21 @@ const Sidebar = () => {
                   <h2 className={`${open && "hidden"} `}>Easy Jobs</h2>
                 </Link>
 
-                {navitems.map((item, index) => (
-                  <div key={index} className="flex items-center space-x-2 p-2">
-                    <div className="border p-2 transition-all duration-200 text-white hover:text-blue-700 rounded-lg hover:bg-gray-200 cursor-pointer group">
-                      <item.icon className="w-6 h-6 " />
-                    </div>
-                    <h3 className={`${open && "hidden"} text-white`}>
-                      {item.title}
-                    </h3>
+                {filteredItems?.map((item, index) => (
+                  <div key={index}>
+                    <NavLink
+                      to={item.link}
+                      className={({ isActive }) =>
+                        `flex items-center space-x-2 p-2 ${
+                          isActive ? "text-blue-700" : "text-white"
+                        }`
+                      }
+                    >
+                      <div className="border p-2 transition-all duration-200 text-white hover:text-blue-700 rounded-lg hover:bg-gray-200 cursor-pointer group">
+                        <item.icon className="w-6 h-6 " />
+                      </div>
+                      <h3 className={`${open && "hidden"}`}>{item.title}</h3>
+                    </NavLink>
                   </div>
                 ))}
               </div>
@@ -63,7 +74,7 @@ const Sidebar = () => {
                 className="flex items-center gap-2  py-2.5 text-sm font-medium text-white"
               >
                 <div className="border p-2 transition-all duration-200 hover:text-blue-700 rounded-lg hover:bg-gray-200 group">
-                  <LogOut className="w-5 h-5" />
+                  <LogOut className="w-6 h-6" />
                 </div>
 
                 <h2 className={`${open && "hidden"}`}> Logout</h2>
