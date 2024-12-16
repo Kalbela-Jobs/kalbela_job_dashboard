@@ -1,24 +1,26 @@
 import Dashboard from "../pages/dashboard/Dashboard";
-import Jobs from "../pages/dashboard/Jobs/Jobs";
+import Add_Jobs from "../pages/dashboard/Jobs/Add_Jobs";
+import Job from "../pages/dashboard/Jobs/Job";
+
 import Private from "./Private";
 
 const AdminRouter = [
-  {
-    path: "",
-    element: (
-      <Private>
-        <Dashboard />
-      </Private>
-    ),
-  },
-  {
-    path: "jobs",
-    element: <Jobs />,
-  },
-  {
-    path: "jobs/edit",
-    element: <h1>Edit Jobs</h1>,
-  },
+      {
+            path: "",
+            element: (
+                  <Private>
+                        <Dashboard />
+                  </Private>
+            ),
+      },
+      {
+            path: "jobs",
+            element: <Job />,
+      },
+      {
+            path: "jobs/add-job",
+            element: <Add_Jobs />,
+      },
 ];
 
 export default AdminRouter;

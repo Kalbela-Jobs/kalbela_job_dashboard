@@ -5,19 +5,19 @@ const MyContext = createContext(null);
 
 // Create Provider
 export const Dashboard_context = ({ children }) => {
-  const [open, setOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+      const [open, setOpen] = useState(true);
+      const [searchQuery, setSearchQuery] = useState("");
 
-  const contextValue = {
-    open,
-    setOpen,
-    searchQuery,
-    setSearchQuery,
-  };
+      const contextValue = {
+            open,
+            setOpen,
+            searchQuery,
+            setSearchQuery,
+      };
 
-  return (
-    <MyContext.Provider value={contextValue}>{children}</MyContext.Provider>
-  );
+      return (
+            <MyContext.Provider value={contextValue}>{children}</MyContext.Provider>
+      );
 };
 
 export default MyContext;

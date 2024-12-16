@@ -1,390 +1,440 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import Lottie from "lottie-react";
-import animation from "../../../assets/animation/log_in.json";
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
-import { useContext } from "react";
-import { Kalbela_AuthProvider } from "../../../context/MainContext";
+import React, { useContext, useEffect, useState } from 'react';
+import {
+      Form,
+      Input,
+      Button,
+      Select,
+      Typography,
+      Layout,
+      Space
+} from 'antd';
+import { GlobalOutlined, EnvironmentOutlined, LinkOutlined } from '@ant-design/icons';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { useQuery } from "@tanstack/react-query";
+import uploadImage from '../../../hooks/upload_image';
+import { Kalbela_AuthProvider } from '../../../context/MainContext';
+import sweet_alert from '../../../utils/custom_alert';
+import { useNavigate } from 'react-router-dom';
 
-export default function WorkSpace() {
-  const location = useLocation();
-  const navigate = useNavigate();
 
-  const from = location.state?.from?.pathname || "/";
-  const [fileName, setFileName] = useState("");
-  const [isPasswordVisible, setPasswordVisible] = useState(false);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
-  const [warningMessage, setWarningMessage] = useState(null);
-  const { googleLogin } = useContext(Kalbela_AuthProvider);
 
-  const handleFileChange = (event) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setFileName(file.name);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreviewUrl(reader.result);
+const { Title } = Typography;
+const { Content } = Layout;
+
+export default function Workspace() {
+      const [select_package, setSelectPackage] = useState(null);
+      const [companyName, setCompanyName] = useState("");
+      const [companyWebsite, setCompanyWebsite] = useState("");
+      const { user } = useContext(Kalbela_AuthProvider);
+
+      const generateWebsite = (name) => {
+            return name
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]/g, "") // Remove special characters
+                  .replace(/\s+/g, ""); // Remove spaces
       };
-      reader.readAsDataURL(file);
-    }
-  };
 
-  const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const email = formData.get("email");
-    const image = formData.get("image");
-    const terms = formData.get("terms") === "on";
+      const handleCompanyNameChange = (e) => {
+            const name = e.target.value;
+            setCompanyName(name);
+            if (!companyWebsite || companyWebsite === generateWebsite(companyName)) {
+                  setCompanyWebsite(generateWebsite(name));
+            }
+      };
 
-    if (!email.trim()) {
-      setWarningMessage("Workspace name is required");
-      return;
-    }
+      const handleCompanyWebsiteChange = (e) => {
+            const sanitizedValue = e.target.value.replace(/[^a-zA-Z0-9-]/g, "").toLowerCase();
+            setCompanyWebsite(sanitizedValue);
+      };
 
-    if (!image) {
-      setWarningMessage("Workspace logo is required");
-      return;
-    }
 
-    if (!terms) {
-      setWarningMessage("Terms must be accepted");
-      return;
-    }
-
-    // Proceed with form submission
-    console.log("Form values:", {
-      email,
-      image,
-      terms,
-    });
-
-    alert("good");
-  };
-
-  const handlerGoogleLogin = () => {
-    googleLogin()
-      .then(() => {
-        navigate(from, { replace: true });
-      })
-      .catch((error) => {
-        console.log(error.message);
+      const { data: packages = [], } = useQuery({
+            queryKey: ["packages"],
+            queryFn: async () => {
+                  const res = await fetch(
+                        "http://localhost:5005/api/v1/package"
+                  );
+                  const data = await res.json();
+                  return data.data;
+            },
       });
-  };
 
-  //   const Google = () => {
-  //     setLoading(true);
-  //     signInWithPopup(auth, googleProvider)
-  //       .then((result) => {
-  //         // Extract user information
-  //         const user = result.user;
 
-  //         console.log(user.email);
-  //         navigate(from, { replace: true });
-  //         // update_on_database(user);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error during Google login:", error);
-  //       })
-  //       .finally(() => {
-  //         setLoading(false);
-  //       });
-  //   };
+      useEffect(() => {
+            if (packages.length > 0) {
+                  setSelectPackage(packages[0]);
+            }
+      }, [packages]);
 
-  return (
-    <section className="bg-white">
-      <div className="grid grid-cols-1 lg:grid-cols-2">
-        <div className="relative flex items-end px-4 pb-10 pt-60 sm:pb-16 md:justify-center lg:pb-24 bg-gray-50 sm:px-6 lg:px-8">
-          <div className="absolute inset-0">
-            {/* <img
-                                          className="object-cover w-full h-full"
-                                          src="https://cdn.rareblocks.xyz/collection/celebration/images/signup/4/girl-working-on-laptop.jpg"
-                                          alt=""
-                                    /> */}
-            <Lottie
-              className="object-cover w-full h-full"
-              animationData={animation}
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
-          <div className="relative">
-            <div className="w-full max-w-xl xl:w-full xl:mx-auto xl:pr-24 xl:max-w-xl">
-              <h3 className="text-4xl font-bold text-white">
-                Join 35k+ job seekers & recruiters find your perfect match
-                today!
-              </h3>
-              <ul className="grid grid-cols-1 mt-10 sm:grid-cols-2 gap-x-8 gap-y-4">
-                <li className="flex items-center space-x-3">
-                  <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-                    <svg
-                      className="w-3.5 h-3.5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+
+
+
+      const industry = [
+            {
+                  value: 'it',
+                  label: 'IT',
+            },
+            {
+                  value: 'health',
+                  label: 'Health',
+            },
+            {
+                  value: 'education',
+                  label: 'Education',
+            },
+            {
+                  value: 'finance',
+                  label: 'Finance',
+            },
+            {
+                  value: 'construction',
+                  label: 'Construction',
+            },
+            {
+                  value: 'retail',
+                  label: 'Retail',
+            },
+            {
+                  value: 'hospitality',
+                  label: 'Hospitality',
+            },
+            {
+                  value: 'manufacturing',
+                  label: 'Manufacturing',
+            },
+            {
+                  value: 'media',
+                  label: 'Media & Entertainment',
+            },
+            {
+                  value: 'agriculture',
+                  label: 'Agriculture',
+            },
+            {
+                  value: 'others',
+                  label: 'Others',
+            },
+      ];
+
+      const companySize = [
+            {
+                  value: '1-10',
+                  label: '1-10 Employees',
+            },
+            {
+                  value: '11-50',
+                  label: '11-50 Employees',
+            },
+            {
+                  value: '51-100',
+                  label: '51-100 Employees',
+            },
+            {
+                  value: '101-500',
+                  label: '101-500 Employees',
+            },
+            {
+                  value: '501-1000',
+                  label: '501-1000 Employees',
+            },
+            {
+                  value: '1001-5000',
+                  label: '1001-5000 Employees',
+            },
+            {
+                  value: '5001-10000',
+                  label: '5001-10,000 Employees',
+            },
+            {
+                  value: '10001+',
+                  label: '10,001+ Employees',
+            },
+      ];
+
+
+      const navigate = useNavigate();
+
+      const create_workspace = async (e) => {
+            e.preventDefault();
+            const form_data = e.target;
+            const file = form_data.logo.files[0];
+            console.log(file, 'file');
+            const logo_url = await uploadImage(file);
+            console.log(logo_url, 'logo_url');
+            const description = form_data.description.value;
+            const company_size = form_data.company_size.value;
+            const industry = form_data.industry.value;
+
+
+            const data = {
+                  company_name: companyName,
+                  company_website: companyWebsite,
+                  logo: logo_url,
+                  description,
+                  company_size,
+                  industry,
+                  logo: logo_url,
+                  package: select_package?._id,
+                  staff: [{
+                        name: user.name,
+                        _id: user._id,
+                        role: 'supper_admin'
+                  }],
+
+            };
+
+
+            fetch(`http://localhost:5005/api/v1/workspace/create?token=${user._id}`, {
+                  method: "POST",
+                  headers: {
+                        "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(data)
+            }).then((res) => res.json())
+                  .then((data) => {
+                        console.log(data, 'data');
+                        if (!data.error) {
+                              sweet_alert('Success', data.message, 'success');
+                              navigate('/admin');
+                        } else {
+                              sweet_alert('Error', data.message, 'error');
+                        }
+                  })
+                  .catch((error) => {
+                        sweet_alert('Error', error.message, 'error');
+                  });
+
+
+      }
+
+
+
+      return (
+            <Layout className="relative py-12 overflow-hidden bg-black sm:py-16 lg:py-20 xl:py-24">
+                  <div className="absolute top-0 left-0 -translate-x-48 -translate-y-36">
+                        <svg
+                              className="blur-3xl filter"
+                              style={{ filter: "blur(64px)" }}
+                              width={756}
+                              height={202}
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                        >
+                              <path
+                                    d="M434.095 21.875c185.823 0 321.414-55.288 321.414 9.929S268.41 201.855 82.588 201.855c-185.822 0 0-104.834 0-170.051 0-65.217 165.685-9.929 351.507-9.929Z"
+                                    fill="url(#b)"
+                              />
+                              <defs>
+                                    <linearGradient
+                                          id="b"
+                                          x1={0}
+                                          y1="201.855"
+                                          x2="8.923"
+                                          y2="-28.873"
+                                          gradientUnits="userSpaceOnUse"
+                                    >
+                                          <stop offset="0%" style={{ stopColor: "var(--color-cyan-500)" }} />
+                                          <stop
+                                                offset="100%"
+                                                style={{ stopColor: "var(--color-purple-500)" }}
+                                          />
+                                    </linearGradient>
+                              </defs>
+                        </svg>
                   </div>
-                  <span className="text-lg font-medium text-white">
-                    AI Job Matching
-                  </span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-                    <svg
-                      className="w-3.5 h-3.5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-lg font-medium text-white">
-                    Resume Builder
-                  </span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-                    <svg
-                      className="w-3.5 h-3.5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-lg font-medium text-white">
-                    Job Alerts
-                  </span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-                    <svg
-                      className="w-3.5 h-3.5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-lg font-medium text-white">
-                    Advanced Filters
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center justify-center px-4 py-10 bg-white sm:px-6 lg:px-8 sm:py-16 lg:py-24">
-          <div className="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
-            <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">
-              Sign up to Celebration
-            </h2>
-            <p className="mt-2 text-base text-gray-600">
-              Already have an account?
-              <a
-                href="#"
-                title=""
-                className="font-medium text-blue-600 transition-all duration-200 hover:text-blue-700 focus:text-blue-700 hover:underline"
-              >
-                {" "}
-                Sign In
-              </a>
-            </p>
-            <form action="#" method="POST" className="mt-8">
-              <div className="space-y-5">
-                <div>
-                  <label
-                    htmlFor=""
-                    className="text-base font-medium text-gray-900"
-                  >
-                    {" "}
-                    Fast &amp; Last name{" "}
-                  </label>
-                  <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  <div className="absolute inset-0">
+                        <img
+                              className="object-cover w-full h-full opacity-50"
+                              src="https://landingfoliocom.imgix.net/store/collection/dusk/images/noise.png"
+                              alt=""
                         />
-                      </svg>
-                    </div>
-                    <input
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder="Enter your full name"
-                      className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
-                    />
                   </div>
-                </div>
-                <div>
-                  <label
-                    htmlFor=""
-                    className="text-base font-medium text-gray-900"
-                  >
-                    {" "}
-                    Email address{" "}
-                  </label>
-                  <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                        />
-                      </svg>
-                    </div>
-                    <input
-                      type="email"
-                      name=""
-                      id=""
-                      placeholder="Enter email to get started"
-                      className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
-                    />
+                  <div className="relative px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                        <div className="">
+                              <h2 className="text-3xl font-normal text-white sm:text-4xl lg:text-5xl xl:text-6xl">
+                                    Create your workspace
+                              </h2>
+                              <p className="mt-4 text-base font-normal text-gray-400 sm:text-lg">
+                                    We're here to help you with your hiring needs.
+                              </p>
+                        </div>
+                        <div className="grid grid-cols-1 mt-12 sm:mt-16 lg:mt-20 lg:grid-cols-6 lg:gap-x-24 gap-y-12">
+                              <div className="space-y-8 lg:space-y-12 lg:col-span-2 lg:order-last">
+                                    <div className="mt-6">
+                                          <p className="text-base font-bold text-gray-100">Choose Package</p>
+                                          <div className="grid grid-cols-1 gap-4 mt-5 sm:grid-cols-2">
+
+                                                {
+                                                      packages.map((item, index) => (
+                                                            <div onClick={() => setSelectPackage(item)} key={item._id} className="relative overflow-hidden transition-all duration-200 bg-white border border-gray-200 cursor-pointer rounded-xl hover:border-gray-400 hover: bg-gray - 50 opacity - 60">
+                                                                  {select_package?._id === item?._id && <div className="absolute top-0 right-0 p-2">
+                                                                        <svg
+                                                                              className="w-6 h-6 text-green-500"
+                                                                              xmlns="http://www.w3.org/2000/svg"
+                                                                              viewBox="0 0 20 20"
+                                                                              fill="currentColor"
+                                                                        >
+                                                                              <path
+                                                                                    fillRule="evenodd"
+                                                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                                                    clipRule="evenodd"
+                                                                              />
+                                                                        </svg>
+                                                                  </div>}
+                                                                  <div className="px-4 py-5" >
+                                                                        <div className="flex items-start">
+
+                                                                              <div className="ml-4">
+                                                                                    <p className="text-sm capitalize font-bold text-gray-900">{item?.name}</p>
+                                                                                    <p className="mt-1 text-sm font-medium text-gray-500">
+                                                                                          {item?.description}
+                                                                                    </p>
+                                                                              </div>
+                                                                        </div>
+                                                                  </div>
+                                                            </div>
+                                                      ))
+                                                }
+
+                                          </div>
+                                    </div>
+                              </div>
+                              <div className="lg:col-span-4">
+                                    <form
+                                          onSubmit={create_workspace}
+                                          className="grid grid-cols-1 gap-6 sm:grid-cols-2"
+                                    >
+
+                                          <div>
+                                                <label htmlFor="companyName" className="text-base font-normal text-white">
+                                                      Your company name
+                                                </label>
+                                                <div className="mt-2">
+                                                      <input
+                                                            type="text"
+                                                            required
+                                                            id="companyName"
+                                                            placeholder="Enter your company name"
+                                                            value={companyName}
+                                                            onChange={handleCompanyNameChange}
+                                                            className="block w-full px-5 py-4 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                                                      />
+                                                </div>
+                                          </div>
+                                          <div>
+                                                <label htmlFor="companyWebsite" className="text-base font-normal text-white">
+                                                      Company website
+                                                </label>
+                                                <div className="mt-2">
+                                                      <input
+                                                            type="text"
+                                                            required
+                                                            id="companyWebsite"
+                                                            placeholder="Enter your company website"
+                                                            value={companyWebsite}
+                                                            onChange={handleCompanyWebsiteChange}
+                                                            className="block w-full px-5 py-4 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                                                      />
+                                                </div>
+                                          </div>
+                                          <div>
+                                                <label htmlFor="" className="text-base font-normal text-white">
+                                                      Company logo
+                                                </label>
+                                                <div className="mt-2">
+                                                      <input
+                                                            type="file"
+                                                            required
+                                                            name="logo"
+                                                            id="logo"
+                                                            className="block w-full px-5 py-3 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                                                      />
+                                                </div>
+                                          </div>
+                                          <div>
+                                                <label htmlFor="" className="text-base font-normal text-white">
+                                                      Company size
+                                                </label>
+                                                <div className="mt-2">
+                                                      <select
+                                                            name="company_size"
+                                                            required
+                                                            id="company_size"
+                                                            className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                                                      >
+                                                            <option value="">Select company size</option>
+                                                            {
+                                                                  companySize.map((item, index) => (
+                                                                        <option key={item.value} value={item.value}>{item.label}</option>
+                                                                  ))
+                                                            }
+                                                      </select>
+                                                </div>
+                                          </div>
+                                          <div className="sm:col-span-2">
+                                                <label htmlFor="" className="text-base font-normal text-white">
+                                                      What industry do you work in?
+                                                </label>
+                                                <div className="mt-2">
+                                                      <select
+                                                            name="industry"
+                                                            required
+                                                            id="industry"
+                                                            className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                                                      >
+                                                            <option value="">Select industry</option>
+                                                            {
+                                                                  industry.map((item, index) => (
+                                                                        <option key={item.value} value={item.value}>{item.label}</option>
+                                                                  ))
+                                                            }
+                                                      </select>
+                                                </div>
+                                          </div>
+                                          <div className="sm:col-span-2">
+                                                <label htmlFor="address" className="text-base font-normal text-white">
+                                                      Company Address
+                                                </label>
+                                                <div className="mt-2">
+                                                      <input
+                                                            required
+                                                            type="text"
+                                                            id="address"
+                                                            placeholder="Enter your company address"
+                                                            className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                                                      />
+                                                </div>
+                                          </div>
+                                          <div className="sm:col-span-2">
+                                                <label htmlFor="" className="text-base font-normal text-white">
+                                                      Company Description
+                                                </label>
+                                                <div className="mt-2">
+                                                      <textarea
+                                                            required
+                                                            name="description"
+                                                            id="description"
+                                                            placeholder="Write your message"
+                                                            rows={4}
+                                                            className="block w-full px-5 py-4 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md resize-y focus:border-white focus:ring-white focus:ring-1"
+                                                            defaultValue={""}
+                                                      />
+                                                </div>
+                                          </div>
+                                          <div className="sm:col-span-2">
+                                                <button
+                                                      type="submit"
+                                                      className="inline-flex items-center justify-center px-10 py-4 text-base font-normal text-white transition-all duration-200 rounded-md bg-gradient-to-r from-cyan-500 to-purple-500 hover:contrast-150 filter"
+                                                >
+                                                      Create Workspace
+                                                </button>
+                                          </div>
+                                    </form>
+                              </div>
+                        </div>
                   </div>
-                </div>
-                <div>
-                  <label
-                    htmlFor=""
-                    className="text-base font-medium text-gray-900"
-                  >
-                    {" "}
-                    Password{" "}
-                  </label>
-                  <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
-                        />
-                      </svg>
-                    </div>
-                    <input
-                      type={isPasswordVisible ? "text" : "password"}
-                      name=""
-                      id=""
-                      placeholder="Enter your password"
-                      className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setPasswordVisible(!isPasswordVisible)}
-                      className="absolute inset-y-0 right-0 flex items-center pr-3 focus:outline-none"
-                    >
-                      {isPasswordVisible ? (
-                        <EyeOff className="w-5 h-5" />
-                      ) : (
-                        <Eye className="w-5 h-5" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <button
-                    type="submit"
-                    className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 border border-transparent rounded-md bg-gradient-to-r from-fuchsia-600 to-blue-600 focus:outline-none hover:opacity-80 focus:opacity-80"
-                  >
-                    Sign up
-                  </button>
-                </div>
-              </div>
-            </form>
-            <div className="mt-3 space-y-3">
-              <button
-                onClick={handlerGoogleLogin}
-                type="button"
-                className="relative inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none"
-              >
-                <div className="absolute inset-y-0 left-0 p-4">
-                  <img
-                    className="w-6 h-6 text-[#2563EB]"
-                    src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
-                    alt=""
-                  />
-                </div>
-                Sign up with Google
-              </button>
-              <button
-                type="button"
-                className="relative inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none"
-              >
-                <div className="absolute inset-y-0 left-0 p-4">
-                  <img
-                    className="w-6 h-6 text-[#2563EB]"
-                    src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png"
-                    alt=""
-                  />
-                </div>
-                Sign up with Linkedin
-              </button>
-            </div>
-            <p className="mt-5 text-sm text-gray-600">
-              This site is protected by reCAPTCHA and the Google{" "}
-              <a
-                href="#"
-                title=""
-                className="text-blue-600 transition-all duration-200 hover:underline hover:text-blue-700"
-              >
-                Privacy Policy
-              </a>{" "}
-              &amp;
-              <a
-                href="#"
-                title=""
-                className="text-blue-600 transition-all duration-200 hover:underline hover:text-blue-700"
-              >
-                Terms of Service
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+            </Layout>
+
+      );
 }
