@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
       Form,
       Input,
@@ -26,7 +26,11 @@ export default function Workspace() {
       const [select_package, setSelectPackage] = useState(null);
       const [companyName, setCompanyName] = useState("");
       const [companyWebsite, setCompanyWebsite] = useState("");
-      const { user } = useContext(Kalbela_AuthProvider);
+      const { user, base_url, setWorkspace, setUser, setCookie } = useContext(Kalbela_AuthProvider);
+      const [loading, setLoading] = useState(false);
+      const [description, setDescription] = useState("");
+
+      const quillRef = useRef(null);
 
       const generateWebsite = (name) => {
             return name
@@ -157,12 +161,10 @@ export default function Workspace() {
 
       const create_workspace = async (e) => {
             e.preventDefault();
+            setLoading(true);
             const form_data = e.target;
             const file = form_data.logo.files[0];
-            console.log(file, 'file');
             const logo_url = await uploadImage(file);
-            console.log(logo_url, 'logo_url');
-            const description = form_data.description.value;
             const company_size = form_data.company_size.value;
             const industry = form_data.industry.value;
 
@@ -185,7 +187,7 @@ export default function Workspace() {
             };
 
 
-            fetch(`http://localhost:5005/api/v1/workspace/create?token=${user._id}`, {
+            fetch(`${base_url}/workspace/create?token=${user._id}`, {
                   method: "POST",
                   headers: {
                         "Content-Type": "application/json"
@@ -195,18 +197,30 @@ export default function Workspace() {
                   .then((data) => {
                         console.log(data, 'data');
                         if (!data.error) {
+                              setLoading(false);
                               sweet_alert('Success', data.message, 'success');
+                              setWorkspace(data.data.workspace);
+                              setUser(data.data.user);
+                              setCookie('kal_bela_jobs_workspace', data.data.workspace, 365);
+                              setCookie('kal_bela_jobs_user', data.data.user, 365);
                               navigate('/admin');
+
                         } else {
+                              setLoading(false);
                               sweet_alert('Error', data.message, 'error');
                         }
                   })
                   .catch((error) => {
+                        setLoading(false);
                         sweet_alert('Error', error.message, 'error');
                   });
 
 
       }
+
+      const handleDescriptionChange = (value) => {
+            setDescription(value);
+      };
 
 
 
@@ -267,7 +281,7 @@ export default function Workspace() {
 
                                                 {
                                                       packages.map((item, index) => (
-                                                            <div onClick={() => setSelectPackage(item)} key={item._id} className="relative overflow-hidden transition-all duration-200 bg-white border border-gray-200 cursor-pointer rounded-xl hover:border-gray-400 hover: bg-gray - 50 opacity - 60">
+                                                            <div onClick={() => setSelectPackage(item)} key={item._id} className="relative overflow-hidden transition-all duration-200 bg-gray-500 bg-opacity-25 border border-gray-200 cursor-pointer rounded-xl hover:border-gray-400 hover:bg-gray-50 border-opacity-15 opacity-60 group">
                                                                   {select_package?._id === item?._id && <div className="absolute top-0 right-0 p-2">
                                                                         <svg
                                                                               className="w-6 h-6 text-green-500"
@@ -286,8 +300,8 @@ export default function Workspace() {
                                                                         <div className="flex items-start">
 
                                                                               <div className="ml-4">
-                                                                                    <p className="text-sm capitalize font-bold text-gray-900">{item?.name}</p>
-                                                                                    <p className="mt-1 text-sm font-medium text-gray-500">
+                                                                                    <p className="text-sm capitalize font-bold group-hover:text-gray-900 text-gray-100">{item?.name}</p>
+                                                                                    <p className="mt-1 text-sm font-medium text-gray-100">
                                                                                           {item?.description}
                                                                                     </p>
                                                                               </div>
@@ -411,7 +425,7 @@ export default function Workspace() {
                                                       Company Description
                                                 </label>
                                                 <div className="mt-2">
-                                                      <textarea
+                                                      {/* <textarea
                                                             required
                                                             name="description"
                                                             id="description"
@@ -419,15 +433,23 @@ export default function Workspace() {
                                                             rows={4}
                                                             className="block w-full px-5 py-4 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md resize-y focus:border-white focus:ring-white focus:ring-1"
                                                             defaultValue={""}
+                                                      /> */}
+                                                      <ReactQuill
+                                                            onChange={handleDescriptionChange}
+                                                            required
+                                                            name="description"
+                                                            id="description"
                                                       />
+
                                                 </div>
                                           </div>
                                           <div className="sm:col-span-2">
                                                 <button
+                                                      // disabled={loading}
                                                       type="submit"
                                                       className="inline-flex items-center justify-center px-10 py-4 text-base font-normal text-white transition-all duration-200 rounded-md bg-gradient-to-r from-cyan-500 to-purple-500 hover:contrast-150 filter"
                                                 >
-                                                      Create Workspace
+                                                      {loading ? 'Creating...' : 'Create Workspace'}
                                                 </button>
                                           </div>
                                     </form>

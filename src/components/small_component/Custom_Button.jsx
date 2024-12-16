@@ -1,11 +1,9 @@
-import { Link } from "react-router-dom";
-
-const Link_Button = ({ url, name }) => {
+const Custom_Button = ({ handleClick, name }) => {
       return (
             <div className="pb-4">
-                  <Link
+                  <button
                         className="group relative inline-flex items-center overflow-hidden rounded bg-gray-900 px-8 py-3 text-white focus:outline-none focus:ring active:bg-gray-500"
-                        to={url}
+                        onClick={handleClick}
                   >
                         <span className="absolute -start-full transition-all group-hover:start-4">
                               <svg
@@ -25,9 +23,9 @@ const Link_Button = ({ url, name }) => {
                         </span>
 
                         <span className="text-sm font-medium transition-all capitalize group-hover:ms-4"> {name} </span>
-                  </Link>
+                  </button>
             </div>
       );
 };
 
-export default Link_Button;
+export default Custom_Button;

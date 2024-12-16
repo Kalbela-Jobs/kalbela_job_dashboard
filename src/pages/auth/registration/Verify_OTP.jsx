@@ -7,7 +7,7 @@ import sweet_alert from '../../../utils/custom_alert';
 const VerifyOTP = () => {
       const [otp, setOtp] = useState(['', '', '', '', '', '']);
       const inputRefs = useRef([]);
-      const { user } = useContext(Kalbela_AuthProvider);
+      const { user, base_url } = useContext(Kalbela_AuthProvider);
 
       const handleChange = (value, index) => {
             const newOtp = [...otp];
@@ -32,7 +32,7 @@ const VerifyOTP = () => {
       const handleVerify = () => {
             const otpValue = otp.join('');
             if (otpValue.length === 6) {
-                  fetch('http://localhost:5005/api/v1/auth/verify-email', {
+                  fetch(`${base_url}/auth/verify-email`, {
                         method: 'POST',
                         headers: {
                               'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const VerifyOTP = () => {
       };
 
       const handleResend = () => {
-            fetch('http://localhost:5005/api/v1/auth/regenerate-otp', {
+            fetch(`${base_url}/auth/regenerate-otp`, {
                   method: 'POST',
                   headers: {
                         'Content-Type': 'application/json',

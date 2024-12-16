@@ -4,14 +4,21 @@ import {
       Home,
       MessageSquareText,
       Settings,
+      ShoppingCart,
+      List,
       Users,
 } from "lucide-react";
 
-export const navitems = [
+export const nav_items = [
       {
             title: "Dashboard",
             icon: Home,
             link: "dashboard",
+      },
+      {
+            title: "Category",
+            icon: List,
+            link: "category",
       },
       {
             title: "Jobs",

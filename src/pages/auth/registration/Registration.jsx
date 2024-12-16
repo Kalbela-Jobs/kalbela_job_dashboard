@@ -13,7 +13,7 @@ export default function Registration() {
       const navigate = useNavigate();
       const [isPasswordVisible, setPasswordVisible] = useState(false);
 
-      const { googleLogin, setUser, setCookie } = useContext(Kalbela_AuthProvider);
+      const { googleLogin, setUser, setCookie, base_url } = useContext(Kalbela_AuthProvider);
 
 
       const data_submit = async (e) => {
@@ -28,7 +28,7 @@ export default function Registration() {
                   email,
                   password
             }
-            fetch("http://localhost:5005/api/v1/auth/sign-up", {
+            fetch(`${base_url}/auth/sign-up`, {
                   method: "POST",
                   headers: {
                         "Content-Type": "application/json"
