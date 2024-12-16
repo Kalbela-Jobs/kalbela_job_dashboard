@@ -8,9 +8,6 @@ const uploadImage = async (file) => {
             const formData = new FormData();
             formData.append("image", file);
 
-
-            console.log('formData', formData);
-
             const url = `http://localhost:5005/api/v1/image/upload-image`;
             const response = await fetch(url, {
                   method: "PUT",

@@ -8,7 +8,7 @@ const Private = ({ children }) => {
       const { user, loading } = useContext(Kalbela_AuthProvider);
       const location = useLocation();
 
-      if (loading) {
+      if (!user && loading) {
             return <h1 className="grid h-screen px-4 bg-black place-content-center"> <Lottie animationData={groovyWalkAnimation} loop={true} /></h1>;
       }
       if (user?.email) {

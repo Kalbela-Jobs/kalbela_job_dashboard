@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useContext, useState } from "react";
 import { Kalbela_AuthProvider } from "../../../context/MainContext";
+import sweet_alert from "../../../utils/custom_alert";
 
 const Login = () => {
-      const { googleLogin, base_url } = useContext(Kalbela_AuthProvider);
+      const { googleLogin, base_url, setCookie, setUser } = useContext(Kalbela_AuthProvider);
       const [isPasswordVisible, setPasswordVisible] = useState(false);
 
       const login_handler = async (e) => {
@@ -20,7 +21,26 @@ const Login = () => {
                   password
             }
 
-            console.log(base_url);
+            fetch(`${base_url}/auth/sign-in`, {
+                  method: "POST",
+                  headers: {
+                        "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(data)
+            }).then((res) => res.json())
+                  .then((data) => {
+                        console.log(data, 'data');
+                        if (!data.error) {
+                              setUser(data.data.user);
+                              setCookie("kal_bela_jobs_user", data.data.user, 365);
+                              sweet_alert("Success", data.message, "success");
+                              navigate("/");
+                        }
+                        else {
+                              sweet_alert("Error", data.message, "error");
+                        }
+                  });
+
 
 
       }

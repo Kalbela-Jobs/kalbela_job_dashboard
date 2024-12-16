@@ -3,58 +3,19 @@ import Link_Button from "../../../components/small_component/Link_Button";
 const Job = () => {
       return (
             <div>
-                  <div className="py-12 bg-white sm:py-16 lg:py-20">
+                  <div className="py-4 bg-white ">
 
 
                         <div className="px-4 sm:px-6 lg:px-8">
-                              <Link_Button url="add-job" />
+                              <Link_Button name="Create New Job" url="add-job" />
                               <div className="sm:flex sm:items-center sm:justify-between">
                                     <div>
                                           <p className="text-xl font-bold text-gray-900">Your Jobs</p>
-                                          <p className="mt-1 text-sm font-medium text-gray-500">
-                                                View all your jobs
-                                          </p>
+
                                     </div>
-                                    <div className="flex items-center justify-start mt-4 sm:justify-end sm:mt-0 sm:space-x-7">
-                                          <button
-                                                type="button"
-                                                className="items-center hidden px-3 py-2 text-sm font-medium leading-4 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm sm:inline-flex hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                                          >
-                                                <svg
-                                                      className="w-4 h-4 mr-1 -ml-1"
-                                                      xmlns="http://www.w3.org/2000/svg"
-                                                      fill="none"
-                                                      viewBox="0 0 24 24"
-                                                      stroke="currentColor"
-                                                      strokeWidth={2}
-                                                >
-                                                      <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                                      />
-                                                </svg>
-                                                Export to CSV
-                                          </button>
-                                          <div className="inline-flex items-center justify-end">
-                                                <label
-                                                      htmlFor="sort"
-                                                      className="text-base font-medium text-gray-900 sm:text-sm"
-                                                >
-                                                      {" "}
-                                                      Sort:{" "}
-                                                </label>
-                                                <select
-                                                      id="sort"
-                                                      name="sort"
-                                                      className="block w-full py-2 pl-1 pr-10 text-base border-gray-300 border-none rounded-lg focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm"
-                                                >
-                                                      <option>Popularity</option>
-                                                </select>
-                                          </div>
-                                    </div>
+
                               </div>
-                              <div className="flex flex-col mt-4 lg:mt-8">
+                              <div className="flex flex-col mt-4 ">
                                     <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                                 <table className="min-w-full lg:divide-gray-200 lg:divide-y">

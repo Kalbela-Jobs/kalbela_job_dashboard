@@ -5,6 +5,8 @@ import { skillsArray } from "../../../utils/dashboard_menu";
 import { message } from "antd";
 import CreatableSelect from "react-select/creatable";
 import { useQuery } from "@tanstack/react-query";
+import Link_Button from "../../../components/small_component/Link_Button";
+import ReactQuill from "react-quill";
 
 const Add_Jobs = () => {
       const [formData, setFormData] = useState({
@@ -157,10 +159,11 @@ const Add_Jobs = () => {
 
       return (
             <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+                  <Link_Button name='Back to Jobs' url="/admin/jobs/" />
                   <div className="bg-white rounded-lg shadow-md overflow-hidden">
                         <div className="px-4 py-5 sm:px-6">
                               <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-                                    Jobs
+                                    Add Jobs
                               </h2>
                         </div>
                         <form onSubmit={handleSubmit} className="px-4 py-5 sm:p-6">
@@ -202,7 +205,7 @@ const Add_Jobs = () => {
                                                       </button>
                                                 </label>
                                           </div>
-                                          <JoditEditor
+                                          {/* <JoditEditor
                                                 className="mt-4"
                                                 config={config}
                                                 value={content}
@@ -211,7 +214,9 @@ const Add_Jobs = () => {
                                                       setContent(newContent);
                                                       console.log(`${description}:`, newContent);
                                                 }}
-                                          />
+                                          /> */}
+
+                                          <ReactQuill />
                                     </div>
 
                                     <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">

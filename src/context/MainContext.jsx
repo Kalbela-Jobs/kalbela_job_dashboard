@@ -16,9 +16,10 @@ export const Kalbela_AuthProvider = createContext();
 
 const Provider = ({ children }) => {
       const [user, setUser] = useState("");
+      const [workspace, setWorkspace] = useState("");
       const [loading, setLoading] = useState(false);
 
-      const base_url = import.meta.env.BASE_URL
+      const base_url = import.meta.env.VITE_BASE_URL
 
       const auth = getAuth(app);
 
@@ -64,7 +65,7 @@ const Provider = ({ children }) => {
             }
             return null;
       };
-      const checkShopCookie = () => {
+      const checkUserCookie = () => {
             const userCookie = getCookie('kal_bela_jobs_user');
             if (userCookie) {
                   const userData = JSON.parse(userCookie);
@@ -72,21 +73,31 @@ const Provider = ({ children }) => {
             }
             setLoading(false);
       };
+      const check_workspace_cookie = () => {
+            const workspaceCookie = getCookie('kal_bela_jobs_workspace');
+            if (workspaceCookie) {
+                  const workspaceData = JSON.parse(workspaceCookie);
+                  setWorkspace(workspaceData);
+            }
+            setLoading(false);
+      };
 
       useEffect(() => {
             const unsubscribe = () => {
-                  // checkUserCookie();
-                  checkShopCookie();
+                  setLoading(true);
+                  checkUserCookie();
+                  check_workspace_cookie();
+                  setLoading(false);
             };
 
             unsubscribe();
 
             return () => {
-
+                  setLoading(false);
             };
       }, []);
 
-      const provider_object = { user, setUser, googleLogin, loading, loginOut, base_url, setCookie };
+      const provider_object = { user, setUser, googleLogin, loading, loginOut, base_url, setCookie, workspace, setWorkspace };
 
       return (
             <Kalbela_AuthProvider.Provider value={provider_object}>

@@ -2,7 +2,7 @@ import { LogOut, Menu, SearchCheck, X } from "lucide-react";
 import { useContext, useEffect } from "react";
 import MyContext from "../../context/Dashboard_context";
 import { Link, NavLink } from "react-router-dom";
-import { navitems } from "../../utils/dashboard_menu";
+import { nav_items } from "../../utils/dashboard_menu";
 import { Kalbela_AuthProvider } from "../../context/MainContext";
 
 const Sidebar = () => {
@@ -11,7 +11,7 @@ const Sidebar = () => {
 
 
 
-      const filteredItems = navitems?.filter((item) =>
+      const filteredItems = nav_items?.filter((item) =>
             item?.title?.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
@@ -25,11 +25,11 @@ const Sidebar = () => {
 
             <div
 
-                  className={`top-0 left-0 z-50 bg-gray-900 h-screen ${open ? 'fixed md:w-64 flex' : 'hidden'}`}
+                  className={`top-0 left-0 z-50 bg-gray-900 h-screen ${open ? 'fixed md:w-64  flex' : 'hidden'}`}
 
             >
                   <div className="relative">
-                        <div className="flex flex-col flex-grow pt-5 overflow-y-auto bg-gray-900">
+                        <div className="flex flex-col flex-grow pt-5 w-full overflow-y-auto bg-gray-900">
                               <div className="flex items-center justify-between flex-shrink-0 px-4">
                                     <img
                                           className="w-64 h-auto filter invert brightness-200 grayscale"
@@ -43,7 +43,6 @@ const Sidebar = () => {
                               </div>
                               <div className="px-4 mt-8">
                                     <label htmlFor="" className="sr-only">
-                                          {" "}
                                           Search{" "}
                                     </label>
                                     <div className="relative">
@@ -85,14 +84,15 @@ const Sidebar = () => {
                                                             <NavLink
                                                                   to={item.link}
                                                                   className={({ isActive }) =>
-                                                                        `flex items-center space-x-2 p-2 ${isActive ? "text-blue-700" : "text-white"
+                                                                        `flex items-center space-x-2 p-2 ${isActive ? "text-blue-500" : "text-white"
                                                                         }`
                                                                   }
                                                             >
-                                                                  <div className="border p-2 transition-all duration-200 text-white hover:text-blue-700 rounded-lg hover:bg-gray-200 cursor-pointer group">
+
+                                                                  <NavLink to={item.link} className={({ isActive }) => `border p-2 transition-all duration-200  hover:text-blue-700 rounded-lg hover:bg-gray-200 cursor-pointer group ${isActive ? "  bg-gray-200 text-blue-700" : "text-white"}`}>
                                                                         <item.icon className="w-6 h-6 " />
-                                                                  </div>
-                                                                  <h3 >{item.title}</h3>
+                                                                  </NavLink>
+                                                                  <h3 className="font-semibold">{item.title}</h3>
                                                             </NavLink>
                                                             <hr className="border-gray-700" />
                                                       </div>
