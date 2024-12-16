@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.5.2",
+    "antd": "^5.22.4",
     "firebase": "^11.0.2",
     "framer-motion": "^11.13.1",
     "jodit-react": "^4.1.2",
@@ -17,7 +19,9 @@
     "lucide-react": "^0.468.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-select": "^5.9.0"
+    "react-quill": "^2.0.0",
+    "react-select": "^5.9.0",
+    "sweetalert2": "^11.15.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
