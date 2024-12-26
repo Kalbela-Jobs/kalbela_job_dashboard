@@ -16,7 +16,7 @@ export default function Registration() {
       const { googleLogin, setUser, setCookie, base_url } = useContext(Kalbela_AuthProvider);
 
 
-      const data_submit = async (e) => {
+      const data_submit = (e) => {
             e.preventDefault();
             const from_data = e.target
             const name = from_data.full_name.value
@@ -28,6 +28,7 @@ export default function Registration() {
                   email,
                   password
             }
+            console.log(`${base_url}/auth/sign-up`);
             fetch(`${base_url}/auth/sign-up`, {
                   method: "POST",
                   headers: {

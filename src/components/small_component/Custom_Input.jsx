@@ -1,4 +1,4 @@
-const Custom_Input = ({ label, name, type, placeholder, onchange_function }) => {
+const Custom_Input = ({ label, name, type, placeholder, onchange_function, default_value }) => {
       return (
 
 
@@ -8,11 +8,12 @@ const Custom_Input = ({ label, name, type, placeholder, onchange_function }) => 
             >
                   <input
                         onChange={onchange_function}
+                        defaultValue={default_value}
                         type={type}
                         id={name}
                         name={name}
                         placeholder={placeholder}
-                        className="peer border-none h-10 bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+                        className="peer border-none w-full h-10 bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
                   />
 
                   <span

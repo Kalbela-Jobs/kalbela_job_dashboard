@@ -1,18 +1,40 @@
-export const mockStats = [
-      { icon: "👥", label: "Active Candidates", count: 12, color: "bg-red-100" },
-      { icon: "💼", label: "Active Jobs", count: 5, color: "bg-pink-100" },
-      { icon: "📝", label: "Draft Jobs", count: 3, color: "bg-orange-100" },
-      { icon: "👥", label: "Team Members", count: 8, color: "bg-blue-100" }
+
+export const jobTypeOptions = [
+      { value: "full-time", label: "Full-time" },
+      { value: "part-time", label: "Part-time" },
+      { value: "contract", label: "Contract" },
+      { value: "internship", label: "Internship" },
 ];
 
-export const mockApplicants = [
-      { id: 1, name: "John Doe", position: "Frontend Developer", status: "Pending" },
-      { id: 2, name: "Jane Smith", position: "UX Designer", status: "Interviewed" },
-      { id: 3, name: "Mike Johnson", position: "Backend Developer", status: "Rejected" },
+
+
+export const categoryOptions = [
+      { value: "software-engineer", label: "Software Engineer" },
+      { value: "data-analyst", label: "Data Analyst" },
+      { value: "project-manager", label: "Project Manager" },
+      { value: "graphic-designer", label: "Graphic Designer" },
+      { value: "content-writer", label: "Content Writer" },
 ];
 
-export const mockJobs = [
-      { id: 1, title: "Senior React Developer", applicants: 15, status: "Active", deadline: "2023-12-31" },
-      { id: 2, title: "UX/UI Designer", applicants: 8, status: "Active", deadline: "2023-12-15" },
-      { id: 3, title: "DevOps Engineer", applicants: 5, status: "Draft", deadline: "2024-01-15" },
+export const employmentTypeOptions = [
+      { value: "full-time", label: "Full-time" },
+      { value: "part-time", label: "Part-time" },
+      { value: "contract", label: "Contract" },
+      { value: "internship", label: "Internship" },
+      { value: "temporary", label: "Temporary" },
+];
+
+export const experienceLevelOptions = [
+      { value: "entry-level", label: "Entry Level" },
+      { value: "mid-level", label: "Mid Level" },
+      { value: "senior-level", label: "Senior Level" },
+      { value: "executive-level", label: "Executive Level" },
+      { value: "internship", label: "Internship" },
+];
+
+export const salaryTypeOptions = [
+      { value: "hourly", label: "Hourly" },
+      { value: "monthly", label: "Monthly" },
+      { value: "yearly", label: "Yearly" },
+      { value: "project-based", label: "Project-Based" },
 ];

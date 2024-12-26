@@ -1,35 +1,31 @@
-import { useContext, useState } from "react";
-import Link_Button from "../../../components/small_component/Link_Button";
 import { useQuery } from "@tanstack/react-query";
 import { Kalbela_AuthProvider } from "../../../context/MainContext";
+import { useContext, useState } from "react";
+import Link_Button from "../../../components/small_component/Link_Button";
 import Modal_Component from "../../../components/common/Modal_Component";
-import Edit from "./edit/Edit";
 import Delete_Modal from "../../../components/common/Delete_Modal";
-import sweet_alert from "../../../utils/custom_alert";
-import Lottie from "lottie-react";
-import groovyWalkAnimation from "../../../routers/Loading.json";
 
-const Category = () => {
-      const { user, base_url, } = useContext(Kalbela_AuthProvider);
+const Hr_management = () => {
+      const { user, base_url, workspace } = useContext(Kalbela_AuthProvider);
       const [modal, set_modal] = useState(false);
       const [delete_modal, set_delete_modal] = useState(false);
 
+      const { data: workspace_hr = [], isLoading, refetch } = useQuery({
+            queryKey: ["workspace-hr", workspace._id],
 
-      const { data: categories = [], isLoading, refetch } = useQuery({
-            queryKey: ["categories"],
             queryFn: async () => {
                   const res = await fetch(
-                        `${base_url}/category?token=${user._id}`
+                        `${base_url}/workspace/workspace-hr?workspace_id=${workspace._id}`
                   );
                   const data = await res.json();
                   return data.data;
             },
+            enabled: !!workspace?._id,
       });
 
 
       const delete_function = async (data) => {
-
-            fetch(`${base_url}/category/delete?category_id=${data._id}&token=${user._id}`, {
+            fetch(`${base_url}/workspace/workspace-hr/delete?hr_id=${data._id}&token=${user._id}`, {
                   method: 'DELETE',
             }).then(res => res.json())
                   .then(data => {
@@ -48,10 +44,10 @@ const Category = () => {
             <div>
                   <div className="py-4 bg-white">
                         <div className="px-4 sm:px-6 lg:px-8">
-                              <Link_Button name='Create New Category' url="add-category" />
+                              <Link_Button name='Create New HR' url="add-hr" />
                               <div className="sm:flex sm:items-center sm:justify-between">
                                     <div>
-                                          <p className="text-xl font-bold text-gray-900">Category List</p>
+                                          <p className="text-xl font-bold text-gray-900">HR List</p>
                                     </div>
 
                               </div>
@@ -61,17 +57,16 @@ const Category = () => {
                                                 <table className="min-w-full overflow-x-auto divide-y divide-gray-200">
                                                       <thead className=" lg:table-header-group">
                                                             <tr>
-                                                                  <th className="py-3.5 px-4 text-left text-xs whitespace-nowrap font-medium text-gray-500 uppercase tracking-widest">
-                                                                        Image
-                                                                  </th>
+
                                                                   <th className="py-3.5 px-4 text-left text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
                                                                         Name
                                                                   </th>
                                                                   <th className="py-3.5 px-4 text-left text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
-                                                                        Slag
+                                                                        Role
                                                                   </th>
-
-
+                                                                  <th className="py-3.5 px-4 text-left text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
+                                                                        Permission
+                                                                  </th>
                                                                   <th className="py-3.5 px-4 text-center text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
                                                                         Actions
                                                                   </th>
@@ -80,31 +75,35 @@ const Category = () => {
                                                       <tbody>
 
 
-                                                            {categories.map((category) => <tr className="bg-gray-50">
+                                                            {workspace_hr.map((hr) => <tr className="bg-gray-50">
 
                                                                   <td className=" px-4 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
-                                                                        <img className="w-10 h-10 border border-gray-200 rounded border-opacity-20" src={category.image} alt={category.name} />
+                                                                        {hr.name}
                                                                   </td>
                                                                   <td className=" px-4 py-4 text-sm font-medium text-gray-900 xl:table-cell whitespace-nowrap">
                                                                         <div className="flex items-center">
 
-                                                                              {category.name}
+                                                                              {hr.role}
                                                                         </div>
                                                                   </td>
                                                                   <td className="px-4 py-4 text-sm font-medium text-right text-gray-900 align-top lg:align-middle lg:text-left whitespace-nowrap">
-                                                                        {category.slag}
+                                                                        {
+                                                                              hr.permission.map((per) => <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                                                    {per}
+                                                                              </span>)
+                                                                        }
                                                                   </td>
                                                                   <td className=" px-4 py-4 lg:table-cell whitespace-nowrap">
                                                                         <div className="flex justify-center items-center space-x-4">
                                                                               <button
-                                                                                    onClick={() => set_modal(category)}
+                                                                                    onClick={() => set_modal(hr)}
                                                                                     type="button"
                                                                                     className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 bg-gray-100 border border-gray-300 rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none hover:text-white hover:border-indigo-600 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                                               >
                                                                                     Edit Details
                                                                               </button>
                                                                               <button
-                                                                                    onClick={() => set_delete_modal(category)}
+                                                                                    onClick={() => set_delete_modal(hr)}
                                                                                     type="button"
                                                                                     className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                                               >
@@ -148,4 +147,4 @@ const Category = () => {
       );
 };
 
-export default Category;
+export default Hr_management;

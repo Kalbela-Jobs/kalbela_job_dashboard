@@ -21,19 +21,34 @@ export const nav_items = [
             link: "category",
       },
       {
+            title: "Job Type",
+            icon: List,
+            link: "job-type",
+      },
+      {
+            title: "Career Resources",
+            icon: List,
+            link: "career-resources",
+      },
+      {
             title: "Jobs",
             icon: Briefcase,
             link: "jobs",
       },
       {
-            title: "Condidates",
+            title: "Candidates",
             icon: Users,
-            link: "condidates",
+            link: "candidates",
       },
       {
-            title: "Messager",
-            icon: MessageSquareText,
-            link: "messager",
+            title: "Hr Management",
+            icon: Users,
+            link: "hr-management",
+      },
+      {
+            title: "Organization",
+            icon: Users,
+            link: "organization",
       },
       {
             title: "Setting",
