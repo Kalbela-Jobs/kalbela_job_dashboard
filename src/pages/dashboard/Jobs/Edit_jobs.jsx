@@ -10,16 +10,18 @@ import sweet_alert from "../../../utils/custom_alert";
 
 const { Title } = Typography;
 
-const Add_Jobs = () => {
+const Edit_jobs = ({ data, onClose }) => {
+
+      console.log(data, 'data');
       const [form] = Form.useForm();
       const { base_url, workspace, user } = useContext(Kalbela_AuthProvider)
-      const [jobDescription, setJobDescription] = useState("");
-      const [responsibilities, setResponsibilities] = useState("");
-      const [benefit, setBenefit] = useState("");
-      const [isNegotiable, setIsNegotiable] = useState(false);
-      const [negotiableNote, setNegotiableNote] = useState("");
-      const [remote, setRemote] = useState(false);
+      const [jobDescription, setJobDescription] = useState(data?.job_description || "");
+      const [responsibilities, setResponsibilities] = useState(data?.responsibilities || "");
+      const [benefit, setBenefit] = useState(data?.benefit || "");
 
+      const [isNegotiable, setIsNegotiable] = useState(data?.salary_negotiable);
+      const [negotiableNote, setNegotiableNote] = useState(data?.negotiableNote || "");
+      const [remote, setRemote] = useState(data?.remote);
 
       const { data: divisions = [], isLoading: isDivisionsLoading } = useQuery({
             queryKey: ["divisions"],
@@ -149,22 +151,22 @@ const Add_Jobs = () => {
       };
 
       return (
-            <div className=" bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
-                  <Card className="">
-                        <Title level={2} className="text-center mb-8">Add New Job</Title>
+            <div className=" ">
+                  <div className="">
+
                         <Form
                               form={form}
                               name="add_job"
                               onFinish={onFinish}
                               layout="vertical"
-                              className="space-y-6"
+                              className="space-y-6 mt-4"
                         >
                               <Form.Item name="job_title" label="Job Title" rules={[{ required: true }]}>
-                                    <Input />
+                                    <Input defaultValue={data?.job_title} />
                               </Form.Item>
 
                               <Form.Item name="skills" label="Skills" rules={[{ required: true }]}>
-                                    <Select mode="tags" style={{ width: '100%' }} placeholder="Select or add skills" />
+                                    <Select mode="tags" defaultValue={data?.skills} style={{ width: '100%' }} placeholder="Select or add skills" />
                               </Form.Item>
 
                               <div className="flex justify-between items-center mb-4">
@@ -181,47 +183,48 @@ const Add_Jobs = () => {
                               <Form.Item name="responsibilities" label="Responsibilities" rules={[{ required: true }]}>
                                     <ReactQuill theme="snow" value={responsibilities} onChange={setResponsibilities} />
                               </Form.Item>
+
                               <Form.Item name="benefit" label="Benefits" rules={[{ required: true }]}>
                                     <ReactQuill theme="snow" value={benefit} onChange={setBenefit} />
                               </Form.Item>
 
                               <div className="flex space-x-4">
                                     <Form.Item className="w-full" name="vacancy" label="Number of Vacancies" rules={[{ required: true }]}>
-                                          <Input type="number" />
+                                          <Input defaultValue={data?.vacancy} type="number" />
                                     </Form.Item>
                                     <Form.Item className="w-full" name="expiry_date" label="Deadline" rules={[{ required: true }]}>
-                                          <Input type="date" />
+                                          <Input defaultValue={data?.expiry_date} type="date" />
                                     </Form.Item>
                               </div>
 
 
                               <div className="flex space-x-4">
                                     <Form.Item className="w-full" name="category" label="Category" rules={[{ required: true }]}>
-                                          <Select options={categoryOptions} />
+                                          <Select defaultValue={data?.category} options={categoryOptions} />
                                     </Form.Item>
 
                                     <Form.Item className="w-full" name="job_type" label="Job Type" rules={[{ required: true }]}>
-                                          <Select options={jobTypeOptions} />
+                                          <Select defaultValue={data?.job_type} options={jobTypeOptions} />
                                     </Form.Item>
                               </div>
 
                               <Form.Item name="salary_type" label="Salary Type" rules={[{ required: true }]}>
-                                    <Select options={salaryTypeOptions} />
+                                    <Select defaultValue={data?.salary_type} options={salaryTypeOptions} />
                               </Form.Item>
 
                               <Form.Item name="salary_negotiable" valuePropName="checked">
-                                    <Checkbox onClick={(e) => setIsNegotiable(e.target.checked)}>Salary Negotiable</Checkbox>
+                                    <Checkbox defaultChecked={data?.salary_negotiable} onClick={(e) => setIsNegotiable(e.target.checked)}>Salary Negotiable</Checkbox>
                               </Form.Item>
 
 
                               {!isNegotiable && <Form.Item label="Salary Range">
                                     <Input.Group compact>
                                           <Form.Item name={["salary_range", "min"]} noStyle rules={[{ required: true }]}>
-                                                <Input style={{ width: '50%' }} placeholder="Min" type="number" />
+                                                <Input defaultValue={data?.salary_range?.min} style={{ width: '50%' }} placeholder="Min" type="number" />
                                           </Form.Item>
 
                                           <Form.Item name={["salary_range", "max"]} noStyle rules={[{ required: true }]}>
-                                                <Input style={{ width: '50%' }} placeholder="Max" type="number" />
+                                                <Input defaultValue={data?.salary_range?.max} style={{ width: '50%' }} placeholder="Max" type="number" />
                                           </Form.Item>
                                     </Input.Group>
                               </Form.Item>
@@ -229,16 +232,17 @@ const Add_Jobs = () => {
 
                               {/* when it is negotiable than show here negotiable note  */}
                               {isNegotiable && <Form.Item name="negotiable_note" label="Negotiable Note">
-                                    <ReactQuill theme="snow" value={negotiableNote} onChange={setNegotiableNote} />
+                                    <ReactQuill defaultValue={data?.negotiable_note} theme="snow" value={negotiableNote} onChange={setNegotiableNote} />
                               </Form.Item>}
 
 
 
                               <Form.Item name="remote" valuePropName="checked">
-                                    <Checkbox onClick={(e) => setRemote(e.target.checked)}> Remote</Checkbox>
+                                    <Checkbox defaultChecked={data?.remote} onClick={(e) => setRemote(e.target.checked)}> Remote</Checkbox>
                               </Form.Item>
                               {!remote && <Form.Item name="state" label="Division" rules={[{ required: true }]}>
                                     <Select
+                                          defaultValue={data?.state}
                                           options={divisions}
                                           loading={isDivisionsLoading}
                                           placeholder="Select a division"
@@ -248,7 +252,7 @@ const Add_Jobs = () => {
 
 
                               <Form.Item name="experience_level" label="Experience Level" rules={[{ required: true }]}>
-                                    <Select options={experienceLevelOptions} />
+                                    <Select defaultValue={data?.experience_level} options={experienceLevelOptions} />
                               </Form.Item>
 
                               {/* <Form.Item name="wh_questions" label="WH Questions">
@@ -261,9 +265,9 @@ const Add_Jobs = () => {
                                     </Button>
                               </Form.Item>
                         </Form>
-                  </Card>
+                  </div>
             </div>
       );
 };
 
-export default Add_Jobs;
+export default Edit_jobs;

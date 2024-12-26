@@ -17,12 +17,9 @@ export const Kalbela_AuthProvider = createContext();
 const Provider = ({ children }) => {
       const [user, setUser] = useState("");
       const [workspace, setWorkspace] = useState("");
-      const [loading, setLoading] = useState(false);
-
+      const [loading, setLoading] = useState(true);
       const base_url = import.meta.env.VITE_BASE_URL
-
       const auth = getAuth(app);
-
       const googleProvider = new GoogleAuthProvider();
 
       const googleLogin = () => {

@@ -75,7 +75,7 @@ const Sidebar = () => {
                               <div className="px-4 mt-6">
                                     <hr className="border-gray-700" />
                               </div>
-                              <div className="flex flex-col flex-1 px-3 mt-6">
+                              <div className="flex flex-col flex-1 px-8 h-40 overflow-y-auto mt-6">
                                     <div className="space-y-4">
                                           <nav className="flex-1 space-y-2">
                                                 {filteredItems.map((item, index) => (
@@ -84,15 +84,15 @@ const Sidebar = () => {
                                                             <NavLink
                                                                   to={item.link}
                                                                   className={({ isActive }) =>
-                                                                        `flex items-center space-x-2 p-2 ${isActive ? "text-blue-500" : "text-white"
+                                                                        `flex items-center space-x-2 p-2 ${isActive ? "text-blue-500" : "text-gray-300"
                                                                         }`
                                                                   }
                                                             >
 
-                                                                  <NavLink to={item.link} className={({ isActive }) => `border p-2 transition-all duration-200  hover:text-blue-700 rounded-lg hover:bg-gray-200 cursor-pointer group ${isActive ? "  bg-gray-200 text-blue-700" : "text-white"}`}>
+                                                                  <NavLink to={item.link} className={({ isActive }) => `border border-white border-opacity-40 p-2 transition-all duration-200  hover:text-blue-700 rounded-lg hover:bg-gray-200 cursor-pointer group ${isActive ? "  bg-gray-200  text-blue-500 text-opacity-70" : "text-gray-300 text-opacity-40"}`}>
                                                                         <item.icon className="w-6 h-6 " />
                                                                   </NavLink>
-                                                                  <h3 className="font-semibold">{item.title}</h3>
+                                                                  <h3 className="font-semibold text-opacity-70 text-gray-300">{item.title}</h3>
                                                             </NavLink>
                                                             <hr className="border-gray-700" />
                                                       </div>

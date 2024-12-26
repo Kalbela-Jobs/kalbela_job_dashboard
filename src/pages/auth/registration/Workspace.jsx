@@ -214,9 +214,8 @@ export default function Workspace() {
                         setLoading(false);
                         sweet_alert('Error', error.message, 'error');
                   });
-
-
       }
+
 
       const handleDescriptionChange = (value) => {
             setDescription(value);
@@ -406,6 +405,36 @@ export default function Workspace() {
                                                       </select>
                                                 </div>
                                           </div>
+
+                                          <div className="sm:col-span-1">
+                                                <label htmlFor="contactNumber" className="text-base font-normal text-white">
+                                                      Company Contact Number
+                                                </label>
+                                                <div className="mt-2">
+                                                      <input
+                                                            required
+                                                            type="text"
+                                                            id="contactNumber"
+                                                            defaultValue={"+880"}
+                                                            placeholder="Enter your company contact number"
+                                                            className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                                                      />
+                                                </div>
+                                          </div>
+                                          <div className="sm:col-span-1">
+                                                <label htmlFor="email" className="text-base font-normal text-white">
+                                                      Company Email Address
+                                                </label>
+                                                <div className="mt-2">
+                                                      <input
+                                                            required
+                                                            type="email"
+                                                            id="email"
+                                                            placeholder="Enter your company email address"
+                                                            className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                                                      />
+                                                </div>
+                                          </div>
                                           <div className="sm:col-span-2">
                                                 <label htmlFor="address" className="text-base font-normal text-white">
                                                       Company Address
@@ -425,15 +454,7 @@ export default function Workspace() {
                                                       Company Description
                                                 </label>
                                                 <div className="mt-2">
-                                                      {/* <textarea
-                                                            required
-                                                            name="description"
-                                                            id="description"
-                                                            placeholder="Write your message"
-                                                            rows={4}
-                                                            className="block w-full px-5 py-4 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md resize-y focus:border-white focus:ring-white focus:ring-1"
-                                                            defaultValue={""}
-                                                      /> */}
+
                                                       <ReactQuill
                                                             onChange={handleDescriptionChange}
                                                             required
@@ -445,7 +466,7 @@ export default function Workspace() {
                                           </div>
                                           <div className="sm:col-span-2">
                                                 <button
-                                                      // disabled={loading}
+                                                      disabled={loading}
                                                       type="submit"
                                                       className="inline-flex items-center justify-center px-10 py-4 text-base font-normal text-white transition-all duration-200 rounded-md bg-gradient-to-r from-cyan-500 to-purple-500 hover:contrast-150 filter"
                                                 >
