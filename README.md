@@ -24,7 +24,7 @@ Follow the steps below to deploy the project to the server:
 Use the following command to securely copy the project files to the server:
 
 ```bash
-scp -r collection munna@120.50.6.150:/var/www/kalbela_job_dashboard
+scp -r dist munna@120.50.6.150:/var/www/kalbela_job_dashboard
 ```
 
 ### 2. Server Password
