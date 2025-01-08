@@ -300,7 +300,7 @@ export default function Workspace() {
 
                                                                               <div className="ml-4">
                                                                                     <p className="text-sm capitalize font-bold group-hover:text-gray-900 text-gray-100">{item?.name}</p>
-                                                                                    <p className="mt-1 text-sm font-medium text-gray-100">
+                                                                                    <p className="mt-1 text-sm font-medium hover:text-gray-900 text-gray-100">
                                                                                           {item?.description}
                                                                                     </p>
                                                                               </div>

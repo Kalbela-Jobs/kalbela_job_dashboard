@@ -60,14 +60,8 @@ const Dashboard = () => {
 
 
       const [openDropdown, setOpenDropdown] = useState(null);
-      console.log("checked user.....", user?.email);
-      const navigate = useNavigate();
 
-      useEffect(() => {
-            if (!user) {
-                  navigate("/sign-in");
-            }
-      }, [user]);
+
       return (
             <div className="flex flex-col flex-1 overflow-x-hidden">
                   <main>

@@ -6,15 +6,30 @@ import Modal_Component from "../../../components/common/Modal_Component";
 import Edit_jobs from "./Edit_jobs";
 import Delete_Modal from "../../../components/common/Delete_Modal";
 import sweet_alert from "../../../utils/custom_alert";
+import { Delete, Eye } from "lucide-react";
 
 const Job = () => {
       const [modal, set_modal] = useState(false);
       const [delete_modal, set_delete_modal] = useState(false);
 
-      const { base_url, workspace } = useContext(Kalbela_AuthProvider)
+      const { base_url, workspace, user } = useContext(Kalbela_AuthProvider);
+
       const { data: jobs = [], isLoading: loading, error, refetch } = useQuery({
-            queryKey: ["workspace-jobs", workspace?._id], // Include `workspace?._id` for cache invalidation
+            queryKey: ["workspace-jobs", workspace?._id, user.role], // Include `user.role` for cache invalidation
             queryFn: async () => {
+                  // If user is 'supper_admin', fetch all jobs
+                  if (user.role === "supper_admin") {
+                        const res = await fetch(`${base_url}/jobs/get-all-jobs`);
+
+                        if (!res.ok) {
+                              throw new Error("Failed to fetch all jobs");
+                        }
+
+                        const data = await res.json();
+                        return data.data?.jobs; // Adjust based on your API response structure
+                  }
+
+                  // Otherwise, fetch jobs based on workspace ID
                   if (!workspace?._id) return []; // Avoid fetching if workspace ID is undefined
                   const res = await fetch(`${base_url}/jobs/workspace-jobs?workspace_id=${workspace._id}`);
 
@@ -25,8 +40,9 @@ const Job = () => {
                   const data = await res.json();
                   return data.data; // Adjust based on your API response structure
             },
-            enabled: !!workspace?._id, // Only fetch data if workspace ID exists
+            enabled: !!(workspace?._id || user.role === "supper_admin"), // Fetch if workspace ID exists or if user is 'supper_admin'
       });
+
 
       const delete_function = async (data) => {
 
@@ -45,6 +61,25 @@ const Job = () => {
                   });
       }
 
+      const update_jobs = async (data, query) => {
+            fetch(`${base_url}/jobs/update${query}`, {
+                  method: 'PUT',
+                  headers: {
+                        'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(data)
+            }).then((res) => res.json())
+                  .then((data) => {
+                        set_modal(false);
+                        refetch();
+                        if (!data.error) {
+                              sweet_alert("Success", data.message, "success");
+                        }
+                        else {
+                              sweet_alert("Error", data.message, "error");
+                        }
+                  });
+      }
 
 
       return (
@@ -125,31 +160,32 @@ const Job = () => {
                                                                                     Edit Details
                                                                               </button>
                                                                               <button
+                                                                                    onClick={() => update_jobs({ featured: !job.featured }, `?job_id=${job._id}`)}
+                                                                                    type="button"
+                                                                                    className={"inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 bg-gray-100 border border-gray-300 rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none hover:text-white hover:border-indigo-600 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" + (job.featured ? " bg-indigo-600 text-white border-indigo-600" : "")}
+                                                                              >
+                                                                                    {job.featured ? "Featured" : "Make Featured"}
+                                                                              </button>
+                                                                              <button
+                                                                                    onClick={() => update_jobs({ status: !job.status }, `?job_id=${job._id}`)}
+                                                                                    type="button"
+                                                                                    className={"inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 bg-gray-100 border border-gray-300 rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none hover:text-white hover:border-indigo-600 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" + (job.status ? " bg-indigo-600 text-white border-indigo-600" : "")}
+                                                                              >
+                                                                                    {job.status ? "Active" : "Inactive"}
+                                                                              </button>
+                                                                              <button
                                                                                     type="button"
                                                                                     className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 bg-gray-100 border border-gray-300 rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none hover:text-white hover:border-indigo-600 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                                               >
-                                                                                    Applications
+                                                                                    <Eye />
                                                                               </button>
                                                                               <button
                                                                                     onClick={() => set_delete_modal(job)}
                                                                                     type="button"
                                                                                     className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                                               >
-                                                                                    <svg
-                                                                                          className="w-5 h-5 mr-2 -ml-1"
-                                                                                          xmlns="http://www.w3.org/2000/svg"
-                                                                                          fill="none"
-                                                                                          viewBox="0 0 24 24"
-                                                                                          stroke="currentColor"
-                                                                                          strokeWidth={2}
-                                                                                    >
-                                                                                          <path
-                                                                                                strokeLinecap="round"
-                                                                                                strokeLinejoin="round"
-                                                                                                d="M6 18L18 6M6 6l12 12"
-                                                                                          />
-                                                                                    </svg>
-                                                                                    Remove
+                                                                                    <Delete />
+
                                                                               </button>
                                                                         </div>
                                                                   </td>
@@ -170,7 +206,7 @@ const Job = () => {
                         delete_modal && <Delete_Modal title="Delete Job" set_modal={set_delete_modal} delete_function={delete_function} modal={delete_modal} />
                   }
 
-            </div>
+            </div >
       );
 };
 

@@ -1,14 +1,16 @@
 import Lottie from "lottie-react";
 import animation from "../../../assets/animation/log_in.json";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useContext, useState } from "react";
 import { Kalbela_AuthProvider } from "../../../context/MainContext";
 import sweet_alert from "../../../utils/custom_alert";
 
 const Login = () => {
-      const { googleLogin, base_url, setCookie, setUser } = useContext(Kalbela_AuthProvider);
+      const { googleLogin, base_url, setCookie, setUser, setWorkspace } = useContext(Kalbela_AuthProvider);
       const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+      const navigate = useNavigate();
 
       const login_handler = async (e) => {
             e.preventDefault();
@@ -32,9 +34,11 @@ const Login = () => {
                         console.log(data, 'data');
                         if (!data.error) {
                               setUser(data.data.user);
+                              setWorkspace(data.data.workspace);
                               setCookie("kal_bela_jobs_user", data.data.user, 365);
+                              setCookie('kal_bela_jobs_workspace', data.data.workspace, 365);
                               sweet_alert("Success", data.message, "success");
-                              navigate("/");
+                              navigate("/admin", { replace: true });
                         }
                         else {
                               sweet_alert("Error", data.message, "error");
@@ -241,7 +245,7 @@ const Login = () => {
                                                             type="submit"
                                                             className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 border border-transparent rounded-md bg-gradient-to-r from-fuchsia-600 to-blue-600 focus:outline-none hover:opacity-80 focus:opacity-80"
                                                       >
-                                                            Sign up
+                                                            Sign In
                                                       </button>
                                                 </div>
                                           </div>

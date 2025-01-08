@@ -27,21 +27,26 @@ const Provider = ({ children }) => {
             return signInWithPopup(auth, googleProvider);
       };
 
-      // singOut
-      const loginOut = () => {
-            setLoading(true);
-            return signOut(auth);
+      const removeCookie = (cookieName) => {
+            document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
       };
 
-      const sign_up = (
-            name,
-            email,
-            password,
-            role,
-            phone_number,
-            profile_image
-      ) => { };
+      // signOut
+      const loginOut = () => {
+            // Clear application state
+            setWorkspace('');
+            setUser('');
 
+            // Firebase signOut
+            signOut(auth);
+
+            // Remove cookies
+            removeCookie('kal_bela_jobs_user');
+            removeCookie('kal_bela_jobs_workspace');
+
+            // Set loading to false
+            setLoading(false);
+      };
 
 
 
@@ -63,6 +68,7 @@ const Provider = ({ children }) => {
             return null;
       };
       const checkUserCookie = () => {
+            setLoading(true);
             const userCookie = getCookie('kal_bela_jobs_user');
             if (userCookie) {
                   const userData = JSON.parse(userCookie);
@@ -71,6 +77,7 @@ const Provider = ({ children }) => {
             setLoading(false);
       };
       const check_workspace_cookie = () => {
+            setLoading(true);
             const workspaceCookie = getCookie('kal_bela_jobs_workspace');
             if (workspaceCookie) {
                   const workspaceData = JSON.parse(workspaceCookie);

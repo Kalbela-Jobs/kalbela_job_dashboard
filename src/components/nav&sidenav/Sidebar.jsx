@@ -11,14 +11,20 @@ const Sidebar = () => {
 
 
 
-      const filteredItems = nav_items?.filter((item) =>
-            item?.title?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      const filteredItems = nav_items?.filter((item) => {
+            // Only show "Category", "Job Type", "Career Resources" if user.role === "supper_admin"
+            if (
+                  ["Category", "Job Type", "Career Resources"].includes(item.title) &&
+                  user.role !== "supper_admin"
+            ) {
+                  return false;
+            }
+            // Otherwise, include the item
+            return item?.title?.toLowerCase().includes(searchQuery.toLowerCase());
+      });
 
       const SignOut = () => {
-            loginOut().then(() => {
-                  console.log("succes full");
-            });
+            loginOut();
       };
 
       return (
@@ -79,8 +85,7 @@ const Sidebar = () => {
                                     <div className="space-y-4">
                                           <nav className="flex-1 space-y-2">
                                                 {filteredItems.map((item, index) => (
-                                                      <div key={index}>
-
+                                                      <div div key={index} >
                                                             <NavLink
                                                                   to={item.link}
                                                                   className={({ isActive }) =>
@@ -122,7 +127,7 @@ const Sidebar = () => {
                               </div>
                         </main>
                   </div>
-            </div>
+            </div >
 
 
       );

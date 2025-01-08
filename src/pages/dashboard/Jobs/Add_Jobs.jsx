@@ -251,6 +251,10 @@ const Add_Jobs = () => {
                                     <Select options={experienceLevelOptions} />
                               </Form.Item>
 
+                              <Form.Item name="attachment" label="Attachment" rules={[{ required: false }]}>
+                                    <Input type="file" />
+                              </Form.Item>
+
                               {/* <Form.Item name="wh_questions" label="WH Questions">
                                     <Select mode="multiple" options={whQuestions} placeholder="Select WH questions" />
                               </Form.Item> */}

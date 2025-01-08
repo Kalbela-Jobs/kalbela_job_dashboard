@@ -36,60 +36,60 @@ const AdminRouter = [
       },
       {
             path: "jobs",
-            element: <Job />,
+            element: <Private><Job /></Private>,
       },
       {
             path: "jobs/add-job",
-            element: <Add_Jobs />,
+            element: <Private> <Add_Jobs /></Private>,
       },
       {
             path: "category",
-            element: <Category />,
+            element: <Private> <Category /></Private>,
       },
       {
             path: "category/add-category",
-            element: <Add_Category />,
+            element: <Private> <Add_Category /></Private>,
       }, {
             path: 'job-type',
-            element: <Job_type />
+            element: <Private> <Job_type /></Private>
       },
       {
             path: 'job-type/add-job-type',
-            element: <Add_job_type />
+            element: <Private> <Add_job_type /></Private>
       }, {
             path: 'career-resources/category',
-            element: <Career_resources_category />
+            element: <Private> <Career_resources_category /></Private>
       },
       {
             path: 'career-resources/category/add-career-resources',
-            element: <Add_career_resources_category />
+            element: <Private> <Add_career_resources_category /></Private>
       },
       {
             path: 'career-resources',
-            element: <Career_resources />
+            element: <Private> <Career_resources /></Private>
       },
       {
             path: 'career-resources/add-career-resources',
-            element: <Add_career_resources />
+            element: <Private> <Add_career_resources /></Private>
       },
       {
             path: 'candidates',
-            element: <Candidate />
+            element: <Private> <Candidate /></Private>
       },
       {
             path: 'candidate/:id',
-            element: <Single_candidate />
+            element: <Private> <Single_candidate /></Private>
       }, {
             path: 'hr-management',
-            element: <Hr_management />
+            element: <Private> <Hr_management /></Private>
       },
       {
             path: 'hr-management/add-hr',
-            element: <Add_new_hr />
+            element: <Private> <Add_new_hr /></Private>
       },
       {
             path: "organization",
-            element: <Organization_management />,
+            element: <Private> <Organization_management /></Private>,
       }
 ];
 

@@ -1,117 +1,160 @@
 
 import { Bright_Meta } from 'bright_meta';
+import { Link } from 'react-router-dom';
 const Home = () => {
-      return <section class="relative py-10 overflow-hidden bg-black sm:py-16 lg:py-24">
-            <Bright_Meta>
-                  <title>Home Page</title>
-            </Bright_Meta>
-            <div class="absolute bottom-0 right-0 -mb-48 md:inset-y-0">
-                  <img class="object-cover w-full h-full" src="https://cdn.rareblocks.xyz/collection/celebration/images/pricing/8/lines.svg" alt="" />
-            </div>
-
-            <div class="relative max-w-5xl px-4 mx-auto sm:px-6 lg:px-8">
-                  <div class="grid items-end grid-cols-1 gap-y-10 md:grid-cols-2 md:gap-x-20">
-                        <div>
-                              <h2 class="text-3xl md:w-[700px]  font-bold leading-tight text-white sm:text-4xl lg:text-5xl">This tool helps you kickstart your project with a predefined configuration and structure.</h2>
-
-
-                              <ul class="mt-12 grid grid-cols-2 space-y-4 md:mt-20">
-                                    <li class="flex items-center space-x-3">
-                                          <div class="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-                                                <svg class="w-3.5 h-3.5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                </svg>
-                                          </div>
-                                          <span class="text-lg font-medium text-white"> Vite </span>
-                                    </li>
-
-                                    <li class="flex items-center space-x-3">
-                                          <div class="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-                                                <svg class="w-3.5 h-3.5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                </svg>
-                                          </div>
-                                          <span class="text-lg font-medium text-white"> React </span>
-                                    </li>
-
-                                    <li class="flex items-center space-x-3">
-                                          <div class="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-                                                <svg class="w-3.5 h-3.5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                </svg>
-                                          </div>
-                                          <span class="text-lg font-medium text-white"> Tailwind CSS </span>
-                                    </li>
-
-                                    <li class="flex items-center space-x-3">
-                                          <div class="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-                                                <svg class="w-3.5 h-3.5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                </svg>
-                                          </div>
-                                          <span class="text-lg font-medium text-white"> React Router DOM</span>
-                                    </li>
-
-                                    <li class="flex items-center space-x-3">
-                                          <div class="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-                                                <svg class="w-3.5 h-3.5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                </svg>
-                                          </div>
-                                          <span class="text-lg font-medium text-white"> TanStack Query </span>
-                                    </li>
-                                    <li class="flex items-center space-x-3">
-                                          <div class="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-                                                <svg class="w-3.5 h-3.5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                </svg>
-                                          </div>
-                                          <span class="text-lg font-medium text-white"> Basic Folder Structure</span>
-                                    </li>
-                                    <li class="flex items-center space-x-3">
-                                          <div class="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-                                                <svg class="w-3.5 h-3.5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                </svg>
-                                          </div>
-                                          <span class="text-lg font-medium text-white"> Meta Tag</span>
-                                    </li>
-                                    <li class="flex items-center space-x-3">
-                                          <div class="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-                                                <svg class="w-3.5 h-3.5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                </svg>
-                                          </div>
-                                          <span class="text-lg font-medium text-white"> Context Setup</span>
-                                    </li>
-                              </ul>
-                        </div>
-
-                        {/* <div class="lg:px-12">
-                              <div class="overflow-hidden text-center bg-white rounded-md shadow-md">
-                                    <div class="px-12 py-10">
-                                          <h3 class="text-xs font-semibold tracking-widest uppercase text-rose-400">Full Pack</h3>
-                                          <p class="mt-4 text-6xl font-bold text-black">$79</p>
-
-                                          <a href="#" title="" class="inline-flex items-center justify-center w-full px-4 py-4 mt-10 font-semibold text-white transition-all duration-200 rounded-full bg-rose-400 hover:bg-rose-500 focus:bg-rose-500" role="button">
-                                                Get full access
-                                                <svg class="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                      <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                                </svg>
-                                          </a>
-
-                                          <div class="flex items-center justify-center mt-5">
-                                                <svg class="flex-shrink-0 w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                                </svg>
-                                                <span class="ml-2 text-sm text-gray-500"> 14 Days Moneyback Guarantee </span>
-                                          </div>
-                                    </div>
+      return <div className="bg-white">
+            <header className="bg-[#FCF8F1] bg-opacity-30">
+                  <div className="px-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        <div className="flex items-center justify-between h-16 lg:h-20">
+                              <div className="flex-shrink-0">
+                                    <a href="#" title="" className="flex">
+                                          <img
+                                                className="w-auto h-10"
+                                                src="https://upload.wikimedia.org/wikipedia/bn/0/09/%E0%A6%A6%E0%A7%88%E0%A6%A8%E0%A6%BF%E0%A6%95_%E0%A6%95%E0%A6%BE%E0%A6%B2%E0%A6%AC%E0%A7%87%E0%A6%B2%E0%A6%BE_%E0%A6%8F%E0%A6%B0_%E0%A6%B2%E0%A7%8B%E0%A6%97%E0%A7%8B.png"
+                                                alt=""
+                                          />
+                                    </a>
                               </div>
-                        </div> */}
+                              <button
+                                    type="button"
+                                    className="inline-flex p-2 text-black transition-all duration-200 rounded-md lg:hidden focus:bg-gray-100 hover:bg-gray-100"
+                              >
+                                    {/* Menu open: "hidden", Menu closed: "block" */}
+                                    <svg
+                                          className="block w-6 h-6"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                    >
+                                          <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M4 8h16M4 16h16"
+                                          />
+                                    </svg>
+                                    {/* Menu open: "block", Menu closed: "hidden" */}
+                                    <svg
+                                          className="hidden w-6 h-6"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                    >
+                                          <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M6 18L18 6M6 6l12 12"
+                                          />
+                                    </svg>
+                              </button>
+                              <div className="hidden lg:flex lg:items-center lg:justify-center lg:space-x-10">
+                                    <a
+                                          href="#"
+                                          title=""
+                                          className="text-base text-black transition-all duration-200 hover:text-opacity-80"
+                                    >
+                                          {" "}
+                                          Features{" "}
+                                    </a>
+                                    <a
+                                          href="#"
+                                          title=""
+                                          className="text-base text-black transition-all duration-200 hover:text-opacity-80"
+                                    >
+                                          {" "}
+                                          Solutions{" "}
+                                    </a>
+                                    <a
+                                          href="#"
+                                          title=""
+                                          className="text-base text-black transition-all duration-200 hover:text-opacity-80"
+                                    >
+                                          {" "}
+                                          Resources{" "}
+                                    </a>
+                                    <a
+                                          href="#"
+                                          title=""
+                                          className="text-base text-black transition-all duration-200 hover:text-opacity-80"
+                                    >
+                                          {" "}
+                                          Pricing{" "}
+                                    </a>
+                              </div>
+                              <Link
+                                    to="/sign-up"
+                                    title=""
+                                    className="hidden lg:inline-flex items-center justify-center px-5 py-2.5 text-base transition-all duration-200 hover:bg-yellow-300 hover:text-black focus:text-black focus:bg-yellow-300 font-semibold text-white bg-black rounded-full"
+                                    role="button"
+                              >
+                                    {" "}
+                                    Join Now{" "}
+                              </Link>
+                        </div>
                   </div>
-            </div>
-      </section>
+            </header>
+            <section className="bg-[#FCF8F1] bg-opacity-30 py-10 sm:py-16 lg:py-24">
+                  <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                        <div className="grid items-center grid-cols-1 gap-12 lg:grid-cols-2">
+                              <div>
+                                    <p className="text-base font-semibold tracking-wider text-blue-600 uppercase">
+                                          A Hr management platform
+                                    </p>
+                                    <h1 className="mt-4 text-4xl font-bold text-black lg:mt-8 sm:text-6xl xl:text-8xl">
+                                          Find better candidates for your jobs
+                                    </h1>
+                                    <p className="mt-4 text-base text-black lg:mt-8 sm:text-xl">
+                                          Grow your career fast with right mentor.
+                                    </p>
+                                    <Link
+                                          to="/sign-up"
+                                          title=""
+                                          className="inline-flex items-center px-6 py-4 mt-8 font-semibold text-black transition-all duration-200 bg-yellow-300 rounded-full lg:mt-16 hover:bg-yellow-400 focus:bg-yellow-400"
+                                          role="button"
+                                    >
+                                          Join for free
+                                          <svg
+                                                className="w-6 h-6 ml-8 -mr-2"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                          >
+                                                <path
+                                                      strokeLinecap="round"
+                                                      strokeLinejoin="round"
+                                                      strokeWidth="1.5"
+                                                      d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                />
+                                          </svg>
+                                    </Link>
+                                    <p className="mt-5 text-gray-600">
+                                          Already joined us?{" "}
+                                          <Link
+                                                to={"/sign-in"}
+                                                title=""
+                                                className="text-black transition-all duration-200 hover:underline"
+                                          >
+                                                Log in
+                                          </Link>
+                                    </p>
+                              </div>
+                              <div>
+                                    <img
+                                          className="w-full"
+                                          src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/1/hero-img.png"
+                                          alt=""
+                                    />
+                              </div>
+                        </div>
+                  </div>
+            </section>
+      </div>
+
+
             ;
 };
 

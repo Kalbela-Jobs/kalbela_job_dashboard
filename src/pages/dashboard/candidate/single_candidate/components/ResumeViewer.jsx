@@ -1,5 +1,5 @@
 export default function ResumeViewer() {
-      const pdfUrl = "https://content.easy.jobs/assets/181359/KJTPDtXP7NlyO1dUhBVeGW587R4Tl5DRZduhntYy.pdf"
+      const pdfUrl = "https://i.ibb.co.com/J25bz4n/codewithmahadihasan.jpg"
 
       const downloadAndOpenPdf = () => {
             window.open(pdfUrl, '_blank');

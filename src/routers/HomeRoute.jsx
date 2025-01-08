@@ -3,12 +3,12 @@ import Registration from "../pages/auth/registration/Registration";
 import VerifyOTP from "../pages/auth/registration/Verify_OTP";
 import WorkspaceAccount from "../pages/auth/registration/Workspace";
 
-import Dashboard from "../pages/dashboard/Dashboard";
+import Home from "../pages/home/pages/home/Home";
 
 const HomeRoute = [
       {
             path: "/",
-            element: <Dashboard />,
+            element: <Home />,
       },
       {
             path: "/sign-up",
