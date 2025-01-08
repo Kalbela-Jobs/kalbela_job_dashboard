@@ -57,7 +57,7 @@ export default function Workspace() {
             queryKey: ["packages"],
             queryFn: async () => {
                   const res = await fetch(
-                        "http://localhost:5005/api/v1/package"
+                        "https://server.kalbelajobs.com/api/v1/package"
                   );
                   const data = await res.json();
                   return data.data;
