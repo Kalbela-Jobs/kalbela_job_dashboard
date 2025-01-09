@@ -30,6 +30,21 @@ const Add_Jobs = () => {
             },
       });
 
+      const { data: workspace_data = [], isLoading, refetch } = useQuery({
+            queryKey: ["workspace_data", user.role === "supper_admin"],
+
+            queryFn: async () => {
+                  const res = await fetch(`${base_url}/workspace/`);
+                  const data = await res.json();
+                  return data.data;
+            },
+
+            // Only enable the query if the user is a "supper_admin"
+            enabled: user.role === "supper_admin",
+      });
+
+      console.log(workspace_data, "workspace_data");
+
       const { data: categoryOptions = [], } = useQuery({
             queryKey: ["categoryOptions"],
             queryFn: async () => {
@@ -106,18 +121,22 @@ const Add_Jobs = () => {
       };
 
       const onFinish = (values) => {
-            console.log("Form values:", values);
+
             values?.salary_range && (values.salary_range.currency = 'BDT');
-            // values.url = genarate slag form job title and company name
-            values.url = `${values.job_title}-${workspace.company_name}`.toLowerCase().replace(/ /g, "-");
+            let workspace_info = workspace;
+            if (values.company_data) {
+                  workspace_info = workspace_data.find(workspace => workspace._id === values.company_data)
+            }
+            values.url = `${values.job_title}-${workspace_info.company_website}`.toLowerCase().replace(/ /g, "-");
+
             values.company_info = {
-                  name: workspace.company_name,
-                  logo: workspace.logo,
-                  website: workspace.company_website,
-                  company_size: workspace.company_size,
-                  industry: workspace.industry,
-                  about: workspace.description,
-                  company_id: workspace._id
+                  name: workspace_info.company_name,
+                  logo: workspace_info.logo,
+                  website: workspace_info.company_website,
+                  company_size: workspace_info.company_size,
+                  industry: workspace_info.industry,
+                  about: workspace_info.description,
+                  company_id: workspace_info._id
             }
             values.location = {
                   division: remote ? null : values.division,
@@ -162,6 +181,20 @@ const Add_Jobs = () => {
                               <Form.Item name="job_title" label="Job Title" rules={[{ required: true }]}>
                                     <Input />
                               </Form.Item>
+
+                              {workspace_data.length > 0 && <Form.Item
+                                    name="company_data"
+                                    label="Company Name"
+                                    rules={[{ required: true, message: "Please select a company!" }]} // Custom error message
+                              >
+                                    <Select
+                                          options={workspace_data.map((workspace) => ({
+                                                value: workspace._id,
+                                                label: workspace.company_name,
+                                          }))}
+                                          placeholder="Select a company"
+                                    />
+                              </Form.Item>}
 
                               <Form.Item name="skills" label="Skills" rules={[{ required: true }]}>
                                     <Select mode="tags" style={{ width: '100%' }} placeholder="Select or add skills" />
@@ -266,7 +299,7 @@ const Add_Jobs = () => {
                               </Form.Item>
                         </Form>
                   </Card>
-            </div>
+            </div >
       );
 };
 

@@ -1,15 +1,17 @@
-export default function ResumeViewer() {
-      const pdfUrl = "https://i.ibb.co.com/J25bz4n/codewithmahadihasan.jpg"
+export default function ResumeViewer({ data }) {
+
+      const resume_url = data.resume_url
+
 
       const downloadAndOpenPdf = () => {
-            window.open(pdfUrl, '_blank');
+            window.open(resume_url, '_blank');
       };
       return (
             <div className="p-4">
                   <div className="flex justify-between items-center mb-4">
                         <h3 className="text-lg font-medium">Resume</h3>
                         <a
-                              href={pdfUrl}
+                              href={resume_url}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
@@ -18,7 +20,7 @@ export default function ResumeViewer() {
                         </a>
                   </div>
 
-                  <div className="bg-gray-800 rounded-lg p-4">
+                  {resume_url && <div className="bg-gray-800 rounded-lg p-4">
                         <div className="flex items-center justify-between text-white mb-4">
                               <div className="flex items-center gap-4">
                                     <button className="p-2 hover:bg-gray-700 rounded">
@@ -50,12 +52,12 @@ export default function ResumeViewer() {
                         </div>
                         <div className="bg-white rounded min-h-[600px] flex items-center justify-center">
                               <iframe
-                                    src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`}
+                                    src={`${resume_url}#toolbar=0&navpanes=0&scrollbar=0`}
                                     className="w-full h-[600px] border-none"
                                     title="Resume PDF"
                               />
                         </div>
-                  </div>
+                  </div>}
             </div>
       )
 }

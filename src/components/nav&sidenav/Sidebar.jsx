@@ -4,6 +4,7 @@ import MyContext from "../../context/Dashboard_context";
 import { Link, NavLink } from "react-router-dom";
 import { nav_items } from "../../utils/dashboard_menu";
 import { Kalbela_AuthProvider } from "../../context/MainContext";
+import logo from "../../assets/logo.png";
 
 const Sidebar = () => {
       const { open, setOpen, searchQuery, setSearchQuery } = useContext(MyContext);
@@ -31,15 +32,15 @@ const Sidebar = () => {
 
             <div
 
-                  className={`top-0 left-0 z-50 bg-gray-900 h-screen ${open ? 'fixed md:w-64  flex' : 'hidden'}`}
+                  className={`top-0 left-0 z-50 bg-gray-900 h-screen ${open ? 'fixed md:w-64  px-4' : 'hidden'}`}
 
             >
                   <div className="relative">
-                        <div className="flex flex-col flex-grow pt-5 w-full overflow-y-auto bg-gray-900">
+                        <div className=" pt-5 w-full bg-gray-900">
                               <div className="flex items-center justify-between flex-shrink-0 px-4">
                                     <img
-                                          className="w-64 h-auto filter invert brightness-200 grayscale"
-                                          src="https://upload.wikimedia.org/wikipedia/bn/0/09/%E0%A6%A6%E0%A7%88%E0%A6%A8%E0%A6%BF%E0%A6%95_%E0%A6%95%E0%A6%BE%E0%A6%B2%E0%A6%AC%E0%A7%87%E0%A6%B2%E0%A6%BE_%E0%A6%8F%E0%A6%B0_%E0%A6%B2%E0%A7%8B%E0%A6%97%E0%A7%8B.png"
+                                          className="w-64 h-auto  "
+                                          src={logo}
                                           alt=""
                                     />
                                     <X
@@ -81,8 +82,8 @@ const Sidebar = () => {
                               <div className="px-4 mt-6">
                                     <hr className="border-gray-700" />
                               </div>
-                              <div className="flex flex-col flex-1 px-8 h-40 overflow-y-auto mt-6">
-                                    <div className="space-y-4">
+                              <div className="flex flex-col flex-1 pl-8  mt-6">
+                                    <div className="space-y-4 h-[350px] md:h-[500px] w-full overflow-y-auto">
                                           <nav className="flex-1 space-y-2">
                                                 {filteredItems.map((item, index) => (
                                                       <div div key={index} >
@@ -122,12 +123,12 @@ const Sidebar = () => {
                         <main>
                               <div className="py-6">
                                     <div className="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
-                                          {/* ADD YOUR CONTENT HERE */}
+
                                     </div>
                               </div>
                         </main>
                   </div>
-            </div >
+            </div>
 
 
       );

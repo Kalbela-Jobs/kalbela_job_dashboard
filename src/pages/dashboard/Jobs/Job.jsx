@@ -160,11 +160,11 @@ const Job = () => {
                                                                                     Edit Details
                                                                               </button>
                                                                               <button
-                                                                                    onClick={() => update_jobs({ featured: !job.featured }, `?job_id=${job._id}`)}
+                                                                                    onClick={() => update_jobs({ feature_status: !job.feature_status }, `?job_id=${job._id}`)}
                                                                                     type="button"
-                                                                                    className={"inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 bg-gray-100 border border-gray-300 rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none hover:text-white hover:border-indigo-600 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" + (job.featured ? " bg-indigo-600 text-white border-indigo-600" : "")}
+                                                                                    className={"inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 bg-gray-100 border border-gray-300 rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none hover:text-white hover:border-indigo-600 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" + (job.feature_status ? " bg-indigo-600 text-white border-indigo-600" : "")}
                                                                               >
-                                                                                    {job.featured ? "Featured" : "Make Featured"}
+                                                                                    {job.feature_status ? "Featured" : "Make Featured"}
                                                                               </button>
                                                                               <button
                                                                                     onClick={() => update_jobs({ status: !job.status }, `?job_id=${job._id}`)}
