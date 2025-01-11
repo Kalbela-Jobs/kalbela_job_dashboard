@@ -1,7 +1,9 @@
 
-import { Bright_Meta } from 'bright_meta';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 const Home = () => {
+
+      console.log("Home page");
       return <div className="bg-white">
             <header className="bg-[#FCF8F1] bg-opacity-30">
                   <div className="px-4 max-w-7xl mx-auto sm:px-6 lg:px-8">

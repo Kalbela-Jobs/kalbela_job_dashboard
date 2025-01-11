@@ -15,7 +15,7 @@ const Sidebar = () => {
       const filteredItems = nav_items?.filter((item) => {
             // Only show "Category", "Job Type", "Career Resources" if user.role === "supper_admin"
             if (
-                  ["Category", "Job Type", "Career Resources"].includes(item.title) &&
+                  ["Category", "Job Type", "Career Resources", "Organization"].includes(item.title) &&
                   user.role !== "supper_admin"
             ) {
                   return false;

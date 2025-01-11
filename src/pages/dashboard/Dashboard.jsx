@@ -62,34 +62,13 @@ const Dashboard = () => {
       const [openDropdown, setOpenDropdown] = useState(null);
 
 
+
       return (
             <div className="flex flex-col flex-1 overflow-x-hidden">
                   <main>
                         <div className="py-6">
                               <div className="px-4 mx-auto sm:px-6 md:px-8">
-                                    {/* <div className="md:items-center md:flex">
-              <Link className="px-10 text-blue-600" to="/admin">
-                Admin
-              </Link>
-              <div>
-                {user ? (
-                  <button onClick={SignOut} className="text-orange-600">
-                    Sign out
-                  </button>
-                ) : (
-                  <Link to="/login" className="text-orange-600">
-                    Login
-                  </Link>
-                )}
-              </div>
 
-              <p className="text-base font-bold text-gray-900 pl-6">
-                Hey Mariana{" "}
-              </p>
-              <p className="mt-1 text-base font-medium text-gray-500 md:mt-0 md:ml-2">
-                here's what's happening with your store today
-              </p>
-            </div> */}
                               </div>
                               <div className="px-4 mx-auto mt-8 sm:px-6 md:px-8">
                                     <div className="space-y-5 sm:space-y-6">
