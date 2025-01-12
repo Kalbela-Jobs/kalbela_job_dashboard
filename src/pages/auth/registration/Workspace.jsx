@@ -337,14 +337,14 @@ export default function Workspace() {
                                           </div>
                                           <div>
                                                 <label htmlFor="companyWebsite" className="text-base font-normal text-white">
-                                                      Company website
+                                                      Company Uniq ID
                                                 </label>
                                                 <div className="mt-2">
                                                       <input
                                                             type="text"
                                                             required
                                                             id="companyWebsite"
-                                                            placeholder="Enter your company website"
+                                                            placeholder="Enter your company uniq id"
                                                             value={companyWebsite}
                                                             onChange={handleCompanyWebsiteChange}
                                                             className="block w-full px-5 py-4 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
