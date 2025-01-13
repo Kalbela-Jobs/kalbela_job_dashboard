@@ -33,3 +33,96 @@
 .ant-tabs-nav::before {
       border-bottom: none !important;
 }
+
+
+.custom-scroll::-webkit-scrollbar {
+      width: 6px;
+}
+
+/* Track */
+.custom-scroll::-webkit-scrollbar-track {
+      background-color: rgb(189, 189, 189);
+}
+
+/* Handle */
+.custom-scroll::-webkit-scrollbar-thumb {
+      background: #24323a8c;
+      border-radius: 10px;
+}
+
+/* Handle on hover */
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #d5dadd8c;
+}
+
+.sidebar::-webkit-scrollbar-track {
+      border-radius: 10px;
+}
+
+/* Handle */
+.sidebar::-webkit-scrollbar-thumb {
+      background: #d5dadd8c;
+      border-radius: 10px;
+}
+
+/* Handle on hover */
+.sidebar::-webkit-scrollbar-thumb:hover {
+      background: #d5dadd8c;
+}
+
+.custom-scroll::-webkit-scrollbar {
+      width: 6px;
+}
+
+.sidebar::-webkit-scrollbar {
+      width: 6px;
+}
+
+
+
+
+
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-outlined:focus, :where(.css-dev-only-do-not-override-p8b6i).ant-input-outlined:focus-within {
+      border-color: transparent !important;
+      box-shadow: transparent !important;
+      outline: 0;
+      background-color: transparent !important;
+}
+
+
+
+/* Track */
+.sidebar::-webkit-scrollbar-track {
+      border-radius: 10px;
+}
+
+/* Handle */
+.sidebar::-webkit-scrollbar-thumb {
+      background: #d5dadd8c;
+      border-radius: 10px;
+}
+
+/* Handle on hover */
+.sidebar::-webkit-scrollbar-thumb:hover {
+      background: #d5dadd8c;
+}
+
+.custom-scroll::-webkit-scrollbar {
+      width: 6px;
+}
+
+/* Track */
+.custom-scroll::-webkit-scrollbar-track {
+      background-color: rgb(189, 189, 189);
+}
+
+/* Handle */
+.custom-scroll::-webkit-scrollbar-thumb {
+      background: #24323a8c;
+      border-radius: 10px;
+}
+
+/* Handle on hover */
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #d5dadd8c;
+}

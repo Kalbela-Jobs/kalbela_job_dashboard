@@ -32,14 +32,14 @@ const Sidebar = () => {
 
             <div
 
-                  className={`top-0 left-0 z-50 bg-gray-900 h-screen ${open ? 'fixed md:w-64  px-4' : 'hidden'}`}
+                  className={`top-0 left-0 z-50 bg-gray-900 h-[100vh] ${open ? 'fixed  lg:w-64 w-full' : 'hidden'}`}
 
             >
                   <div className="relative">
                         <div className=" pt-5 w-full bg-gray-900">
                               <div className="flex items-center justify-between flex-shrink-0 px-4">
                                     <img
-                                          className="w-64 h-auto  "
+                                          className="lg:w-64 w-48 h-auto  "
                                           src={logo}
                                           alt=""
                                     />
@@ -83,7 +83,7 @@ const Sidebar = () => {
                                     <hr className="border-gray-700" />
                               </div>
                               <div className="flex flex-col flex-1 pl-8  mt-6">
-                                    <div className="space-y-4 h-[350px] md:h-[500px] w-full overflow-y-auto">
+                                    <div className="space-y-4 pr-4  pb-4 h-[60vh] overflow-y-auto sidebar">
                                           <nav className="flex-1 space-y-2">
                                                 {filteredItems.map((item, index) => (
                                                       <div div key={index} >

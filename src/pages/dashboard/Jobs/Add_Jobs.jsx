@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import { experienceLevelOptions, jobTypeOptions, salaryTypeOptions, } from "../../../utils/mockData";
 import { Kalbela_AuthProvider } from "../../../context/MainContext";
 import sweet_alert from "../../../utils/custom_alert";
+import { useNavigate } from "react-router-dom";
 // import { categoryOptions, experienceLevelOptions, jobTypeOptions, salaryTypeOptions, whQuestions } from "../utils/mockData";
 
 const { Title } = Typography;
@@ -19,6 +20,7 @@ const Add_Jobs = () => {
       const [isNegotiable, setIsNegotiable] = useState(false);
       const [negotiableNote, setNegotiableNote] = useState("");
       const [remote, setRemote] = useState(false);
+      const navigate = useNavigate();
 
 
       const { data: divisions = [], isLoading: isDivisionsLoading } = useQuery({

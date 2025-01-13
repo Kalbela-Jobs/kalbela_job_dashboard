@@ -6,7 +6,7 @@ import Modal_Component from "../../../components/common/Modal_Component";
 import Edit_jobs from "./Edit_jobs";
 import Delete_Modal from "../../../components/common/Delete_Modal";
 import sweet_alert from "../../../utils/custom_alert";
-import { Delete, Eye } from "lucide-react";
+import { Delete, Eye, Trash } from "lucide-react";
 
 const Job = () => {
       const [modal, set_modal] = useState(false);
@@ -173,18 +173,19 @@ const Job = () => {
                                                                               >
                                                                                     {job.status ? "Active" : "Inactive"}
                                                                               </button>
-                                                                              <button
-                                                                                    type="button"
+                                                                              <a
+                                                                                    href={`https://kalbelajobs.com/jobs/${job.url}`}
+                                                                                    target="_blank"
                                                                                     className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 bg-gray-100 border border-gray-300 rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none hover:text-white hover:border-indigo-600 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                                               >
                                                                                     <Eye />
-                                                                              </button>
+                                                                              </a>
                                                                               <button
                                                                                     onClick={() => set_delete_modal(job)}
                                                                                     type="button"
                                                                                     className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                                               >
-                                                                                    <Delete />
+                                                                                    <Trash />
 
                                                                               </button>
                                                                         </div>

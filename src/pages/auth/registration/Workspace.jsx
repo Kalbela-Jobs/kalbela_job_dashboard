@@ -329,7 +329,7 @@ export default function Workspace() {
                                                             required
                                                             id="companyName"
                                                             placeholder="Enter your company name"
-                                                            value={companyName}
+                                                            defaultValue={user.name}
                                                             onChange={handleCompanyNameChange}
                                                             className="block w-full px-5 py-4 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                                                       />

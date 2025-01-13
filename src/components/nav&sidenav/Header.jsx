@@ -3,52 +3,12 @@ import MyContext from "../../context/Dashboard_context";
 import { Menu } from "lucide-react";
 
 const Header = () => {
-      //   const { open, setOpen } = useContext(Provider);
+
       const { open, setOpen, setSearchQuery } = useContext(MyContext);
       return (
             <header className={`bg-white border-b sticky top-0 z-40 border-gray-200 `}>
                   <div className="px-4 mx-auto">
                         <div className="flex items-center justify-between h-16">
-                              {/* Mobile menu button */}
-                              {/* <div className="flex items-center cursor-pointer -m-2 xl:hidden">
-            <button
-              onClick={() => setOpen(!open)}
-              type="button"
-              className="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-lg hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
-            >
-              <svg
-                className="w-6 h-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div> */}
-
-                              {/* Logo */}
-                              {/* <div className="flex ml-6 xl:ml-0">
-            <div className="flex items-center flex-shrink-0">
-              <img
-                className="block w-auto h-8 lg:hidden"
-                src="https://landingfoliocom.imgix.net/store/collection/clarity-dashboard/images/logo-symbol.svg"
-                alt=""
-              />
-              <img
-                className="hidden w-auto h-8 lg:block"
-                src="https://landingfoliocom.imgix.net/store/collection/clarity-dashboard/images/logo.svg"
-                alt=""
-              />
-            </div>
-          </div> */}
-
                               <Menu
                                     className="cursor-pointer lg:hidden md:flex text-green-600 "
                                     onClick={() => setOpen(!open)}

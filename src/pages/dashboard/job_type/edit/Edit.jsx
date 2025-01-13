@@ -42,16 +42,11 @@ const Edit = ({ data, refetch, set_modal }) => {
                         }
                   });
       };
-
+ 
 
       return (
             <div className="p-10 border-2  rounded m-10">
                   <form onSubmit={dataSubmit} className="w-full ">
-                        {/* <Custom_Input label="Category Name" name="categoryName" type="text" default_value={data.name} placeholder="Category Name" />
-                        <div className="my-4">
-                              <Custom_Input default_value={data.slag} label="Type Slag" name="slag" type="text" placeholder="Type Slag" />
-                        </div>
-                        <input type="file" name="photo" accept="image/*" /> */}
 
                         <Custom_Input default_value={data.name} label="Type Name" name="typeName" type="text" placeholder="Type Name" />
                         <div className="my-4">

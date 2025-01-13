@@ -83,7 +83,7 @@ const Category = () => {
                                                             {categories.map((category) => <tr className="bg-gray-50">
 
                                                                   <td className=" px-4 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
-                                                                        <img className="w-10 h-10 border border-gray-200 rounded border-opacity-20" src={category.image} alt={category.name} />
+                                                                        <img className="w-10  h-10 border border-gray-500 rounded object-fit border-opacity-20" src={category.image} alt={category.name} />
                                                                   </td>
                                                                   <td className=" px-4 py-4 text-sm font-medium text-gray-900 xl:table-cell whitespace-nowrap">
                                                                         <div className="flex items-center">
