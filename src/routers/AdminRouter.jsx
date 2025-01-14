@@ -13,7 +13,11 @@ import Add_job_type from "../pages/dashboard/job_type/add/Add_job_type";
 import Job_type from "../pages/dashboard/job_type/Job_Type";
 import Add_Jobs from "../pages/dashboard/Jobs/Add_Jobs";
 import Job from "../pages/dashboard/Jobs/Job";
+import Message from "../pages/dashboard/message/Message";
 import Organization_management from "../pages/dashboard/organization/Organization_management";
+import Profile from "../pages/dashboard/profile/Profile";
+import Workspace_profile from "../pages/dashboard/profile/Workspace_profile";
+
 
 import Private from "./Private";
 
@@ -90,6 +94,14 @@ const AdminRouter = [
       {
             path: "organization",
             element: <Private> <Organization_management /></Private>,
+      },
+      {
+            path: "organization/profile",
+            element: <Private> <Workspace_profile /></Private>,
+      },
+      {
+            path: "message",
+            element: <Private> <Message /></Private>,
       }
 ];
 

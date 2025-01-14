@@ -70,6 +70,9 @@ const Category = () => {
                                                                   <th className="py-3.5 px-4 text-left text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
                                                                         Slag
                                                                   </th>
+                                                                  <th className="py-3.5 px-4 text-left text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
+                                                                        Mega Category
+                                                                  </th>
 
 
                                                                   <th className="py-3.5 px-4 text-center text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
@@ -93,6 +96,9 @@ const Category = () => {
                                                                   </td>
                                                                   <td className="px-4 py-4 text-sm font-medium text-right text-gray-900 align-top lg:align-middle lg:text-left whitespace-nowrap">
                                                                         {category.slag}
+                                                                  </td>
+                                                                  <td className="px-4 py-4 text-sm font-medium text-right text-gray-900 align-top lg:align-middle lg:text-left whitespace-nowrap">
+                                                                        {category?.mega_category_name || "No Mega Category"}
                                                                   </td>
                                                                   <td className=" px-4 py-4 lg:table-cell whitespace-nowrap">
                                                                         <div className="flex justify-center items-center space-x-4">

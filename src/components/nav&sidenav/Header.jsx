@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import MyContext from "../../context/Dashboard_context";
 import { Menu } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
 
@@ -48,8 +49,8 @@ const Header = () => {
 
                               {/* Right side icons */}
                               <div className="flex items-center justify-end ml-auto space-x-6">
-                                    {/* Mail icon */}
-                                    <div className="relative">
+
+                                    <Link to={"/admin/message"} className="relative">
                                           <button
                                                 type="button"
                                                 className="p-1 text-gray-700 transition-all duration-200 bg-white rounded-full hover:text-gray-900 focus:outline-none hover:bg-gray-100"
@@ -72,7 +73,7 @@ const Header = () => {
                                           <span className="inline-flex items-center px-1.5 absolute -top-px -right-1 py-0.5 rounded-full text-xs font-semibold bg-indigo-600 text-white">
                                                 2
                                           </span>
-                                    </div>
+                                    </Link>
 
                                     {/* Notification icon */}
                                     <div className="relative">
@@ -111,7 +112,7 @@ const Header = () => {
                               </div>
                         </div>
                   </div>
-            </header>
+            </header >
       );
 };
 

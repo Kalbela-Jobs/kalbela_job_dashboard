@@ -38,11 +38,14 @@ const Sidebar = () => {
                   <div className="relative">
                         <div className=" pt-5 w-full bg-gray-900">
                               <div className="flex items-center justify-between flex-shrink-0 px-4">
-                                    <img
-                                          className="lg:w-64 w-48 h-auto  "
-                                          src={logo}
-                                          alt=""
-                                    />
+                                    <a href="https://kalbelajobs.com" target="_blank" rel="noopener noreferrer">
+                                          <img
+                                                className="lg:w-64 w-48 h-auto  "
+                                                src={logo}
+                                                alt=""
+                                          />
+
+                                    </a>
                                     <X
                                           className="cursor-pointer lg:hidden md:visible text-green-600"
                                           onClick={() => setOpen(!open)}

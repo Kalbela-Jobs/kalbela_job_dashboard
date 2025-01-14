@@ -34,11 +34,16 @@ const Login = () => {
                         console.log(data, 'data');
                         if (!data.error) {
                               setUser(data.data.user);
+                              if (data.data.user.role === 'workspace_admin' && !data.data.workspace?._id) {
+                                    navigate('/create-workspace', { replace: true });
+                              }
+                              else {
+                                    navigate("/admin", { replace: true });
+                              }
                               setWorkspace(data.data.workspace);
                               setCookie("kal_bela_jobs_user", data.data.user, 365);
                               setCookie('kal_bela_jobs_workspace', data.data.workspace, 365);
                               sweet_alert("Success", data.message, "success");
-                              navigate("/admin", { replace: true });
                         }
                         else {
                               sweet_alert("Error", data.message, "error");

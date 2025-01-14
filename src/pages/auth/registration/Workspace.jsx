@@ -23,10 +23,11 @@ const { Title } = Typography;
 const { Content } = Layout;
 
 export default function Workspace() {
-      const [select_package, setSelectPackage] = useState(null);
-      const [companyName, setCompanyName] = useState("");
-      const [companyWebsite, setCompanyWebsite] = useState("");
       const { user, base_url, setWorkspace, setUser, setCookie } = useContext(Kalbela_AuthProvider);
+      const [select_package, setSelectPackage] = useState(null);
+      const [companyName, setCompanyName] = useState();
+      const [companyWebsite, setCompanyWebsite] = useState("");
+
       const [loading, setLoading] = useState(false);
       const [description, setDescription] = useState("");
 
@@ -164,7 +165,9 @@ export default function Workspace() {
             setLoading(true);
             const form_data = e.target;
             const file = form_data.logo.files[0];
+            const license = form_data.license.files[0];
             const logo_url = await uploadImage(file);
+            const license_url = await uploadImage(license);
             const company_size = form_data.company_size.value;
             const industry = form_data.industry.value;
 
@@ -176,8 +179,9 @@ export default function Workspace() {
                   description,
                   company_size,
                   industry,
-                  logo: logo_url,
+                  trade_license: license_url,
                   package: select_package?._id,
+                  website: form_data?.website?.value,
                   staff: [{
                         name: user.name,
                         _id: user._id,
@@ -222,9 +226,9 @@ export default function Workspace() {
       };
 
 
-
       return (
             <Layout className="relative py-12 overflow-hidden bg-black sm:py-16 lg:py-20 xl:py-24">
+
                   <div className="absolute top-0 left-0 -translate-x-48 -translate-y-36">
                         <svg
                               className="blur-3xl filter"
@@ -321,7 +325,7 @@ export default function Workspace() {
 
                                           <div>
                                                 <label htmlFor="companyName" className="text-base font-normal text-white">
-                                                      Your company name
+                                                      Your company name <span className='text-red-500'>*</span>
                                                 </label>
                                                 <div className="mt-2">
                                                       <input
@@ -329,7 +333,6 @@ export default function Workspace() {
                                                             required
                                                             id="companyName"
                                                             placeholder="Enter your company name"
-                                                            defaultValue={user.name}
                                                             onChange={handleCompanyNameChange}
                                                             className="block w-full px-5 py-4 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                                                       />
@@ -337,7 +340,7 @@ export default function Workspace() {
                                           </div>
                                           <div>
                                                 <label htmlFor="companyWebsite" className="text-base font-normal text-white">
-                                                      Company Uniq ID
+                                                      Company Uniq ID <span className='text-red-500'>*</span>
                                                 </label>
                                                 <div className="mt-2">
                                                       <input
@@ -353,7 +356,7 @@ export default function Workspace() {
                                           </div>
                                           <div>
                                                 <label htmlFor="" className="text-base font-normal text-white">
-                                                      Company logo
+                                                      Company logo <span className='text-red-500'>*</span>
                                                 </label>
                                                 <div className="mt-2">
                                                       <input
@@ -367,7 +370,21 @@ export default function Workspace() {
                                           </div>
                                           <div>
                                                 <label htmlFor="" className="text-base font-normal text-white">
-                                                      Company size
+                                                      Trade License Copy <span className='text-red-500'>*</span>
+                                                </label>
+                                                <div className="mt-2">
+                                                      <input
+                                                            type="file"
+                                                            required
+                                                            name="license"
+                                                            id="license"
+                                                            className="block w-full px-5 py-3 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                                                      />
+                                                </div>
+                                          </div>
+                                          <div>
+                                                <label htmlFor="" className="text-base font-normal text-white">
+                                                      Company size <span className='text-red-500'>*</span>
                                                 </label>
                                                 <div className="mt-2">
                                                       <select
@@ -385,9 +402,22 @@ export default function Workspace() {
                                                       </select>
                                                 </div>
                                           </div>
+                                          <div className="sm:col-span-1">
+                                                <label htmlFor="website" className="text-base font-normal text-white">
+                                                      Company Website
+                                                </label>
+                                                <div className="mt-2">
+                                                      <input
+                                                            type="url"
+                                                            id="website"
+                                                            placeholder="Enter your company website"
+                                                            className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                                                      />
+                                                </div>
+                                          </div>
                                           <div className="sm:col-span-2">
                                                 <label htmlFor="" className="text-base font-normal text-white">
-                                                      What industry do you work in?
+                                                      What industry do you work in? <span className='text-red-500'>*</span>
                                                 </label>
                                                 <div className="mt-2">
                                                       <select
@@ -408,7 +438,7 @@ export default function Workspace() {
 
                                           <div className="sm:col-span-1">
                                                 <label htmlFor="contactNumber" className="text-base font-normal text-white">
-                                                      Company Contact Number
+                                                      Company Contact Number <span className='text-red-500'>*</span>
                                                 </label>
                                                 <div className="mt-2">
                                                       <input
@@ -423,7 +453,7 @@ export default function Workspace() {
                                           </div>
                                           <div className="sm:col-span-1">
                                                 <label htmlFor="email" className="text-base font-normal text-white">
-                                                      Company Email Address
+                                                      Company Email Address <span className='text-red-500'>*</span>
                                                 </label>
                                                 <div className="mt-2">
                                                       <input
@@ -437,7 +467,7 @@ export default function Workspace() {
                                           </div>
                                           <div className="sm:col-span-2">
                                                 <label htmlFor="address" className="text-base font-normal text-white">
-                                                      Company Address
+                                                      Company Address <span className='text-red-500'>*</span>
                                                 </label>
                                                 <div className="mt-2">
                                                       <input
@@ -457,7 +487,6 @@ export default function Workspace() {
 
                                                       <ReactQuill
                                                             onChange={handleDescriptionChange}
-                                                            required
                                                             name="description"
                                                             id="description"
                                                       />

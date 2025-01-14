@@ -4,6 +4,7 @@ import { useState } from 'react';
 const Home = () => {
 
       console.log("Home page");
+
       return <div className="bg-white">
             <header className="bg-[#FCF8F1] bg-opacity-30">
                   <div className="px-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -108,16 +109,19 @@ const Home = () => {
                                     <h1 className="mt-4 text-4xl font-bold text-black lg:mt-8 sm:text-6xl xl:text-8xl">
                                           Find better candidates for your jobs
                                     </h1>
-                                    <p className="mt-4 text-base text-black lg:mt-8 sm:text-xl">
+                                    <p className="mt-4 mb-2 text-base text-black lg:mt-8 sm:text-xl">
                                           Grow your career fast with right mentor.
+                                    </p>
+                                    <p className="mt-8 lg:mt-16 tracking-wide  text-base text-black md:text-2xl">
+                                          Already joined us?{" "}
                                     </p>
                                     <Link
                                           to="/sign-up"
                                           title=""
-                                          className="inline-flex items-center px-6 py-4 mt-8 font-semibold text-black transition-all duration-200 bg-yellow-300 rounded-full lg:mt-16 hover:bg-yellow-400 focus:bg-yellow-400"
+                                          className="bg-blue-600 px-10 py-4 text-lg text-white font-semibold rounded-full hover:bg-blue-700 focus:bg-blue-700 focus:text-white whitespace-nowrap flex w-48"
                                           role="button"
                                     >
-                                          Join for free
+                                          Sign In
                                           <svg
                                                 className="w-6 h-6 ml-8 -mr-2"
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -133,16 +137,7 @@ const Home = () => {
                                                 />
                                           </svg>
                                     </Link>
-                                    <p className="mt-5 text-gray-600">
-                                          Already joined us?{" "}
-                                          <Link
-                                                to={"/sign-in"}
-                                                title=""
-                                                className="text-black transition-all duration-200 hover:underline"
-                                          >
-                                                Log in
-                                          </Link>
-                                    </p>
+
                               </div>
                               <div>
                                     <img
