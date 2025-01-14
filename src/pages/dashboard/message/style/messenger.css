@@ -1,10 +1,5 @@
 
 
-body {
-      color: #FFFFFF;
-}
-
-
 .sidebar {
 
       border-right: 1px solid #2A3347;
@@ -28,7 +23,7 @@ body {
       display: flex;
       gap: 8px;
       padding: 8px 20px;
-      background-color: var(--bg-primary);
+      background-color: #2A3347;
 }
 
 .filter-tab {
@@ -36,13 +31,13 @@ body {
       border-radius: 20px;
       background: none;
       border: none;
-      color: var(--text-secondary);
+      color: #FFFFFF;
       cursor: pointer;
       font-size: 14px;
 }
 
 .filter-tab.active {
-      background-color: var(--accent-blue);
+      background-color: #4C7BFF;
       color: #FFFFFF;
 }
 
@@ -64,7 +59,7 @@ body {
       left: 32px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--text-secondary);
+      color: #8B93A8;
 }
 
 .chat-list {
@@ -84,11 +79,11 @@ body {
 }
 
 .chat-item:hover {
-      background-color: var(--bg-hover);
+      background-color: #2A3347;
 }
 
 .chat-item.selected {
-      background-color: var(--bg-secondary);
+      background-color: #4C7BFF;
 }
 
 /* Chat Area Styles */
@@ -96,12 +91,12 @@ body {
       display: flex;
       flex-direction: column;
       height: 100vh;
-      background-color: var(--bg-primary);
+      background-color: #0B101B;
 }
 
 .chat-header {
       padding: 16px;
-      background-color: var(--bg-primary);
+      background-color: #1E2736;
       border-bottom: 1px solid #2A3347;
       display: flex;
       align-items: center;
@@ -136,7 +131,7 @@ body {
 }
 
 .message.sent .message-bubble {
-      background-color: var(--accent-blue);
+      background-color: #4C7BFF;
 }
 
 .message-input-container {
@@ -173,14 +168,14 @@ body {
 .action-button {
       background: none;
       border: none;
-      color: var(--text-secondary);
+      color: #8B93A8;
       cursor: pointer;
       padding: 4px;
       border-radius: 50%;
 }
 
 .action-button:hover {
-      background-color: var(--bg-hover);
+      background-color: rgba(255, 255, 255, 0.1);
 }
 
 .ai-suggestions {
@@ -191,7 +186,7 @@ body {
 }
 
 .ai-suggestion {
-      background-color: var(--bg-secondary);
+      background-color: #4C7BFF;
       color: #FFFFFF;
       padding: 8px 16px;
       border-radius: 20px;
@@ -200,5 +195,5 @@ body {
 }
 
 .ai-suggestion:hover {
-      background-color: var(--bg-hover);
+      background-color: #3659D9;
 }

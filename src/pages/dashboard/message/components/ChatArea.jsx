@@ -31,11 +31,11 @@ function ChatArea({ messages, selectedUser, onSendMessage }) {
                                           style={{ objectFit: 'cover' }}
                                     />
                               ) : (
-                                    <div className="community-avatar">
+                                    <div className="community-avatar ">
                                           {getInitials(selectedUser.name)}
                                     </div>
                               )}
-                              <div className="community-details">
+                              <div className="community-details text-white">
                                     <h2>{selectedUser.name}</h2>
                                     <div className="community-status">
                                           Active now

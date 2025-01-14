@@ -15,9 +15,9 @@ function Sidebar({ users, onSelectUser, selectedUser, messages }) {
       );
 
       return (
-            <div className="sidebar-container ">
+            <div className="sidebar-container text-white ">
                   <div className="message-header">
-                        <h1 className="message-count">Messages ({users.length})</h1>
+                        <h1 className="message-count ">Messages ({users.length})</h1>
                         <div className="message-filters">
                               {['all', 'unread', 'groups', 'archived'].map(filter => (
                                     <button
