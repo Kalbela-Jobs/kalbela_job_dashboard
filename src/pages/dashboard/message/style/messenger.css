@@ -1,13 +1,13 @@
 
-body {
 
-      color: var(--text-primary);
+body {
+      color: #FFFFFF;
 }
 
-/* Sidebar Styles */
+
 .sidebar {
 
-      border-right: 1px solid var(--border-color);
+      border-right: 1px solid #2A3347;
       display: flex;
       flex-direction: column;
       height: 90vh;
@@ -15,13 +15,13 @@ body {
 
 .sidebar-header {
       padding: 20px;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid #2A3347;
 }
 
 .sidebar-title {
       font-size: 24px;
       font-weight: 600;
-      color: var(--text-primary);
+      color: #FFFFFF;
 }
 
 .filter-tabs {
@@ -43,7 +43,7 @@ body {
 
 .filter-tab.active {
       background-color: var(--accent-blue);
-      color: var(--text-primary);
+      color: #FFFFFF;
 }
 
 .search-container {
@@ -55,8 +55,8 @@ body {
       width: 100%;
       padding: 10px 16px 10px 40px;
       border-radius: 8px;
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
+      border: 1px solid #2A3347;
+      color: #FFFFFF;
 }
 
 .search-icon {
@@ -102,7 +102,7 @@ body {
 .chat-header {
       padding: 16px;
       background-color: var(--bg-primary);
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid #2A3347;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -132,7 +132,7 @@ body {
 
       padding: 12px 16px;
       border-radius: 12px;
-      color: var(--text-primary);
+      color: #FFFFFF;
 }
 
 .message.sent .message-bubble {
@@ -192,7 +192,7 @@ body {
 
 .ai-suggestion {
       background-color: var(--bg-secondary);
-      color: var(--text-primary);
+      color: #FFFFFF;
       padding: 8px 16px;
       border-radius: 20px;
       white-space: nowrap;

@@ -112,11 +112,11 @@ const Home = () => {
                                     <p className="mt-4 mb-2 text-base text-black lg:mt-8 sm:text-xl">
                                           Grow your career fast with right mentor.
                                     </p>
-                                    <p className="mt-8 lg:mt-16 tracking-wide  text-base text-black md:text-2xl">
+                                    <p className="mt-8 lg:mt-16 my-4 tracking-wide  text-base text-black md:text-2xl">
                                           Already joined us?{" "}
                                     </p>
                                     <Link
-                                          to="/sign-up"
+                                          to="/sign-in"
                                           title=""
                                           className="bg-blue-600 px-10 py-4 text-lg text-white font-semibold rounded-full hover:bg-blue-700 focus:bg-blue-700 focus:text-white whitespace-nowrap flex w-48"
                                           role="button"
