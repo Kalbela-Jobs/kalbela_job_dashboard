@@ -1,8 +1,10 @@
 import { Avatar, Modal, Rate, Select } from 'antd'
 import { LinkedinFilled, FacebookFilled } from '@ant-design/icons'
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import TextArea from 'antd/es/input/TextArea';
 import ReactQuill from 'react-quill';
+import sweet_alert from '../../../../../utils/custom_alert';
+import { Kalbela_AuthProvider } from '../../../../../context/MainContext';
 
 const jobApplicationStatuses = [
       "Applied",
@@ -24,7 +26,7 @@ const statusesRequiringNotes = ["Rejected", "Interview", "Offered"];
 
 export default function ProfileSidebar({ data }) {
 
-
+      const { base_url } = useContext(Kalbela_AuthProvider);
       const [status, setStatus] = useState(data.status);
       const [isModalVisible, setIsModalVisible] = useState(false);
       const [note, setNote] = useState('');
@@ -40,15 +42,51 @@ export default function ProfileSidebar({ data }) {
                   setIsModalVisible(true);
             } else {
                   setStatus(newStatus);
-                  onStatusChange(newStatus);
+                  fetch(`${base_url}/employer/update?candidate_id=${data._id}`, {
+                        method: 'PUT',
+                        headers: {
+                              'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                              status: tempStatus,
+                        }),
+                  }).then((res) => res.json())
+                        .then((data) => {
+                              if (!data.error) {
+                                    sweet_alert("Success", data.message, "success");
+                              }
+                              else {
+                                    sweet_alert("Error", data.message, "error");
+                              }
+                        });
+
             }
       };
 
       const handleModalOk = () => {
             setStatus(tempStatus);
-            onStatusChange(tempStatus, note);
             setIsModalVisible(false);
+
+            fetch(`${base_url}/employer/update?candidate_id=${data._id}`, {
+                  method: 'PUT',
+                  headers: {
+                        'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                        status: tempStatus,
+                        note: note,
+                  }),
+            }).then((res) => res.json())
+                  .then((data) => {
+                        if (!data.error) {
+                              sweet_alert("Success", data.message, "success");
+                        }
+                        else {
+                              sweet_alert("Error", data.message, "error");
+                        }
+                  });
             setNote('');
+
       };
 
       const handleModalCancel = () => {
@@ -85,7 +123,7 @@ export default function ProfileSidebar({ data }) {
                   >
                         <ReactQuill
                               value={note}
-                              onChange={(e) => setNote(e.target.value)}
+                              onChange={(e) => setNote(e)}
                               placeholder="Enter your note here..."
                               aria-label="Status change note"
                         />
@@ -125,7 +163,7 @@ export default function ProfileSidebar({ data }) {
                         </div>}
 
                         <button className="w-full bg-blue-50 text-blue-600 rounded-md py-2 mt-4">
-                              Email Mahadi Hasan
+                              Email {data?.user?.fullName}
                         </button>
                   </div>
             </div>

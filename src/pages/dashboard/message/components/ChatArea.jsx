@@ -62,7 +62,7 @@ function ChatArea({ messages, selectedUser, onSendMessage }) {
                         </div>
                   </div>
 
-                  <div className="messages-container">
+                  <div className="messages-container h-20 overflow-y-auto">
                         {messages.map((message) => (
                               <div
                                     key={message.id}

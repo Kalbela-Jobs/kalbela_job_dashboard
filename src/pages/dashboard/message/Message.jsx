@@ -29,7 +29,7 @@ function Message() {
       };
 
       return (
-            <div className="chat-container h-[90vh] overflow-auto">
+            <div className="chat-container h-[95vh] overflow-auto">
                   <div style={{ width: '320px' }}>
                         <Sidebar
                               users={users}
@@ -39,6 +39,7 @@ function Message() {
                         />
                   </div>
                   <ChatArea
+
                         messages={messages[selectedUser.id]}
                         selectedUser={selectedUser}
                         onSendMessage={handleSendMessage}
