@@ -200,6 +200,10 @@ const Add_Jobs = () => {
                                     /> */}
 
                                     <Select
+                                          showSearch
+                                          filterOption={(input, option) =>
+                                                option?.label?.props?.children[1]?.toLowerCase().includes(input.toLowerCase()) // Search by company name
+                                          }
                                           options={workspace_data.map((workspace) => ({
                                                 value: workspace._id,
                                                 label: (
