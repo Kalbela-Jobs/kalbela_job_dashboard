@@ -32,7 +32,7 @@ const OrganizationManagement = () => {
 
       const deleteFunction = async (data) => {
             try {
-                  const res = await fetch(`${base_url}/workspace/workspace-hr/delete?hr_id=${data._id}&token=${user._id}`, {
+                  const res = await fetch(`${base_url}/workspace/delete?workspace_id=${data._id}&token=${user._id}`, {
                         method: 'DELETE',
                   });
                   const result = await res.json();
@@ -158,7 +158,7 @@ const OrganizationManagement = () => {
 
                         {deleteModal && (
                               <Delete_Modal
-                                    title="Delete Category"
+                                    title="Delete Workspace"
                                     set_modal={setDeleteModal}
                                     delete_function={deleteFunction}
                                     modal={deleteModal}

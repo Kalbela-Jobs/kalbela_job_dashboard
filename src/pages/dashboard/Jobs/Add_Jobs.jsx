@@ -36,14 +36,16 @@ const Add_Jobs = () => {
             queryKey: ["workspace_data", user.role === "supper_admin"],
 
             queryFn: async () => {
-                  const res = await fetch(`${base_url}/workspace/`);
+                  const res = await fetch(`${base_url}/workspace`);
                   const data = await res.json();
-                  return data.data;
+                  return data.data.workspaces;
             },
 
             // Only enable the query if the user is a "supper_admin"
             enabled: user.role === "supper_admin",
       });
+
+
 
       console.log(workspace_data, "workspace_data");
 
@@ -189,10 +191,27 @@ const Add_Jobs = () => {
                                     label="Company Name"
                                     rules={[{ required: true, message: "Please select a company!" }]} // Custom error message
                               >
-                                    <Select
+                                    {/* <Select
                                           options={workspace_data.map((workspace) => ({
                                                 value: workspace._id,
                                                 label: workspace.company_name,
+                                          }))}
+                                          placeholder="Select a company"
+                                    /> */}
+
+                                    <Select
+                                          options={workspace_data.map((workspace) => ({
+                                                value: workspace._id,
+                                                label: (
+                                                      <div className="flex items-center">
+                                                            <img
+                                                                  src={workspace.logo}
+                                                                  alt={workspace.company_name}
+                                                                  className="w-6 h-6 object-cover rounded-full mr-2"
+                                                            />
+                                                            {workspace.company_name}
+                                                      </div>
+                                                ),
                                           }))}
                                           placeholder="Select a company"
                                     />
