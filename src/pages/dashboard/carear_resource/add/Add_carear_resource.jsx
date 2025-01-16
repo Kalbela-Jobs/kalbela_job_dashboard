@@ -8,6 +8,8 @@ import Select from "react-select";
 import { useQuery } from "@tanstack/react-query";
 import JoditEditor from "jodit-react";
 import sweet_alert from "../../../../utils/custom_alert";
+import { Input } from "antd";
+import uploadImage from "../../../../hooks/upload_image";
 
 const Add_career_resources = () => {
       const [fileName, setFileName] = useState("");
@@ -34,13 +36,17 @@ const Add_career_resources = () => {
       const dataSubmit = async (e) => {
             e.preventDefault();
             const form_data = e.target;
-            console.log(form_data, 'photo');
+            const photo = form_data?.photo?.files[0];
+            const photo_url = await uploadImage(photo);
+
             const data = {
+                  created_at: new Date(),
+                  photo: photo_url,
                   name: form_data.Name.value,
                   slag: form_data.Category.value,
                   description: description, // Use the state for description
             };
-            console.log(data);
+
             fetch(`${base_url}/resource/create?token=${user._id}`, {
                   method: 'POST',
                   headers: {
@@ -85,6 +91,7 @@ const Add_career_resources = () => {
 
                               <div className="p-10 border-2  rounded m-10">
                                     <form onSubmit={dataSubmit} className="w-full ">
+                                          <Input type="file" name="photo" className="w-full my-2" />
                                           <Custom_Input label="Name" className="w-full" name="Name" type="text" placeholder="Category Name" />
 
                                           <div className="my-4 z-40">

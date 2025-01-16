@@ -55,7 +55,7 @@ const Career_resources = () => {
                               </div>
 
 
-                              <table className="divide-y divide-gray-200 ">
+                              <table className="divide-y divide-gray-200 w-full">
                                     <thead className="hidden lg:table-header-group">
                                           <tr>
                                                 <th className="py-3.5 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-widest">
@@ -76,8 +76,9 @@ const Career_resources = () => {
                                     <tbody>
 
 
-                                          {career_resources?.map((resource) => <tr className="bg-gray-50">
-                                                <td className="px-4 py-4 text-sm font-bold text-gray-900 align-top lg:align-middle whitespace-nowrap">
+                                          {career_resources?.map((resource) => <tr className="">
+                                                <td className="px-4 py-4 text-sm flex items-center gap-4 font-bold text-gray-900 align-top lg:align-middle whitespace-nowrap">
+                                                      <img className="size-10" src={resource?.photo} alt={resource?.name} />
                                                       <div className="flex items-center">
                                                             {resource.name}
                                                       </div>

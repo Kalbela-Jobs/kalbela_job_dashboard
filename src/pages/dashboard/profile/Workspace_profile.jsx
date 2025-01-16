@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import Profile from "./Profile";
 import { Kalbela_AuthProvider } from "../../../context/MainContext";
+import Profile from "./Profile";
 
 const Workspace_profile = () => {
 
@@ -8,7 +8,7 @@ const Workspace_profile = () => {
 
       return (
             <div>
-                  <div >
+                  <div className="p-8" >
                         <Profile initialData={workspace} />
                   </div>
             </div>

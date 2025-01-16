@@ -7,6 +7,8 @@ import Select from "react-select";
 import JoditEditor from "jodit-react";
 import Custom_Button from "../../../../components/small_component/Custom_Button";
 import sweet_alert from "../../../../utils/custom_alert";
+import uploadImage from "../../../../hooks/upload_image";
+import { Input } from "antd";
 
 const Edit_career_resources = ({ data, refetch, set_modal }) => {
       const { user, base_url, setWorkspace, setUser, setCookie } = useContext(Kalbela_AuthProvider);
@@ -33,10 +35,18 @@ const Edit_career_resources = ({ data, refetch, set_modal }) => {
             e.preventDefault();
             const form_data = e.target;
             const submittedData = {
+                  updated_at: new Date(),
                   name: form_data.Name.value,
                   slag: selectedCategory.value,
                   description: description, // Use the state for description
             };
+            const photo = form_data?.photo?.files[0];
+
+            if (photo) {
+                  const photo_url = await uploadImage(photo);
+                  submittedData.photo = photo_url;
+            }
+
             console.log(submittedData)
 
             fetch(`${base_url}/resource/update?resource_id=${data._id}&token=${user._id}`, {
@@ -63,6 +73,7 @@ const Edit_career_resources = ({ data, refetch, set_modal }) => {
             <div>
                   <div className="p-10 border-2 rounded m-10">
                         <form onSubmit={dataSubmit} className="w-full">
+                              <Input type="file" name="photo" className="w-full my-2" />
                               <Custom_Input
                                     label="Name"
                                     default_value={data.name}

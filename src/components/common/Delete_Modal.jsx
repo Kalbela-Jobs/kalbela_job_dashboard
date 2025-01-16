@@ -2,7 +2,7 @@ const Delete_Modal = ({ title, set_modal, delete_function, modal }) => {
       return (
             <div>
                   <div class="bg-gray-100 h-96">
-                        <div class={`fixed z-50 top-0 left-0 flex h-full min-h-screen w-full items-center justify-center bg-black bg-opacity-90 px-4 py-5 ${modal ? "block" : "hidden"
+                        <div class={`fixed z-40 top-0 left-0 flex h-full min-h-screen w-full items-center justify-center bg-black bg-opacity-90 px-4 py-5 ${modal ? "block" : "hidden"
                               }`}>
                               <div class="w-full max-w-sm bg-white shadow-lg rounded-xl">
                                     <div class="px-4 py-5 sm:p-6">

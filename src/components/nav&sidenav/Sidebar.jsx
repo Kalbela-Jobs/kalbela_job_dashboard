@@ -32,7 +32,7 @@ const Sidebar = () => {
 
             <div
 
-                  className={`top-0 left-0 z-50 bg-gray-900 h-[100vh] ${open ? 'fixed  lg:w-64 w-full' : 'hidden'}`}
+                  className={`top-0 left-0 z-40 bg-gray-900 h-[100vh] ${open ? 'fixed  lg:w-64 w-full' : 'hidden'}`}
 
             >
                   <div className="relative">

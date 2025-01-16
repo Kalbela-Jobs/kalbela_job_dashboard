@@ -99,7 +99,7 @@ const Header = () => {
                                     </div>
 
                                     {/* User avatar */}
-                                    <button
+                                    <Link to={"/admin/profile"}
                                           type="button"
                                           className="flex items-center max-w-xs rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
                                     >
@@ -108,11 +108,11 @@ const Header = () => {
                                                 src="https://landingfoliocom.imgix.net/store/collection/clarity-dashboard/images/previews/dashboards/1/avatar-male.png"
                                                 alt=""
                                           />
-                                    </button>
+                                    </Link>
                               </div>
                         </div>
                   </div>
-            </header >
+            </header>
       );
 };
 

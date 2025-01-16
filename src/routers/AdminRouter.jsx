@@ -96,7 +96,7 @@ const AdminRouter = [
             element: <Private> <Organization_management /></Private>,
       },
       {
-            path: "organization/profile",
+            path: "profile",
             element: <Private> <Workspace_profile /></Private>,
       },
       {

@@ -1,159 +1,172 @@
-import { useQuery } from "@tanstack/react-query";
 import Delete_Modal from "../../../components/common/Delete_Modal";
 import Modal_Component from "../../../components/common/Modal_Component";
 import sweet_alert from "../../../utils/custom_alert";
 import { Kalbela_AuthProvider } from "../../../context/MainContext";
+
+
+
+import { useQuery } from "@tanstack/react-query";
 import { useContext, useState } from "react";
-import Link_Button from "../../../components/small_component/Link_Button";
+import { Table, Input, Button, Pagination, Switch, message } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 
-const Organization_management = () => {
-      const { user, base_url, workspace } = useContext(Kalbela_AuthProvider);
-      const [modal, set_modal] = useState(false);
-      const [delete_modal, set_delete_modal] = useState(false);
 
-      const { data: workspace_data = [], isLoading, refetch } = useQuery({
-            queryKey: ["workspace_data",],
+const OrganizationManagement = () => {
+      const { user, base_url } = useContext(Kalbela_AuthProvider);
+      const [modal, setModal] = useState(false);
+      const [deleteModal, setDeleteModal] = useState(false);
+      const [searchText, setSearchText] = useState("");
+      const [currentPage, setCurrentPage] = useState(1);
+      const pageSize = 10;
 
+      const { data: workspaceData = [], isLoading, refetch } = useQuery({
+            queryKey: ["workspace_data", currentPage, searchText],
             queryFn: async () => {
                   const res = await fetch(
-                        `${base_url}/workspace/`
+                        `${base_url}/workspace/?page=${currentPage}&limit=${pageSize}&search=${searchText}`
                   );
                   const data = await res.json();
-                  return data.data;
+                  return data.data.workspaces;
             },
       });
 
-
-      const delete_function = async (data) => {
-            fetch(`${base_url}/workspace/workspace-hr/delete?hr_id=${data._id}&token=${user._id}`, {
-                  method: 'DELETE',
-            }).then(res => res.json())
-                  .then(data => {
-                        set_delete_modal(false);
-                        if (!data.error) {
-                              refetch()
-                              sweet_alert("Success", data.message, "success");
-                        }
-                        else {
-                              sweet_alert("Error", data.message, "error");
-                        }
+      const deleteFunction = async (data) => {
+            try {
+                  const res = await fetch(`${base_url}/workspace/workspace-hr/delete?hr_id=${data._id}&token=${user._id}`, {
+                        method: 'DELETE',
                   });
-      }
+                  const result = await res.json();
+                  setDeleteModal(false);
+                  if (!result.error) {
+                        refetch();
+                        sweet_alert("Success", result.message, "success");
+                  } else {
+                        sweet_alert("Error", result.message, "error");
+                  }
+            } catch (error) {
+                  sweet_alert("Error", "An error occurred", "error");
+            }
+      };
+
+      console.log(`${base_url}/workspace/?page=${currentPage}&limit=${pageSize}&search=${searchText}`, 'url');
+      const updateFeature = async (data) => {
+            try {
+                  const res = await fetch(`${base_url}/workspace/update?workspace_id=${data._id}&token=${user._id}`, {
+                        method: 'PATCH',
+                        headers: {
+                              'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ feature: !data.feature })
+                  });
+                  const result = await res.json();
+                  if (!result.error) {
+                        refetch();
+                        message.success(result.message);
+                  } else {
+                        message.error(result.message);
+                  }
+            } catch (error) {
+                  message.error("An error occurred");
+            }
+      };
+
+      const columns = [
+            {
+                  title: "Logo",
+                  dataIndex: "logo",
+                  key: "logo",
+                  render: (logo, record) => (
+                        <img className="w-10 h-10 border border-gray-200 rounded" src={logo || "/placeholder.svg"} alt={record.company_name} />
+                  ),
+            },
+            {
+                  title: "Name",
+                  dataIndex: "company_name",
+                  key: "company_name",
+            },
+            {
+                  title: "Size",
+                  dataIndex: "company_size",
+                  key: "company_size",
+            },
+            {
+                  title: "Industry",
+                  dataIndex: "industry",
+                  key: "industry",
+            },
+            {
+                  title: "Priority",
+                  dataIndex: "priority",
+                  key: "priority",
+            },
+            {
+                  title: "Actions",
+                  key: "actions",
+                  render: (_, record) => (
+                        <div className="flex justify-center items-center space-x-4">
+                              <Switch
+                                    checked={record.feature}
+                                    onChange={() => updateFeature(record)}
+                                    checkedChildren="Featured"
+                                    unCheckedChildren="Feature"
+                              />
+                              <Button danger onClick={() => setDeleteModal(record)}>
+                                    Remove
+                              </Button>
+                        </div>
+                  ),
+            },
+      ];
 
       return (
-            <div>
-                  <div className="py-4 bg-white">
-                        <div className="px-4 sm:px-6 lg:px-8">
-                              <Link_Button name='Create New HR' url="add-hr" />
-                              <div className="sm:flex sm:items-center sm:justify-between">
-                                    <div>
-                                          <p className="text-xl font-bold text-gray-900">Organization Management</p>
-                                    </div>
-
-                              </div>
-                              {isLoading ? <>Loading</> : <div className="flex flex-col mt-4 lg:mt-8">
-                                    <div className="-mx-4 -my-2  sm:-mx-6 lg:-mx-8">
-                                          <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                                                <table className="min-w-full overflow-x-auto divide-y divide-gray-200">
-                                                      <thead className=" lg:table-header-group">
-                                                            <tr>
-
-                                                                  <th className="py-3.5 px-4 text-left text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
-                                                                        Logo
-                                                                  </th>
-                                                                  <th className="py-3.5 px-4 text-left text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
-                                                                        Name
-                                                                  </th>
-                                                                  <th className="py-3.5 px-4 text-left text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
-                                                                        Size
-                                                                  </th>
-                                                                  <th className="py-3.5 px-4 text-left text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
-                                                                        Industry
-                                                                  </th>
-                                                                  <th className="py-3.5 px-4 text-left text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
-                                                                        Priority
-                                                                  </th>
-                                                                  <th className="py-3.5 px-4 text-center text-xs whitespace-nowrap uppercase tracking-widest font-medium text-gray-500">
-                                                                        Actions
-                                                                  </th>
-                                                            </tr>
-                                                      </thead>
-                                                      <tbody>
+            <div className="py-4 bg-white">
+                  <div className="px-4 sm:px-6 lg:px-8">
 
 
-                                                            {workspace_data.map((org) => <tr className="bg-gray-50">
-                                                                  <td className=" px-4 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
-                                                                        <img className="w-10 h-10 border border-gray-200 rounded border-opacity-20" src={org.logo} alt={org.company_name} />
-                                                                  </td>
-                                                                  <td className=" px-4 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
-                                                                        {org.company_name}
-                                                                  </td>
-                                                                  <td className=" px-4 py-4 text-sm font-medium text-gray-900 xl:table-cell whitespace-nowrap">
-                                                                        <div className="flex items-center">
+                        <Input
+                              placeholder="Search organizations"
+                              prefix={<SearchOutlined />}
+                              value={searchText}
+                              onChange={(e) => setSearchText(e.target.value)}
+                              className="mb-4"
+                        />
 
-                                                                              {org.company_size}
-                                                                        </div>
-                                                                  </td>
-                                                                  <td className="px-4 py-4 text-sm capitalize font-medium text-right text-gray-900 align-top lg:align-middle lg:text-left whitespace-nowrap">
-                                                                        {org.industry}
-                                                                  </td>
-                                                                  <td className="px-4 capitalize py-4 text-sm font-medium text-right text-gray-900 align-top lg:align-middle lg:text-left whitespace-nowrap">
-                                                                        {org.
-                                                                              priority
-                                                                        }
-                                                                  </td>
-                                                                  <td className=" px-4 py-4 lg:table-cell whitespace-nowrap">
-                                                                        <div className="flex justify-center items-center space-x-4">
-                                                                              <button
-                                                                                    onClick={() => set_modal(hr)}
-                                                                                    type="button"
-                                                                                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 bg-gray-100 border border-gray-300 rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none hover:text-white hover:border-indigo-600 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                                                              >
-                                                                                    Edit Details
-                                                                              </button>
-                                                                              <button
-                                                                                    onClick={() => set_delete_modal(hr)}
-                                                                                    type="button"
-                                                                                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                                                              >
-                                                                                    <svg
+                        <Table
+                              columns={columns}
+                              dataSource={workspaceData}
+                              loading={isLoading}
+                              pagination={false}
+                              rowKey="_id"
+                        />
 
-                                                                                          className="w-5 h-5 mr-2 -ml-1"
-                                                                                          xmlns="http://www.w3.org/2000/svg"
-                                                                                          fill="none"
-                                                                                          viewBox="0 0 24 24"
-                                                                                          stroke="currentColor"
-                                                                                          strokeWidth={2}
-                                                                                    >
-                                                                                          <path
-                                                                                                strokeLinecap="round"
-                                                                                                strokeLinejoin="round"
-                                                                                                d="M6 18L18 6M6 6l12 12"
-                                                                                          />
-                                                                                    </svg>
-                                                                                    Remove
-                                                                              </button>
-                                                                        </div>
-                                                                  </td>
-                                                            </tr>)}
-                                                      </tbody>
-                                                </table>
-                                          </div>
-                                    </div>
-                              </div>}
-                        </div>
+                        <Pagination
+                              current={currentPage}
+                              total={workspaceData.length}
+                              pageSize={pageSize}
+                              onChange={(page) => setCurrentPage(page)}
+                              className="mt-4 text-center"
+                        />
 
-                        {
-                              modal && <Modal_Component title="Edit Category" modal={modal} set_modal={set_modal} JSX={<Edit refetch={refetch} set_modal={set_modal} data={modal} />} />
-                        }
+                        {modal && (
+                              <Modal_Component
+                                    title="Edit Category"
+                                    modal={modal}
+                                    set_modal={setModal}
+                                    JSX={<Edit refetch={refetch} set_modal={setModal} data={modal} />}
+                              />
+                        )}
 
-                        {
-                              delete_modal && <Delete_Modal title="Delete Category" set_modal={set_delete_modal} delete_function={delete_function} modal={delete_modal} />
-                        }
-
+                        {deleteModal && (
+                              <Delete_Modal
+                                    title="Delete Category"
+                                    set_modal={setDeleteModal}
+                                    delete_function={deleteFunction}
+                                    modal={deleteModal}
+                              />
+                        )}
                   </div>
             </div>
       );
 };
 
-export default Organization_management;
+export default OrganizationManagement;
