@@ -26,9 +26,18 @@ const Add_Jobs = () => {
       const { data: divisions = [], isLoading: isDivisionsLoading } = useQuery({
             queryKey: ["divisions"],
             queryFn: async () => {
-                  const res = await fetch("https://bdapis.com/api/v1.2/divisions");
+                  const res = await fetch(`${base_url}/config/locations`);
                   const data = await res.json();
-                  return data.data.map(division => ({ value: division.division, label: division.division }));
+                  return data.data.map(division => ({ value: division.name, label: division.name }));
+            },
+      });
+
+      const { data: skills = [], isLoading: isSkillsLoading } = useQuery({
+            queryKey: ["skills"],
+            queryFn: async () => {
+                  const res = await fetch(`${base_url}/config/skills`);
+                  const data = await res.json();
+                  return data.data.map(skill => ({ value: skill.name, label: skill.name }));
             },
       });
 
@@ -140,10 +149,12 @@ const Add_Jobs = () => {
                   company_size: workspace_info.company_size,
                   industry: workspace_info.industry,
                   about: workspace_info.description,
-                  company_id: workspace_info._id
+                  company_id: workspace_info._id,
+                  company_address: workspace_info?.address ?? ''
             }
             values.location = {
                   division: remote ? null : values.division,
+                  location: values.input_location,
                   district: null,
                   country: 'BD',
                   remote: remote
@@ -153,6 +164,7 @@ const Add_Jobs = () => {
                   email: user.email,
                   user_id: user._id
             }
+
             delete values.division;
             fetch(`${base_url}/jobs/create`, {
                   method: "POST",
@@ -222,7 +234,7 @@ const Add_Jobs = () => {
                               </Form.Item>}
 
                               <Form.Item name="skills" label="Skills" rules={[{ required: true }]}>
-                                    <Select mode="tags" style={{ width: '100%' }} placeholder="Select or add skills" />
+                                    <Select options={skills} mode="tags" style={{ width: '100%' }} placeholder="Select or add skills" />
                               </Form.Item>
 
                               <div className="flex justify-between items-center mb-4">
@@ -263,9 +275,18 @@ const Add_Jobs = () => {
                                     </Form.Item>
                               </div>
 
-                              <Form.Item name="salary_type" label="Salary Type" rules={[{ required: true }]}>
-                                    <Select options={salaryTypeOptions} />
-                              </Form.Item>
+                              <div className="flex space-x-4">
+                                    <Form.Item name="salary_type" className="w-full" label="Salary Type" rules={[{ required: true }]}>
+                                          <Select options={salaryTypeOptions} />
+                                    </Form.Item>
+                                    {!remote && <Form.Item className="w-full" name="gender" label="Gender" rules={[{ required: true }]}>
+                                          <Select
+                                                options={[{ value: 'male', label: 'Male' }, { value: 'female', label: 'Female' }, { value: 'others', label: 'Others' }]}
+                                                loading={isDivisionsLoading}
+                                                placeholder="Select a gender"
+                                          />
+                                    </Form.Item>}
+                              </div>
 
                               <Form.Item name="salary_negotiable" valuePropName="checked">
                                     <Checkbox onClick={(e) => setIsNegotiable(e.target.checked)}>Salary Negotiable</Checkbox>
@@ -295,13 +316,20 @@ const Add_Jobs = () => {
                               <Form.Item name="remote" valuePropName="checked">
                                     <Checkbox onClick={(e) => setRemote(e.target.checked)}> Remote</Checkbox>
                               </Form.Item>
-                              {!remote && <Form.Item name="state" label="Division" rules={[{ required: true }]}>
-                                    <Select
-                                          options={divisions}
-                                          loading={isDivisionsLoading}
-                                          placeholder="Select a division"
-                                    />
-                              </Form.Item>}
+                              <div className="flex space-x-4">
+                                    {!remote && <Form.Item className="w-full" name="state" label="District" rules={[{ required: true }]}>
+                                          <Select
+                                                options={divisions}
+                                                loading={isDivisionsLoading}
+                                                placeholder="Select a division"
+                                          />
+                                    </Form.Item>}
+
+                                    <Form.Item className="w-full" name="input_location" label="Location" rules={[{ required: false }]}>
+                                          <Input type="text" />
+                                    </Form.Item>
+
+                              </div>
 
 
 

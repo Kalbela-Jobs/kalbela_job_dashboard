@@ -7,14 +7,14 @@ const Header = () => {
 
       const { open, setOpen, setSearchQuery } = useContext(MyContext);
       return (
-            <header className={`bg-white border-b sticky top-0 z-40 border-gray-200 `}>
+            <header className={`bg-white border-b w-full  sticky top-0 z-40 border-gray-200 `}>
                   <div className="px-4 mx-auto">
                         <div className="flex items-center justify-between h-16">
                               <Menu
                                     className="cursor-pointer lg:hidden md:flex text-green-600 "
                                     onClick={() => setOpen(!open)}
                               />
-                              {/* Search bar */}
+
                               <div className="flex-1 hidden max-w-xs ml-40 mr-auto lg:block">
                                     <label htmlFor="" className="sr-only">
                                           Search

@@ -1,6 +1,7 @@
 
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import logo from '../../../../assets/image.png';
 const Home = () => {
 
       console.log("Home page");
@@ -13,8 +14,8 @@ const Home = () => {
                                     <a href="#" title="" className="flex">
                                           <img
                                                 className="w-auto h-10"
-                                                src="https://upload.wikimedia.org/wikipedia/bn/0/09/%E0%A6%A6%E0%A7%88%E0%A6%A8%E0%A6%BF%E0%A6%95_%E0%A6%95%E0%A6%BE%E0%A6%B2%E0%A6%AC%E0%A7%87%E0%A6%B2%E0%A6%BE_%E0%A6%8F%E0%A6%B0_%E0%A6%B2%E0%A7%8B%E0%A6%97%E0%A7%8B.png"
-                                                alt=""
+                                                src={logo}
+                                                alt="Kalbela Jobs"
                                           />
                                     </a>
                               </div>

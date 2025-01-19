@@ -170,7 +170,7 @@ export default function Workspace() {
             const license_url = await uploadImage(license);
             const company_size = form_data.company_size.value;
             const industry = form_data.industry.value;
-
+            const address = form_data.address.value;
 
             const data = {
                   company_name: companyName,
@@ -179,6 +179,7 @@ export default function Workspace() {
                   description,
                   company_size,
                   industry,
+                  address,
                   trade_license: license_url,
                   package: select_package?._id,
                   website: form_data?.website?.value,
@@ -474,6 +475,7 @@ export default function Workspace() {
                                                             required
                                                             type="text"
                                                             id="address"
+                                                            name='address'
                                                             placeholder="Enter your company address"
                                                             className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                                                       />

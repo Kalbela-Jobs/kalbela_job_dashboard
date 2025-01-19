@@ -1,3 +1,4 @@
+import { path } from "framer-motion/client";
 import Candidate from "../pages/dashboard/candidate/Candidate";
 import Single_candidate from "../pages/dashboard/candidate/single_candidate/Single_candidate";
 import Add_career_resources from "../pages/dashboard/carear_resource/add/Add_carear_resource";
@@ -20,6 +21,14 @@ import Workspace_profile from "../pages/dashboard/profile/Workspace_profile";
 
 
 import Private from "./Private";
+import Config from "../pages/dashboard/configaration/Config";
+import Skills from "../pages/dashboard/configaration/pages/skills/Skills";
+import Position from "../pages/dashboard/configaration/pages/Position/Position";
+import Location from "../pages/dashboard/configaration/pages/Location/Location";
+import Industry from "../pages/dashboard/configaration/pages/Industry/Industry";
+import Department from "../pages/dashboard/configaration/pages/Department/Department";
+import Govt_jobs from "../pages/dashboard/govt_jobs/Govt_jobs";
+import AddEditJobForm from "../pages/dashboard/govt_jobs/pages/add_govt_jobs/Add_govt_jobs";
 
 const AdminRouter = [
       {
@@ -41,6 +50,14 @@ const AdminRouter = [
       {
             path: "jobs",
             element: <Private><Job /></Private>,
+      },
+      {
+            path: "govt-jobs",
+            element: <Private><Govt_jobs /></Private>,
+      },
+      {
+            path: "govt-jobs/add",
+            element: <Private><AddEditJobForm /></Private>,
       },
       {
             path: "jobs/add-job",
@@ -77,6 +94,30 @@ const AdminRouter = [
             element: <Private> <Add_career_resources /></Private>
       },
       {
+            path: 'configuration',
+            element: <Private> <Config /></Private>
+      },
+      {
+            path: 'configuration/skills',
+            element: <Private> <Skills /></Private>
+      },
+      {
+            path: 'configuration/positions',
+            element: <Private> <Position /></Private>
+      },
+      {
+            path: 'configuration/locations',
+            element: <Private> <Location /></Private>
+      },
+      {
+            path: 'configuration/industry',
+            element: <Private> <Industry /></Private>
+      },
+      {
+            path: 'configuration/departments',
+            element: <Private> <Department /></Private>
+      },
+      {
             path: 'candidates',
             element: <Private> <Candidate /></Private>
       },
@@ -102,7 +143,8 @@ const AdminRouter = [
       {
             path: "message",
             element: <Private> <Message /></Private>,
-      }
+      },
+
 ];
 
 export default AdminRouter;

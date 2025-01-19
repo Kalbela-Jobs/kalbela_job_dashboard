@@ -31,6 +31,16 @@ export const nav_items = [
             link: "career-resources",
       },
       {
+            title: "Configuration",
+            icon: List,
+            link: "configuration",
+      },
+      {
+            title: "Govt Jobs",
+            icon: List,
+            link: "govt-jobs",
+      },
+      {
             title: "Jobs",
             icon: Briefcase,
             link: "jobs",

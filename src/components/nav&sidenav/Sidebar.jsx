@@ -86,7 +86,7 @@ const Sidebar = () => {
                                     <hr className="border-gray-700" />
                               </div>
                               <div className="flex flex-col flex-1 pl-8  mt-6">
-                                    <div className="space-y-4 pr-4  pb-4 h-[60vh] overflow-y-auto sidebar">
+                                    <div className="space-y-4 pr-4  pb-4 h-[60vh] overflow-y-auto sidebar scrollbar-auto">
                                           <nav className="flex-1 space-y-2">
                                                 {filteredItems.map((item, index) => (
                                                       <div div key={index} >

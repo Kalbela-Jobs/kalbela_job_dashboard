@@ -42,10 +42,10 @@ const Edit = ({ data, refetch, set_modal }) => {
                         }
                   });
       };
- 
+
 
       return (
-            <div className="p-10 border-2  rounded m-10">
+            <div className="p-10 border-2  rounded m-20">
                   <form onSubmit={dataSubmit} className="w-full ">
 
                         <Custom_Input default_value={data.name} label="Type Name" name="typeName" type="text" placeholder="Type Name" />

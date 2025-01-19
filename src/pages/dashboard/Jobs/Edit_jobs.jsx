@@ -143,122 +143,122 @@ const Edit_jobs = ({ data, onClose, refetch }) => {
       };
 
       return (
-            <div className=" ">
-                  <div className="">
 
-                        <Form
-                              form={form}
-                              name="add_job"
-                              onFinish={onFinish}
-                              layout="vertical"
-                              className="space-y-6 mt-4"
-                        >
-                              <Form.Item name="job_title" label="Job Title" initialValue={data?.job_title} rules={[{ required: true }]}>
-                                    <Input defaultValue={data?.job_title} />
+            <div className="">
+
+                  <Form
+                        form={form}
+                        name="add_job"
+                        onFinish={onFinish}
+                        layout="vertical"
+                        className="space-y-6 mt-4"
+                  >
+                        <Form.Item name="job_title" label="Job Title" initialValue={data?.job_title} rules={[{ required: true }]}>
+                              <Input defaultValue={data?.job_title} />
+                        </Form.Item>
+
+                        <Form.Item name="skills" label="Skills" initialValue={data?.skills} rules={[{ required: true }]}>
+                              <Select mode="tags" defaultValue={data?.skills} style={{ width: '100%' }} placeholder="Select or add skills" />
+                        </Form.Item>
+
+                        <div className="flex justify-between items-center mb-4">
+                              <Title level={4}>Job Description</Title>
+                              <Button onClick={handleGenerateDescription} loading={generateJobDescriptionMutation.isLoading}>
+                                    Generate with AI
+                              </Button>
+                        </div>
+
+                        <Form.Item name="job_description" label="Job Description" initialValue={data?.job_description} rules={[{ required: true }]}>
+                              <ReactQuill theme="snow" value={jobDescription} onChange={setJobDescription} />
+                        </Form.Item>
+
+                        <Form.Item name="responsibilities" label="Responsibilities" initialValue={data?.responsibilities} rules={[{ required: true }]}>
+                              <ReactQuill theme="snow" value={responsibilities} onChange={setResponsibilities} />
+                        </Form.Item>
+
+                        <Form.Item name="benefit" label="Benefits" initialValue={data?.benefit} rules={[{ required: true }]}>
+                              <ReactQuill theme="snow" value={benefit} onChange={setBenefit} />
+                        </Form.Item>
+
+                        <div className="flex space-x-4">
+                              <Form.Item className="w-full" name="vacancy" label="Number of Vacancies" initialValue={data?.vacancy} rules={[{ required: true }]}>
+                                    <Input defaultValue={data?.vacancy} type="number" />
+                              </Form.Item>
+                              <Form.Item className="w-full" name="expiry_date" label="Deadline" initialValue={data?.expiry_date} rules={[{ required: true }]}>
+                                    <Input defaultValue={data?.expiry_date} type="date" />
+                              </Form.Item>
+                        </div>
+
+
+                        <div className="flex space-x-4">
+                              <Form.Item className="w-full" name="category" label="Category" initialValue={data?.category} rules={[{ required: true }]}>
+                                    <Select defaultValue={data?.category} options={categoryOptions} />
                               </Form.Item>
 
-                              <Form.Item name="skills" label="Skills" initialValue={data?.skills} rules={[{ required: true }]}>
-                                    <Select mode="tags" defaultValue={data?.skills} style={{ width: '100%' }} placeholder="Select or add skills" />
+                              <Form.Item className="w-full" name="job_type" label="Job Type" initialValue={data?.job_type} rules={[{ required: true }]}>
+                                    <Select defaultValue={data?.job_type} options={jobTypeOptions} />
                               </Form.Item>
+                        </div>
 
-                              <div className="flex justify-between items-center mb-4">
-                                    <Title level={4}>Job Description</Title>
-                                    <Button onClick={handleGenerateDescription} loading={generateJobDescriptionMutation.isLoading}>
-                                          Generate with AI
-                                    </Button>
-                              </div>
+                        <Form.Item name="salary_type" label="Salary Type" initialValue={data?.salary_type} rules={[{ required: true }]}>
+                              <Select defaultValue={data?.salary_type} options={salaryTypeOptions} />
+                        </Form.Item>
 
-                              <Form.Item name="job_description" label="Job Description" initialValue={data?.job_description} rules={[{ required: true }]}>
-                                    <ReactQuill theme="snow" value={jobDescription} onChange={setJobDescription} />
-                              </Form.Item>
+                        <Form.Item name="salary_negotiable" label="Salary Negotiable" initialValue={data?.salary_negotiable} valuePropName="checked">
+                              <Checkbox defaultChecked={data?.salary_negotiable} onClick={(e) => setIsNegotiable(e.target.checked)}>Salary Negotiable</Checkbox>
+                        </Form.Item>
 
-                              <Form.Item name="responsibilities" label="Responsibilities" initialValue={data?.responsibilities} rules={[{ required: true }]}>
-                                    <ReactQuill theme="snow" value={responsibilities} onChange={setResponsibilities} />
-                              </Form.Item>
 
-                              <Form.Item name="benefit" label="Benefits" initialValue={data?.benefit} rules={[{ required: true }]}>
-                                    <ReactQuill theme="snow" value={benefit} onChange={setBenefit} />
-                              </Form.Item>
-
-                              <div className="flex space-x-4">
-                                    <Form.Item className="w-full" name="vacancy" label="Number of Vacancies" initialValue={data?.vacancy} rules={[{ required: true }]}>
-                                          <Input defaultValue={data?.vacancy} type="number" />
+                        {!isNegotiable && <Form.Item label="Salary Range">
+                              <Input.Group compact>
+                                    <Form.Item name={["salary_range", "min"]} initialValue={data?.salary_range?.min} defaultValue={data?.salary_range?.min} noStyle rules={[{ required: true }]}>
+                                          <Input defaultValue={data?.salary_range?.min} style={{ width: '50%' }} placeholder="Min" type="number" />
                                     </Form.Item>
-                                    <Form.Item className="w-full" name="expiry_date" label="Deadline" initialValue={data?.expiry_date} rules={[{ required: true }]}>
-                                          <Input defaultValue={data?.expiry_date} type="date" />
+
+                                    <Form.Item name={["salary_range", "max"]} initialValue={data?.salary_range?.max} defaultValue={data?.salary_range?.max} noStyle rules={[{ required: true }]}>
+                                          <Input defaultValue={data?.salary_range?.max} style={{ width: '50%' }} placeholder="Max" type="number" />
                                     </Form.Item>
-                              </div>
+                              </Input.Group>
+                        </Form.Item>
+                        }
 
-
-                              <div className="flex space-x-4">
-                                    <Form.Item className="w-full" name="category" label="Category" initialValue={data?.category} rules={[{ required: true }]}>
-                                          <Select defaultValue={data?.category} options={categoryOptions} />
-                                    </Form.Item>
-
-                                    <Form.Item className="w-full" name="job_type" label="Job Type" initialValue={data?.job_type} rules={[{ required: true }]}>
-                                          <Select defaultValue={data?.job_type} options={jobTypeOptions} />
-                                    </Form.Item>
-                              </div>
-
-                              <Form.Item name="salary_type" label="Salary Type" initialValue={data?.salary_type} rules={[{ required: true }]}>
-                                    <Select defaultValue={data?.salary_type} options={salaryTypeOptions} />
-                              </Form.Item>
-
-                              <Form.Item name="salary_negotiable" label="Salary Negotiable" initialValue={data?.salary_negotiable} valuePropName="checked">
-                                    <Checkbox defaultChecked={data?.salary_negotiable} onClick={(e) => setIsNegotiable(e.target.checked)}>Salary Negotiable</Checkbox>
-                              </Form.Item>
-
-
-                              {!isNegotiable && <Form.Item label="Salary Range">
-                                    <Input.Group compact>
-                                          <Form.Item name={["salary_range", "min"]} initialValue={data?.salary_range?.min} defaultValue={data?.salary_range?.min} noStyle rules={[{ required: true }]}>
-                                                <Input defaultValue={data?.salary_range?.min} style={{ width: '50%' }} placeholder="Min" type="number" />
-                                          </Form.Item>
-
-                                          <Form.Item name={["salary_range", "max"]} initialValue={data?.salary_range?.max} defaultValue={data?.salary_range?.max} noStyle rules={[{ required: true }]}>
-                                                <Input defaultValue={data?.salary_range?.max} style={{ width: '50%' }} placeholder="Max" type="number" />
-                                          </Form.Item>
-                                    </Input.Group>
-                              </Form.Item>
-                              }
-
-                              {/* when it is negotiable than show here negotiable note  */}
-                              {isNegotiable && <Form.Item name="negotiable_note" initialValue={data?.negotiable_note} label="Negotiable Note">
-                                    <ReactQuill defaultValue={data?.negotiable_note} theme="snow" value={negotiableNote} onChange={setNegotiableNote} />
-                              </Form.Item>}
+                        {/* when it is negotiable than show here negotiable note  */}
+                        {isNegotiable && <Form.Item name="negotiable_note" initialValue={data?.negotiable_note} label="Negotiable Note">
+                              <ReactQuill defaultValue={data?.negotiable_note} theme="snow" value={negotiableNote} onChange={setNegotiableNote} />
+                        </Form.Item>}
 
 
 
-                              <Form.Item name="remote" initialValue={data?.remote} valuePropName="checked">
-                                    <Checkbox defaultChecked={data?.remote} onClick={(e) => setRemote(e.target.checked)}> Remote</Checkbox>
-                              </Form.Item>
-                              {!remote && <Form.Item name="state" initialValue={data?.state} label="Division" rules={[{ required: true }]}>
-                                    <Select
-                                          defaultValue={data?.state}
-                                          options={divisions}
-                                          loading={isDivisionsLoading}
-                                          placeholder="Select a division"
-                                    />
-                              </Form.Item>}
+                        <Form.Item name="remote" initialValue={data?.remote} valuePropName="checked">
+                              <Checkbox defaultChecked={data?.remote} onClick={(e) => setRemote(e.target.checked)}> Remote</Checkbox>
+                        </Form.Item>
+                        {!remote && <Form.Item name="state" initialValue={data?.state} label="Division" rules={[{ required: true }]}>
+                              <Select
+                                    defaultValue={data?.state}
+                                    options={divisions}
+                                    loading={isDivisionsLoading}
+                                    placeholder="Select a division"
+                              />
+                        </Form.Item>}
 
 
 
-                              <Form.Item initialValue={data?.experience_level} name="experience_level" label="Experience Level" rules={[{ required: true }]}>
-                                    <Select defaultValue={data?.experience_level} options={experienceLevelOptions} />
-                              </Form.Item>
+                        <Form.Item initialValue={data?.experience_level} name="experience_level" label="Experience Level" rules={[{ required: true }]}>
+                              <Select defaultValue={data?.experience_level} options={experienceLevelOptions} />
+                        </Form.Item>
 
-                              {/* <Form.Item name="wh_questions" label="WH Questions">
+                        {/* <Form.Item name="wh_questions" label="WH Questions">
                                     <Select mode="multiple" options={whQuestions} placeholder="Select WH questions" />
                               </Form.Item> */}
 
-                              <Form.Item>
-                                    <Button type="primary" htmlType="submit" className="w-full">
-                                          Update Job
-                                    </Button>
-                              </Form.Item>
-                        </Form>
-                  </div>
+                        <Form.Item>
+                              <Button type="primary" htmlType="submit" className="w-full">
+                                    Update Job
+                              </Button>
+                        </Form.Item>
+                  </Form>
             </div>
+
       );
 };
 

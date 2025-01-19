@@ -42,7 +42,7 @@ const Job_type = () => {
 
       return (
             <div>
-                  <div className="py-4 bg-white">
+                  <div className="py-4 bg-white ">
                         <div className="px-4 sm:px-6 lg:px-8">
                               <Link_Button name='Create New Job Type' url="add-job-type" />
                               <div className="sm:flex sm:items-center sm:justify-between">
@@ -55,7 +55,7 @@ const Job_type = () => {
                               <div className="flex flex-col mt-4 lg:mt-8">
                                     <div className="-mx-4 -my-2  sm:-mx-6 lg:-mx-8">
                                           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                                                <table className="min-w-full overflow-x-auto divide-y divide-gray-200">
+                                                <table className="min-w-full overflow-x-auto   divide-y divide-gray-200">
                                                       <thead className=" lg:table-header-group">
                                                             <tr>
                                                                   <th className="py-3.5 px-4 text-left text-xs whitespace-nowrap font-medium text-gray-500 uppercase tracking-widest">
