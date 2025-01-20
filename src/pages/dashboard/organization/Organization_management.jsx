@@ -26,9 +26,11 @@ const OrganizationManagement = () => {
                         `${base_url}/workspace/?page=${currentPage}&limit=${pageSize}&search=${searchText}`
                   );
                   const data = await res.json();
-                  return data.data.workspaces;
+                  return data.data;
             },
       });
+
+
 
       const deleteFunction = async (data) => {
             try {
@@ -76,7 +78,7 @@ const OrganizationManagement = () => {
                   dataIndex: "logo",
                   key: "logo",
                   render: (logo, record) => (
-                        <img className="w-10 h-10 border border-gray-200 rounded" src={logo || "/placeholder.svg"} alt={record.company_name} />
+                        <img className="w-10 h-10 border border-gray-200 object-contain rounded" src={logo || "/placeholder.svg"} alt={record.company_name} />
                   ),
             },
             {
@@ -93,11 +95,17 @@ const OrganizationManagement = () => {
                   title: "Industry",
                   dataIndex: "industry",
                   key: "industry",
+                  render: (industry) => (
+                        industry ? industry.charAt(0).toUpperCase() + industry.slice(1) : ""
+                  ),
             },
             {
                   title: "Priority",
                   dataIndex: "priority",
                   key: "priority",
+                  render: (priority) => (
+                        priority ? priority.charAt(0).toUpperCase() + priority.slice(1) : ""
+                  ),
             },
             {
                   title: "Actions",
@@ -133,7 +141,7 @@ const OrganizationManagement = () => {
 
                         <Table
                               columns={columns}
-                              dataSource={workspaceData}
+                              dataSource={workspaceData.workspaces}
                               loading={isLoading}
                               pagination={false}
                               rowKey="_id"
@@ -141,7 +149,7 @@ const OrganizationManagement = () => {
 
                         <Pagination
                               current={currentPage}
-                              total={workspaceData.length}
+                              total={workspaceData.total}
                               pageSize={pageSize}
                               onChange={(page) => setCurrentPage(page)}
                               className="mt-4 text-center"

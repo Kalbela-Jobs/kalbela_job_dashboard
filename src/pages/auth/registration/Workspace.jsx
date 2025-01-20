@@ -25,8 +25,11 @@ const { Content } = Layout;
 export default function Workspace() {
       const { user, base_url, setWorkspace, setUser, setCookie } = useContext(Kalbela_AuthProvider);
       const [select_package, setSelectPackage] = useState(null);
-      const [companyName, setCompanyName] = useState();
-      const [companyWebsite, setCompanyWebsite] = useState("");
+      const [companyWebsite, setCompanyWebsite] = useState('');
+      const [companyName, setCompanyName] = useState('');
+
+
+      console.log(user, 'user');
 
       const [loading, setLoading] = useState(false);
       const [description, setDescription] = useState("");
@@ -34,12 +37,23 @@ export default function Workspace() {
       const quillRef = useRef(null);
 
       const generateWebsite = (name) => {
-            return name
-                  .toLowerCase()
+            return name?.toLowerCase()
                   .replace(/[^a-z0-9]/g, "") // Remove special characters
                   .replace(/\s+/g, ""); // Remove spaces
       };
 
+
+      console.log(companyName, 'companyName');
+
+
+
+      useEffect(() => {
+            if (user?.name) {
+                  console.log(user.name, 'user.name');
+                  setCompanyName(user.name);
+                  setCompanyWebsite(generateWebsite(user.name));
+            }
+      }, [user?.name]);
       const handleCompanyNameChange = (e) => {
             const name = e.target.value;
             setCompanyName(name);
@@ -48,8 +62,10 @@ export default function Workspace() {
             }
       };
 
+
+
       const handleCompanyWebsiteChange = (e) => {
-            const sanitizedValue = e.target.value.replace(/[^a-zA-Z0-9-]/g, "").toLowerCase();
+            const sanitizedValue = e.target.value.replace(/[^a-zA-Z0-9-]/g, "")?.toLowerCase();
             setCompanyWebsite(sanitizedValue);
       };
 
@@ -332,6 +348,7 @@ export default function Workspace() {
                                                       <input
                                                             type="text"
                                                             required
+                                                            defaultValue={companyName}
                                                             id="companyName"
                                                             placeholder="Enter your company name"
                                                             onChange={handleCompanyNameChange}

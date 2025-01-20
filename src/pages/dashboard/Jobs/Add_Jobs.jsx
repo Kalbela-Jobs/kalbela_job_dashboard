@@ -23,6 +23,7 @@ const Add_Jobs = () => {
       const navigate = useNavigate();
 
 
+
       const { data: divisions = [], isLoading: isDivisionsLoading } = useQuery({
             queryKey: ["divisions"],
             queryFn: async () => {
@@ -279,13 +280,26 @@ const Add_Jobs = () => {
                                     <Form.Item name="salary_type" className="w-full" label="Salary Type" rules={[{ required: true }]}>
                                           <Select options={salaryTypeOptions} />
                                     </Form.Item>
-                                    {!remote && <Form.Item className="w-full" name="gender" label="Gender" rules={[{ required: true }]}>
+                                    {!remote && <Form.Item className="w-full" name="gender" label="Gender" rules={[{ required: false }]}>
                                           <Select
-                                                options={[{ value: 'male', label: 'Male' }, { value: 'female', label: 'Female' }, { value: 'others', label: 'Others' }]}
+                                                options={[{ value: 'both', label: 'Both Male and Female' }, { value: 'male', label: 'Male' }, { value: 'female', label: 'Female' }, { value: 'others', label: 'Others' }]}
                                                 loading={isDivisionsLoading}
                                                 placeholder="Select a gender"
                                           />
                                     </Form.Item>}
+
+                                    <Form.Item name="age_range" label="Age Range" rules={[{ required: false }]}>
+                                          <Input.Group className="w-full flex ">
+                                                <Form.Item name={["age_range", "min"]} noStyle rules={[{ required: true }]}>
+                                                      <Input placeholder="Min" type="number" />
+                                                </Form.Item>
+
+                                                <Form.Item name={["age_range", "max"]} noStyle rules={[{ required: true }]}>
+                                                      <Input placeholder="Max" type="number" />
+                                                </Form.Item>
+                                          </Input.Group>
+                                    </Form.Item>
+
                               </div>
 
                               <Form.Item name="salary_negotiable" valuePropName="checked">
