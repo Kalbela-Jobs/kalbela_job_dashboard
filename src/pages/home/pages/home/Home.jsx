@@ -1,6 +1,4 @@
-
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import logo from '../../../../assets/image.png';
 const Home = () => {
 

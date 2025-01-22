@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Select, message, Input, Button, Form, Card, Typography, Spin, Checkbox } from "antd";
+import { Select, message, Input, Button, Form, Card, Typography, Spin, Checkbox, DatePicker } from "antd";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -7,6 +7,7 @@ import { experienceLevelOptions, jobTypeOptions, salaryTypeOptions, } from "../.
 import { Kalbela_AuthProvider } from "../../../context/MainContext";
 import sweet_alert from "../../../utils/custom_alert";
 import { useNavigate } from "react-router-dom";
+import uploadImage from "../../../hooks/upload_image";
 // import { categoryOptions, experienceLevelOptions, jobTypeOptions, salaryTypeOptions, whQuestions } from "../utils/mockData";
 
 const { Title } = Typography;
@@ -28,6 +29,15 @@ const Add_Jobs = () => {
             queryKey: ["divisions"],
             queryFn: async () => {
                   const res = await fetch(`${base_url}/config/locations`);
+                  const data = await res.json();
+                  return data.data.map(division => ({ value: division.name, label: division.name }));
+            },
+      });
+
+      const { data: countries = [], isLoading: isCountriesLoading } = useQuery({
+            queryKey: ["divisions"],
+            queryFn: async () => {
+                  const res = await fetch(`https://restcountries.com/v3.1/all`);
                   const data = await res.json();
                   return data.data.map(division => ({ value: division.name, label: division.name }));
             },
@@ -134,14 +144,18 @@ const Add_Jobs = () => {
             }
       };
 
-      const onFinish = (values) => {
+      const onFinish = async (values) => {
 
             values?.salary_range && (values.salary_range.currency = 'BDT');
             let workspace_info = workspace;
             if (values.company_data) {
                   workspace_info = workspace_data.find(workspace => workspace._id === values.company_data)
             }
-            values.url = `${values.job_title}-${workspace_info.company_website}`.toLowerCase().replace(/ /g, "-");
+            values.url = `${values.job_title}-${workspace_info.company_website}`
+                  .toLowerCase()
+                  .replace(/[^a-z0-9-]+/g, '-') // Replace non-alphanumeric characters (excluding '-') with '-'
+                  .replace(/--+/g, '-') // Replace multiple '-' with a single '-'
+                  .replace(/^-+|-+$/g, ''); // Trim '-' from the start and end
 
             values.company_info = {
                   name: workspace_info.company_name,
@@ -155,7 +169,7 @@ const Add_Jobs = () => {
             }
             values.location = {
                   division: remote ? null : values.division,
-                  location: values.input_location,
+                  location: values?.input_location,
                   district: null,
                   country: 'BD',
                   remote: remote
@@ -164,6 +178,10 @@ const Add_Jobs = () => {
                   name: user.name,
                   email: user.email,
                   user_id: user._id
+            }
+            const attachment = values?.attachment?.[0]?.originFileObj;
+            if (attachment) {
+                  values.attachment = await uploadImage(attachment);
             }
 
             delete values.division;
@@ -261,7 +279,7 @@ const Add_Jobs = () => {
                                           <Input type="number" />
                                     </Form.Item>
                                     <Form.Item className="w-full" name="expiry_date" label="Deadline" rules={[{ required: true }]}>
-                                          <Input type="date" />
+                                          <DatePicker format="MM-DD-YYYY" className="w-full" />
                                     </Form.Item>
                               </div>
 
@@ -290,11 +308,11 @@ const Add_Jobs = () => {
 
                                     <Form.Item name="age_range" label="Age Range" rules={[{ required: false }]}>
                                           <Input.Group className="w-full flex ">
-                                                <Form.Item name={["age_range", "min"]} noStyle rules={[{ required: true }]}>
+                                                <Form.Item name={["age_range", "min"]} noStyle rules={[{ required: false }]}>
                                                       <Input placeholder="Min" type="number" />
                                                 </Form.Item>
 
-                                                <Form.Item name={["age_range", "max"]} noStyle rules={[{ required: true }]}>
+                                                <Form.Item name={["age_range", "max"]} noStyle rules={[{ required: false }]}>
                                                       <Input placeholder="Max" type="number" />
                                                 </Form.Item>
                                           </Input.Group>
@@ -313,7 +331,7 @@ const Add_Jobs = () => {
                                                 <Input style={{ width: '50%' }} placeholder="Min" type="number" />
                                           </Form.Item>
 
-                                          <Form.Item name={["salary_range", "max"]} noStyle rules={[{ required: true }]}>
+                                          <Form.Item name={["salary_range", "max"]} noStyle rules={[{ required: false }]}>
                                                 <Input style={{ width: '50%' }} placeholder="Max" type="number" />
                                           </Form.Item>
                                     </Input.Group>
@@ -366,7 +384,7 @@ const Add_Jobs = () => {
                               </Form.Item>
                         </Form>
                   </Card>
-            </div >
+            </div>
       );
 };
 

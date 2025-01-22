@@ -29,6 +29,8 @@ import Industry from "../pages/dashboard/configaration/pages/Industry/Industry";
 import Department from "../pages/dashboard/configaration/pages/Department/Department";
 import Govt_jobs from "../pages/dashboard/govt_jobs/Govt_jobs";
 import AddEditJobForm from "../pages/dashboard/govt_jobs/pages/add_govt_jobs/Add_govt_jobs";
+import Hero_logo from "../pages/dashboard/configaration/pages/Hero_logo/Hero_logo";
+import AddGovtOrgWithTable from "../pages/dashboard/govt_jobs/pages/add_govt_org/Add_govt_org";
 
 const AdminRouter = [
       {
@@ -58,6 +60,10 @@ const AdminRouter = [
       {
             path: "govt-jobs/add",
             element: <Private><AddEditJobForm /></Private>,
+      },
+      {
+            path: "govt-organizations",
+            element: <Private><AddGovtOrgWithTable /></Private>,
       },
       {
             path: "jobs/add-job",
@@ -116,6 +122,10 @@ const AdminRouter = [
       {
             path: 'configuration/departments',
             element: <Private> <Department /></Private>
+      },
+      {
+            path: 'configuration/hero-logo',
+            element: <Private> <Hero_logo /></Private>
       },
       {
             path: 'candidates',

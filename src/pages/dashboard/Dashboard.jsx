@@ -1,12 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
-import Header from "../../components/nav&sidenav/Header";
-import Sidebar from "../../components/nav&sidenav/Sidebar";
-import { Kalbela_AuthProvider } from "../../context/MainContext";
+import { useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+
 
 const Dashboard = () => {
-      const { user, loginOut } = useContext(Kalbela_AuthProvider);
+
       const [salesData] = useState({
             todaySale: 12426,
             totalSales: 238485,

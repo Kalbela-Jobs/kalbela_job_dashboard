@@ -1,4 +1,4 @@
-import { useState } from 'react';
+
 import sweet_alert from '../utils/custom_alert';
 
 const uploadImage = async (file) => {

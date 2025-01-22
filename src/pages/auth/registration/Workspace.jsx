@@ -44,6 +44,7 @@ export default function Workspace() {
 
 
       console.log(companyName, 'companyName');
+      const { Option } = Select;
 
 
 
@@ -88,55 +89,64 @@ export default function Workspace() {
             }
       }, [packages]);
 
+      const { data: industry = [], isLoading, refetch } = useQuery({
+            queryKey: ["demoIndustries"],
+            queryFn: async () => {
+                  const res = await fetch(
+                        `${base_url}/config/industries?token=${user._id}`
+                  );
+                  const data = await res.json();
+                  return data.data;
+            },
+      });
 
 
-
-      const industry = [
-            {
-                  value: 'it',
-                  label: 'IT',
-            },
-            {
-                  value: 'health',
-                  label: 'Health',
-            },
-            {
-                  value: 'education',
-                  label: 'Education',
-            },
-            {
-                  value: 'finance',
-                  label: 'Finance',
-            },
-            {
-                  value: 'construction',
-                  label: 'Construction',
-            },
-            {
-                  value: 'retail',
-                  label: 'Retail',
-            },
-            {
-                  value: 'hospitality',
-                  label: 'Hospitality',
-            },
-            {
-                  value: 'manufacturing',
-                  label: 'Manufacturing',
-            },
-            {
-                  value: 'media',
-                  label: 'Media & Entertainment',
-            },
-            {
-                  value: 'agriculture',
-                  label: 'Agriculture',
-            },
-            {
-                  value: 'others',
-                  label: 'Others',
-            },
-      ];
+      // const industry = [
+      //       {
+      //             value: 'it',
+      //             label: 'IT',
+      //       },
+      //       {
+      //             value: 'health',
+      //             label: 'Health',
+      //       },
+      //       {
+      //             value: 'education',
+      //             label: 'Education',
+      //       },
+      //       {
+      //             value: 'finance',
+      //             label: 'Finance',
+      //       },
+      //       {
+      //             value: 'construction',
+      //             label: 'Construction',
+      //       },
+      //       {
+      //             value: 'retail',
+      //             label: 'Retail',
+      //       },
+      //       {
+      //             value: 'hospitality',
+      //             label: 'Hospitality',
+      //       },
+      //       {
+      //             value: 'manufacturing',
+      //             label: 'Manufacturing',
+      //       },
+      //       {
+      //             value: 'media',
+      //             label: 'Media & Entertainment',
+      //       },
+      //       {
+      //             value: 'agriculture',
+      //             label: 'Agriculture',
+      //       },
+      //       {
+      //             value: 'others',
+      //             label: 'Others',
+      //       },
+      // ];
 
       const companySize = [
             {
@@ -181,9 +191,13 @@ export default function Workspace() {
             setLoading(true);
             const form_data = e.target;
             const file = form_data.logo.files[0];
-            const license = form_data.license.files[0];
-            const logo_url = await uploadImage(file);
-            const license_url = await uploadImage(license);
+            const license = form_data?.license?.files[0];
+            const logo_url = await uploadImage(file); // Assuming file is defined somewhere
+            let license_url = ''; // Use 'let' here instead of 'const'
+            if (license) {
+                  license_url = await uploadImage(license); // Now you can reassign 'license_url'
+            }
+
             const company_size = form_data.company_size.value;
             const industry = form_data.industry.value;
             const address = form_data.address.value;
@@ -388,12 +402,11 @@ export default function Workspace() {
                                           </div>
                                           <div>
                                                 <label htmlFor="" className="text-base font-normal text-white">
-                                                      Trade License Copy <span className='text-red-500'>*</span>
+                                                      Trade License Copy
                                                 </label>
                                                 <div className="mt-2">
                                                       <input
                                                             type="file"
-                                                            required
                                                             name="license"
                                                             id="license"
                                                             className="block w-full px-5 py-3 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
@@ -438,19 +451,37 @@ export default function Workspace() {
                                                       What industry do you work in? <span className='text-red-500'>*</span>
                                                 </label>
                                                 <div className="mt-2">
-                                                      <select
+                                                      <Select
+                                                            required
+                                                            name="industry"
+                                                            id="industry"
+                                                            className="custom-select !border-opacity-20 block w-full"
+                                                            placeholder="Select industry"
+                                                            dropdownClassName="custom-dropdown"
+                                                            showSearch
+
+                                                      >
+                                                            {industry.map((item) => (
+                                                                  <Option key={item.name} value={item.name} className="text-white">
+                                                                        {item.name}
+                                                                  </Option>
+                                                            ))}
+                                                      </Select>
+
+                                                      {/* <Select
                                                             name="industry"
                                                             required
                                                             id="industry"
                                                             className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                                                       >
+
                                                             <option value="">Select industry</option>
                                                             {
                                                                   industry.map((item, index) => (
-                                                                        <option key={item.value} value={item.value}>{item.label}</option>
+                                                                        <option key={item.name} value={item.name}>{item.name}</option>
                                                                   ))
                                                             }
-                                                      </select>
+                                                      </Select> */}
                                                 </div>
                                           </div>
 

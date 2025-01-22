@@ -6,6 +6,8 @@ import ViewJobModal from './components/ViewJobModal';
 import Link_Button from '../../../components/small_component/Link_Button';
 import { useQuery } from '@tanstack/react-query';
 import { Kalbela_AuthProvider } from '../../../context/MainContext';
+import sweet_alert from '../../../utils/custom_alert';
+import AddGovtOrgWithTable from './pages/add_govt_org/Add_govt_org';
 
 
 const { Content } = Layout;
@@ -13,6 +15,7 @@ const { Title } = Typography;
 
 const Govt_jobs = () => {
       const { base_url, workspace, user } = useContext(Kalbela_AuthProvider)
+
       const { data: jobs = [], isLoading, refetch } = useQuery({
             queryKey: ["jobs"],
             queryFn: async () => {
@@ -28,29 +31,54 @@ const Govt_jobs = () => {
       const [editingJob, setEditingJob] = useState(null);
       const [viewingJob, setViewingJob] = useState(null);
 
-      const handleAddJob = (job) => {
-            setJobs([...jobs, { ...job, id: Date.now() }]);
-      };
+
 
       const handleEditJob = (job) => {
-            setJobs(jobs.map((j) => (j.id === job.id ? job : j)));
+            fetch(`${base_url}/jobs/update?job_id=${job._id}`, {
+                  method: 'PUT',
+                  headers: {
+                        'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(job),
+            }).then(res => res.json())
+                  .then(data => {
+                        setEditingJob(null);
+                  });
             setEditingJob(null);
       };
 
       const handleDeleteJob = (id) => {
-            setJobs(jobs.filter((job) => job.id !== id));
+            fetch(`${base_url}/jobs/delete-govt-jobs?job_id=${id}`, {
+                  method: 'DELETE',
+            }).then(res => res.json())
+                  .then(data => {
+                        if (!data.error) {
+                              refetch()
+                              sweet_alert("Success", data.message, "success");
+                        }
+                        else {
+                              sweet_alert("Error", data.message, "error");
+                        }
+                  })
+                  .catch(error => {
+                        sweet_alert("Error", "An unexpected error occurred", "error");
+                  });
       };
 
       return (
             <Layout className="min-h-screen">
 
                   <Content className="p-8">
-                        <Link_Button name='Create New Job Type' url="add" />
+                        <div className='flex gap-4 items-center'>
+                              <Link_Button name='Create New Job Type' url="add" />
+                              <Link_Button name='Government Organizations' url="/admin/govt-organizations" />
+                        </div>
                         <Title level={2} className="mb-8">Government Jobs</Title>
                         {editingJob && <AddEditJobForm
-                              onSubmit={editingJob ? handleEditJob : handleAddJob}
+                              onSubmit={editingJob && handleEditJob}
                               initialValues={editingJob}
                         />}
+                        {/* <AddGovtOrgWithTable /> */}
                         <JobsTable
                               jobs={jobs}
                               onEdit={setEditingJob}

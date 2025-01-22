@@ -37,7 +37,7 @@ const JobsTable = ({ jobs, onEdit, onDelete, onView }) => {
                         <Space>
                               <Button icon={<EyeOutlined />} onClick={() => onView(record)} />
                               <Button icon={<EditOutlined />} onClick={() => onEdit(record)} />
-                              <Button icon={<DeleteOutlined />} onClick={() => onDelete(record.id)} danger />
+                              <Button icon={<DeleteOutlined />} onClick={() => onDelete(record._id)} danger />
                         </Space>
                   ),
             },
