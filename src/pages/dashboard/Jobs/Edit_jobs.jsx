@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import { experienceLevelOptions, jobTypeOptions, salaryTypeOptions, } from "../../../utils/mockData";
 import { Kalbela_AuthProvider } from "../../../context/MainContext";
 import sweet_alert from "../../../utils/custom_alert";
+import { format } from "date-fns";
 // import { categoryOptions, experienceLevelOptions, jobTypeOptions, salaryTypeOptions, whQuestions } from "../utils/mockData";
 
 const { Title } = Typography;
@@ -22,13 +23,31 @@ const Edit_jobs = ({ data, onClose, refetch }) => {
       const [isNegotiable, setIsNegotiable] = useState(data?.salary_negotiable);
       const [negotiableNote, setNegotiableNote] = useState(data?.negotiableNote || "");
       const [remote, setRemote] = useState(data?.remote);
+      const [selectedCountry, setSelectedCountry] = useState(data?.location?.country == 'BD' ? "Bangladesh" : data?.location?.country || "Bangladesh"); // Default country is Bangladesh
+      const [isLoadingCountries, setIsLoadingCountries] = useState(false);
+      const isBangladesh = selectedCountry === "Bangladesh";
+      const [cv_email_sent, setCvEmailSent] = useState(data?.cvEmailSent);
 
       const { data: divisions = [], isLoading: isDivisionsLoading } = useQuery({
             queryKey: ["divisions"],
             queryFn: async () => {
-                  const res = await fetch("https://bdapis.com/api/v1.2/divisions");
+                  const res = await fetch(`${base_url}/config/locations`);
                   const data = await res.json();
-                  return data.data.map(division => ({ value: division.division, label: division.division }));
+                  return data.data.map(division => ({ value: division.name, label: division.name }));
+            },
+      });
+
+      const { data: countries = [], isLoading: isCountriesLoading } = useQuery({
+            queryKey: ["countries"],
+            queryFn: async () => {
+                  const res = await fetch(`https://restcountries.com/v3.1/all`);
+                  const data = await res.json();
+                  return data
+                        .map((country) => ({
+                              label: country.name.common,
+                              value: country.name.common,
+                        }))
+                        .sort((a, b) => a.label.localeCompare(b.label)); // Sort by label (country name)
             },
       });
 
@@ -117,13 +136,15 @@ const Edit_jobs = ({ data, onClose, refetch }) => {
                   .replace(/\s+/g, "-")         // Replace spaces with dashes
                   .replace(/^-+|-+$/g, "");
             values.location = {
-                  division: remote ? null : values.division,
-                  district: null,
-                  country: 'BD',
-                  remote: remote
+                  division: remote ? null : values.state,
+                  district: remote ? null : values.district,
+                  country: selectedCountry,
+                  remote: remote,
+                  location: values.input_location,
             }
 
-            delete values.division;
+            delete values.state;
+            delete values.district;
             fetch(`${base_url}/jobs/update?job_id=${data._id}`, {
                   method: "PUT",
                   headers: {
@@ -181,28 +202,56 @@ const Edit_jobs = ({ data, onClose, refetch }) => {
                         </Form.Item>
 
                         <div className="flex space-x-4">
-                              <Form.Item className="w-full" name="vacancy" label="Number of Vacancies" initialValue={data?.vacancy} rules={[{ required: true }]}>
+                              <Form.Item className="w-full whitespace-nowrap" name="vacancy" label="Number of Vacancies" initialValue={data?.vacancy} rules={[{ required: true }]}>
                                     <Input defaultValue={data?.vacancy} type="number" />
                               </Form.Item>
-                              <Form.Item className="w-full" name="expiry_date" label="Deadline" initialValue={data?.expiry_date} rules={[{ required: true }]}>
+                              <Form.Item className="w-full" name="expiry_date" label="Deadline" initialValue={format(data?.expiry_date || new Date(), 'yyyy-MM-dd')} rules={[{ required: true }]}>
                                     <Input defaultValue={data?.expiry_date} type="date" />
                               </Form.Item>
+                              <Form.Item className="w-full" name="gender" label="Gender" initialValue={data?.gender} rules={[{ required: false }]}>
+                                    <Select
+                                          showSearch
+                                          defaultValue={data?.gender}
+                                          filterOption={(input, option) =>
+                                                option?.label?.toLowerCase().includes(input.toLowerCase())
+                                          }
+                                          options={[{ value: 'both', label: 'Both Male and Female' }, { value: 'male', label: 'Male' }, { value: 'female', label: 'Female' }, { value: 'others', label: 'Others' }]}
+                                          loading={isDivisionsLoading}
+                                          placeholder="Select a gender"
+                                    />
+                              </Form.Item>
+                              <Form.Item className="w-full" initialValue={data?.experience_level} name="experience_level" label="Experience Level" rules={[{ required: true }]}>
+                                    <Select defaultValue={data?.experience_level} options={experienceLevelOptions} />
+                              </Form.Item>
+
                         </div>
 
 
                         <div className="flex space-x-4">
                               <Form.Item className="w-full" name="category" label="Category" initialValue={data?.category} rules={[{ required: true }]}>
-                                    <Select defaultValue={data?.category} options={categoryOptions} />
+                                    <Select showSearch defaultValue={data?.category} options={categoryOptions} />
                               </Form.Item>
 
                               <Form.Item className="w-full" name="job_type" label="Job Type" initialValue={data?.job_type} rules={[{ required: true }]}>
-                                    <Select defaultValue={data?.job_type} options={jobTypeOptions} />
+                                    <Select showSearch defaultValue={data?.job_type} options={jobTypeOptions} />
+                              </Form.Item>
+                              <Form.Item name="salary_type" className="w-full" label="Salary Type" initialValue={data?.salary_type} rules={[{ required: true }]}>
+                                    <Select showSearch defaultValue={data?.salary_type} options={salaryTypeOptions} />
+                              </Form.Item>
+                              <Form.Item className="w-full" name="age_range" initialValue={data?.age_range} label="Age Range" rules={[{ required: false }]}>
+                                    <Input.Group className="w-full flex ">
+                                          <Form.Item name={["age_range", "min"]} defaultValue={data?.age_range?.min} noStyle rules={[{ required: false }]}>
+                                                <Input defaultValue={data?.age_range?.min} placeholder="Min" type="number" />
+                                          </Form.Item>
+
+                                          <Form.Item name={["age_range", "max"]} defaultValue={data?.age_range?.max} noStyle rules={[{ required: false }]}>
+                                                <Input defaultValue={data?.age_range?.max} placeholder="Max" type="number" />
+                                          </Form.Item>
+                                    </Input.Group>
                               </Form.Item>
                         </div>
 
-                        <Form.Item name="salary_type" label="Salary Type" initialValue={data?.salary_type} rules={[{ required: true }]}>
-                              <Select defaultValue={data?.salary_type} options={salaryTypeOptions} />
-                        </Form.Item>
+
 
                         <Form.Item name="salary_negotiable" label="Salary Negotiable" initialValue={data?.salary_negotiable} valuePropName="checked">
                               <Checkbox defaultChecked={data?.salary_negotiable} onClick={(e) => setIsNegotiable(e.target.checked)}>Salary Negotiable</Checkbox>
@@ -211,11 +260,11 @@ const Edit_jobs = ({ data, onClose, refetch }) => {
 
                         {!isNegotiable && <Form.Item label="Salary Range">
                               <Input.Group compact>
-                                    <Form.Item name={["salary_range", "min"]} initialValue={data?.salary_range?.min} defaultValue={data?.salary_range?.min} noStyle rules={[{ required: true }]}>
+                                    <Form.Item name={["salary_range", "min"]} initialValue={data?.salary_range?.min} defaultValue={data?.salary_range?.min} noStyle rules={[{ required: false }]}>
                                           <Input defaultValue={data?.salary_range?.min} style={{ width: '50%' }} placeholder="Min" type="number" />
                                     </Form.Item>
 
-                                    <Form.Item name={["salary_range", "max"]} initialValue={data?.salary_range?.max} defaultValue={data?.salary_range?.max} noStyle rules={[{ required: true }]}>
+                                    <Form.Item name={["salary_range", "max"]} initialValue={data?.salary_range?.max} defaultValue={data?.salary_range?.max} noStyle rules={[{ required: false }]}>
                                           <Input defaultValue={data?.salary_range?.max} style={{ width: '50%' }} placeholder="Max" type="number" />
                                     </Form.Item>
                               </Input.Group>
@@ -232,20 +281,73 @@ const Edit_jobs = ({ data, onClose, refetch }) => {
                         <Form.Item name="remote" initialValue={data?.remote} valuePropName="checked">
                               <Checkbox defaultChecked={data?.remote} onClick={(e) => setRemote(e.target.checked)}> Remote</Checkbox>
                         </Form.Item>
-                        {!remote && <Form.Item name="state" initialValue={data?.state} label="Division" rules={[{ required: true }]}>
+                        {/* {!remote && <Form.Item name="state" initialValue={data?.state} label="Division" rules={[{ required: true }]}>
                               <Select
                                     defaultValue={data?.state}
                                     options={divisions}
                                     loading={isDivisionsLoading}
                                     placeholder="Select a division"
                               />
-                        </Form.Item>}
+                        </Form.Item>} */}
+
+                        <div className="flex space-x-4">
+                              <Form.Item className="w-full" name="country" label="Country" rules={[{ required: false }]}>
+                                    <Select
+                                          showSearch
+                                          filterOption={(input, option) =>
+                                                option?.label?.toLowerCase().includes(input.toLowerCase())
+                                          }
+                                          defaultValue={{ value: 'Bangladesh', label: 'Bangladesh' }}
+                                          options={countries}
+                                          loading={isCountriesLoading}
+                                          value={selectedCountry}
+                                          onChange={(value) => setSelectedCountry(value)}
+                                          placeholder="Select a country"
+                                    />
+                              </Form.Item>
+
+                              {isBangladesh && !remote && (
+                                    <Form.Item className="w-full" initialValue={data?.location?.division} name="state" label="District" rules={[{ required: true }]}>
+                                          <Select
+                                                showSearch
+                                                defaultValue={data?.location?.division}
+                                                filterOption={(input, option) =>
+                                                      option?.label?.toLowerCase().includes(input.toLowerCase())
+                                                }
+                                                options={divisions}
+                                                placeholder="Select a division"
+                                          />
+                                    </Form.Item>
+                              )}
+
+                              <Form.Item className="w-full" initialValue={data?.location?.location} name="input_location" label="Location" rules={[{ required: false }]}>
+                                    <Input type="text" defaultValue={data?.location?.location} placeholder="Enter a location" />
+                              </Form.Item>
+
+                        </div>
 
 
+                        <div className="flex space-x-4">
+                              <Form.Item className="w-full" name="attachment" label="Attachment" rules={[{ required: false }]}>
+                                    <Input type="file" />
+                              </Form.Item>
+                              <Form.Item defaultValue={data?.cv_email_sent} className="w-full" name="cvEmailSent" label="Job Seeker's CV Sent via Email?" valuePropName="checked">
+                                    <Checkbox defaultChecked={data?.cv_email_sent} className="border w-full py-1.5 px-4 rounded" onClick={(e) => setCvEmailSent(e.target.checked)}>Yes, CV sent via email</Checkbox>
+                              </Form.Item>
 
-                        <Form.Item initialValue={data?.experience_level} name="experience_level" label="Experience Level" rules={[{ required: true }]}>
-                              <Select defaultValue={data?.experience_level} options={experienceLevelOptions} />
-                        </Form.Item>
+                              {cv_email_sent && (
+                                    <Form.Item
+                                          initialValue={data?.cvEmailAddress}
+                                          className="w-full"
+                                          name="cvEmailAddress"
+                                          label="Enter Job Seeker's Email Address"
+                                          rules={[{ required: true, message: 'Please provide the email address' }]}
+                                    >
+                                          <Input placeholder="example@domain.com" />
+                                    </Form.Item>
+                              )}
+                        </div>
+
 
                         {/* <Form.Item name="wh_questions" label="WH Questions">
                                     <Select mode="multiple" options={whQuestions} placeholder="Select WH questions" />

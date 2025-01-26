@@ -71,7 +71,7 @@ const Govt_jobs = () => {
                   <Content className="p-8">
                         <div className='flex gap-4 items-center'>
                               <Link_Button name='Create New Job Type' url="add" />
-                              <Link_Button name='Government Organizations' url="/admin/govt-organizations" />
+                              <Link_Button name='Government Organizations' url="/admin/govt-jobs/govt-organizations" />
                         </div>
                         <Title level={2} className="mb-8">Government Jobs</Title>
                         {editingJob && <AddEditJobForm

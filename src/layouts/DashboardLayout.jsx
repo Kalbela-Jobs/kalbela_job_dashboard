@@ -9,11 +9,11 @@ const DashboardLayout = () => {
       return (
             <div className="flex">
                   <Sidebar />
-                  <div className={`flex-1 flex flex-col lg:ml-64 md:ml-0`}>
+                  <div className={`flex-1 flex flex-col lg:ml-64 md:ml-0 w-[80%]`}>
                         <div className="hidden lg:flex">
                               <Header />
                         </div>
-                        <div className="">
+                        <div className="z-20 ">
                               <Outlet />
                         </div>
                   </div>

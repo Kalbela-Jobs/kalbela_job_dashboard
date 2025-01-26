@@ -62,7 +62,7 @@ const AdminRouter = [
             element: <Private><AddEditJobForm /></Private>,
       },
       {
-            path: "govt-organizations",
+            path: "govt-jobs/govt-organizations",
             element: <Private><AddGovtOrgWithTable /></Private>,
       },
       {

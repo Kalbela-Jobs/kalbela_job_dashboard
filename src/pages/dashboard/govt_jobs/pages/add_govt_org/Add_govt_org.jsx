@@ -5,6 +5,7 @@ import uploadImage from "../../../../../hooks/upload_image";
 import { Kalbela_AuthProvider } from "../../../../../context/MainContext";
 import sweet_alert from "../../../../../utils/custom_alert";
 import { useQuery } from "@tanstack/react-query";
+import Link_Button from "../../../../../components/small_component/Link_Button";
 
 const AddGovtOrgWithTable = () => {
 
@@ -126,13 +127,36 @@ const AddGovtOrgWithTable = () => {
       return (
             <div className="p-4">
                   {/* Button to open modal */}
-                  <Button
-                        type="primary"
-                        className="bg-blue-500 hover:bg-blue-600 mb-4"
-                        onClick={() => setIsModalVisible(true)}
-                  >
-                        Add Govt Organization
-                  </Button>
+                  <div className='flex gap-4 items-center'>
+                        <Link_Button name='Back to Government Jobs' url="/admin/govt-jobs" />
+                        <div className="pb-4">
+                              <button
+                                    className="group relative inline-flex items-center overflow-hidden rounded bg-gray-900 px-8 py-3 text-white focus:outline-none focus:ring active:bg-gray-500"
+                                    onClick={() => setIsModalVisible(true)}
+                              >
+                                    <span className="absolute -start-full transition-all group-hover:start-4">
+                                          <svg
+                                                className="size-5 rtl:rotate-180"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                          >
+                                                <path
+                                                      strokeLinecap="round"
+                                                      strokeLinejoin="round"
+                                                      strokeWidth="2"
+                                                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                                />
+                                          </svg>
+                                    </span>
+
+                                    <span className="text-sm font-medium transition-all capitalize group-hover:ms-4"> Add Govt Organization </span>
+                              </button>
+                        </div>
+                        {/* <Link_Button name='Add Govt Organization' onClick={() => setIsModalVisible(true)} /> */}
+                  </div>
+
 
                   {/* Table to display organizations */}
                   <Table

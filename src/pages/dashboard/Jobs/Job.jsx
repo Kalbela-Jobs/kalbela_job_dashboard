@@ -50,8 +50,9 @@ const Job = () => {
                         url += `${url.includes('?') ? '&' : '?'}page=${page}`;
                   }
                   if (pageSize) {
-                        url += `${url.includes('?') ? '&' : '?'}page_size=${pageSize}`;
+                        url += `${url.includes('?') ? '&' : '?'}page_size=${pageSize}&limit=${pageSize}`;
                   }
+
                   if (featured) {
                         url += `${url.includes('?') ? '&' : '?'}featured=${featured}`;
                   }
@@ -133,7 +134,7 @@ const Job = () => {
 
       return (
             <div>
-                  <div className="py-4 bg-white w-full ">
+                  <div className="py-4 bg-white  ">
 
 
                         <div className="px-4 sm:px-6 lg:px-8">
@@ -202,8 +203,8 @@ const Job = () => {
                                     />
                               </div>
                               <div className="flex flex-col mt-4 ">
-                                    <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                          <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                    <div className="overflow-x-auto ">
+                                          <div className="">
                                                 <table className="min-w-full lg:divide-gray-200 lg:divide-y">
                                                       <thead className="hidden lg:table-header-group">
                                                             <tr>
@@ -249,7 +250,7 @@ const Job = () => {
                                                             {jobs?.jobs?.map((job, index) => <tr key={job._id} className="bg-gray-50">
                                                                   <td className="px-4 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
                                                                         <div className="flex items-center">
-                                                                              {index + 1}
+                                                                              {index + 1 + (jobs.current_page - 1) * pageSize}
                                                                         </div>
                                                                   </td>
                                                                   <td className="px-4 py-4 text-sm font-bold text-gray-900 align-top lg:align-middle whitespace-nowrap">
@@ -308,15 +309,16 @@ const Job = () => {
                                     </div>
                               </div>
                               <div className="mt-4 flex justify-end">
+                                    {console.log(jobs, 'jobs')}
                                     <Pagination
-                                          current={page ?? 1}
+                                          current={jobs?.current_page ?? 1}
                                           pageSize={pageSize ?? 10}
                                           total={jobs?.total_jobs ?? 0}
                                           showSizeChanger
                                           defaultCurrent={3}
-                                          showTotal={(total) => `Total ${total} items`}
+                                          // showTotal={(total) => `Total ${total} items`}
                                           onChange={handlePageChange}
-                                          onShowSizeChange={handlePageChange}
+                                    // onShowSizeChange={handlePageChange}
                                     />
                               </div>
                         </div>
@@ -365,6 +367,11 @@ export function JobActions({ job, setModal, updateJobs, setDeleteModal }) {
                   <Menu.Item key="view" icon={<EyeOutlined />}>
                         <a href={`https://kalbelajobs.com/jobs/${job.url}`} target="_blank" rel="noopener noreferrer">
                               View Job
+                        </a>
+                  </Menu.Item>
+                  <Menu.Item key="view_candidates" icon={<EyeOutlined />}>
+                        <a href={`https://kalbelajobs.com/jobs/${job.url}`} target="_blank" rel="noopener noreferrer">
+                              View Candidates
                         </a>
                   </Menu.Item>
                   <Menu.Divider />

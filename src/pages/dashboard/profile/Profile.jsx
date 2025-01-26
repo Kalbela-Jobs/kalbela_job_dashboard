@@ -1,5 +1,7 @@
 import { Layout, Menu, Button, Form, Input, Avatar, Alert, Typography } from 'antd';
 import { UserOutlined, CreditCardOutlined, HistoryOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { useContext } from 'react';
+import { Kalbela_AuthProvider } from '../../../context/MainContext';
 
 
 const { Content, Sider } = Layout;
@@ -8,6 +10,7 @@ const { Title } = Typography;
 export default function Profile() {
       const [form] = Form.useForm();
       const [passwordForm] = Form.useForm();
+      const { user } = useContext(Kalbela_AuthProvider)
 
       const handleUpdate = (values) => {
             console.log('Updated values:', values);
@@ -83,27 +86,17 @@ export default function Profile() {
                                                 form={form}
                                                 layout="vertical"
                                                 onFinish={handleUpdate}
-                                                initialValues={{
-                                                      firstName: 'Md. Mahadi',
-                                                      lastName: 'Hasan',
-                                                      email: 'brightfuturesoft@gmail.com',
-                                                }}
+                                                initialValues={{ full_name: user.fullName, email: user.email, phone: user.phone }}
                                           >
                                                 <div className="grid grid-cols-2 gap-4">
                                                       <Form.Item
-                                                            label="First Name"
-                                                            name="firstName"
+                                                            label="Full Name"
+                                                            name="full_name"
                                                             required
                                                       >
                                                             <Input />
                                                       </Form.Item>
-                                                      <Form.Item
-                                                            label="Last Name"
-                                                            name="lastName"
-                                                            required
-                                                      >
-                                                            <Input />
-                                                      </Form.Item>
+
                                                 </div>
 
                                                 <Form.Item

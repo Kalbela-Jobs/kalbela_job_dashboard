@@ -7,7 +7,7 @@ const Header = () => {
 
       const { open, setOpen, setSearchQuery } = useContext(MyContext);
       return (
-            <header className={`bg-white border-b w-full  sticky top-0 z-40 border-gray-200 `}>
+            <header className={`bg-white border-b w-full  sticky top-0 z-10 border-gray-200 `}>
                   <div className="px-4 mx-auto">
                         <div className="flex items-center justify-between h-16">
                               <Menu

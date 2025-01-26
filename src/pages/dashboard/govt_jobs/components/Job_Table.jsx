@@ -3,6 +3,7 @@ import { Table, Button, Space } from 'antd';
 import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 
 const JobsTable = ({ jobs, onEdit, onDelete, onView }) => {
+      console.log(jobs);
       const columns = [
             {
                   title: 'Title',
@@ -10,9 +11,19 @@ const JobsTable = ({ jobs, onEdit, onDelete, onView }) => {
                   key: 'title',
             },
             {
-                  title: 'Department',
-                  dataIndex: 'department',
-                  key: 'department',
+                  title: 'Organization',
+                  dataIndex: 'organization',
+                  key: 'organization',
+                  render: (org) => (
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                              <img
+                                    src={org.logo}
+                                    alt={org.name}
+                                    style={{ width: '30px', height: '30px', marginRight: '10px', borderRadius: '50%' }}
+                              />
+                              <span>{org.name}</span>
+                        </div>
+                  ),
             },
             {
                   title: 'Advertisement No',
