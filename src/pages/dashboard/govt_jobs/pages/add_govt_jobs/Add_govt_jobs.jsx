@@ -46,8 +46,8 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                               organization: JSON.parse(values.org_info),
                               advertisementNo: values.advertisementNo,
                               vacancy: values[`vacancy_${index}`],
-                              applicationStartDate: values.applicationStartDate.format("YYYY-MM-DD"),
-                              applicationDeadline: values.applicationDeadline.format("YYYY-MM-DD"),
+                              applicationStartDate: values.applicationStartDate,
+                              applicationDeadline: values.applicationDeadline,
                               uploadDocument: values.document_url,  // Attach the document URL
                         };
 
@@ -158,7 +158,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                                     label="Application Start Date"
                                     rules={[{ required: true, message: "Please select start date" }]}
                               >
-                                    <DatePicker className="w-full" placeholder="Pick a date" format="DD-MM-YYYY" />
+                                    <DatePicker className="w-full" placeholder="Pick a date" format="DD MMM YYYY hh:mm a" />
                               </Form.Item>
 
                               <Form.Item
@@ -166,11 +166,10 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                                     label="Application Deadline"
                                     rules={[{ required: true, message: "Please select deadline" }]}
                               >
-                                    <DatePicker disabledDate={disabledDeadlineDates} className="w-full" placeholder="Pick a date" format="DD-MM-YYYY" />
+                                    <DatePicker disabledDate={disabledDeadlineDates} className="w-full" placeholder="Pick a date" format="DD MMM YYYY hh:mm a" />
                               </Form.Item>
                               <Form.Item
                                     name="document"
-
                                     label="Upload Document"
                                     className="w-full "
                                     rules={[{ required: true, message: "Please upload a document" }]}

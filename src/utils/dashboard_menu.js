@@ -30,21 +30,27 @@ export const nav_items = [
             icon: List,
             link: "career-resources",
       },
+
       {
             title: "Configuration",
             icon: List,
             link: "configuration",
       },
       {
-            title: "Govt Jobs",
-            icon: List,
-            link: "govt-jobs",
-      },
-      {
             title: "Jobs",
             icon: Briefcase,
             link: "jobs",
       },
+      {
+            title: "Govt Jobs",
+            icon: List,
+            link: "govt-jobs",
+      },
+      // {
+      //       title: "Bank/BIMA/NGO",
+      //       icon: List,
+      //       link: "bank-bima-ngo",
+      // },
       {
             title: "Candidates",
             icon: Users,
