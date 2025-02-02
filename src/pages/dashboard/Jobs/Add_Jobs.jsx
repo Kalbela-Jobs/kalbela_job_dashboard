@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Select, message, Input, Button, Form, Card, Typography, Spin, Checkbox, DatePicker } from "antd";
+import { Select, message, Input, Button, Form, Card, Typography, Spin, Checkbox, DatePicker, Upload } from "antd";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -8,6 +8,7 @@ import { Kalbela_AuthProvider } from "../../../context/MainContext";
 import sweet_alert from "../../../utils/custom_alert";
 import { useNavigate } from "react-router-dom";
 import uploadImage from "../../../hooks/upload_image";
+import { UploadOutlined } from "@ant-design/icons";
 // import { categoryOptions, experienceLevelOptions, jobTypeOptions, salaryTypeOptions, whQuestions } from "../utils/mockData";
 
 const { Title } = Typography;
@@ -156,6 +157,8 @@ const Add_Jobs = () => {
 
       const onFinish = async (values) => {
 
+
+
             values?.salary_range && (values.salary_range.currency = 'BDT');
             let workspace_info = workspace;
             if (values.company_data) {
@@ -190,12 +193,13 @@ const Add_Jobs = () => {
                   user_id: user._id
             }
             values.cv_email_sent = cv_email_sent;
-            const attachment = values?.attachment?.[0]?.originFileObj;
+
+            const attachment = values?.attachment?.file;
 
             if (attachment) {
-                  values.attachment = await uploadImage(attachment);
+                  values.attachment_url = await uploadImage(attachment);
             }
-
+            delete values.attachment;
             delete values.division;
             fetch(`${base_url}/jobs/create`, {
                   method: "POST",
@@ -414,8 +418,18 @@ const Add_Jobs = () => {
 
 
                               <div className="flex space-x-4">
-                                    <Form.Item className="w-full" name="attachment" label="Attachment" rules={[{ required: false }]}>
-                                          <Input type="file" />
+
+                                    <Form.Item
+                                          className=" w-full"
+                                          name="attachment"
+                                          label="Attachment"
+                                          rules={[{ required: false }]}
+                                    >
+                                          <Upload beforeUpload={() => false} multiple={false} className="w-full">
+                                                <Button icon={<UploadOutlined />} block className="w-full">
+                                                      Click to Upload
+                                                </Button>
+                                          </Upload>
                                     </Form.Item>
                                     <Form.Item className="w-full" name="cvEmailSent" label="Job Seeker's CV Sent via Email?" valuePropName="checked">
                                           <Checkbox className="border w-full py-1.5 px-4 rounded" onClick={(e) => setCvEmailSent(e.target.checked)}>Yes, CV sent via email</Checkbox>

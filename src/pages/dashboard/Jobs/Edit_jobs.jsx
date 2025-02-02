@@ -126,7 +126,7 @@ const Edit_jobs = ({ data, onClose, refetch }) => {
             }
       };
 
-      const onFinish = (values) => {
+      const onFinish = async (values) => {
             console.log("Form values:", data.company_info);
             values?.salary_range && (values.salary_range.currency = 'BDT');
             // values.url = genarate slag form job title and company name
@@ -142,6 +142,13 @@ const Edit_jobs = ({ data, onClose, refetch }) => {
                   remote: remote,
                   location: values.input_location,
             }
+
+            const attachment = values?.attachment?.[0]?.originFileObj;
+
+            if (attachment) {
+                  values.attachment_url = await uploadImage(attachment);
+            }
+            delete values.attachment;
 
             delete values.state;
             delete values.district;

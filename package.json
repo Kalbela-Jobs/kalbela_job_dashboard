@@ -13,6 +13,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.5.2",
     "antd": "^5.22.4",
+    "antd-img-crop": "^4.24.0",
     "date-fns": "^4.1.0",
     "emoji-picker-react": "^4.12.0",
     "firebase": "^11.0.2",
@@ -24,6 +25,7 @@
     "pdfjs-dist": "^4.9.155",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-easy-crop": "^5.2.0",
     "react-quill": "^2.0.0",
     "react-select": "^5.9.0",
     "sweetalert2": "^11.15.0"

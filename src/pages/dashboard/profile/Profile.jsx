@@ -1,19 +1,38 @@
-import { Layout, Menu, Button, Form, Input, Avatar, Alert, Typography } from 'antd';
-import { UserOutlined, CreditCardOutlined, HistoryOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+"use client"
+
+import { Layout, Form, Input, Button, Typography, Avatar } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import { useContext } from 'react';
 import { Kalbela_AuthProvider } from '../../../context/MainContext';
+import ProfilePic from './components/Profile_pic';
+import sweet_alert from '../../../utils/custom_alert';
 
-
-const { Content, Sider } = Layout;
+const { Content } = Layout;
 const { Title } = Typography;
 
-export default function Profile() {
-      const [form] = Form.useForm();
+export default function ProfileSettings() {
+      const [profileForm] = Form.useForm();
       const [passwordForm] = Form.useForm();
-      const { user } = useContext(Kalbela_AuthProvider)
+      const { user, workspace, setUser, setCookie, base_url } = useContext(Kalbela_AuthProvider);
 
       const handleUpdate = (values) => {
-            console.log('Updated values:', values);
+            console.log('Profile updated:', values);
+            fetch(`${base_url}/user/update-profile?id=${user._id}`, {
+                  method: "PUT",
+                  headers: {
+                        "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                        full_name: values.full_name,
+                        phone: values.phone,
+                  }),
+            })
+                  .then((res) => res.json())
+                  .then((data) => {
+                        setUser(data.data);
+                        setCookie("kal_bela_jobs_user", data.data, 365);
+                        sweet_alert('success', 'Profile updated successfully!');
+                  });
       };
 
       const handlePasswordChange = (values) => {
@@ -21,157 +40,140 @@ export default function Profile() {
       };
 
       return (
-            <Layout className="min-h-screen ">
-                  {/* <Alert
-                        message={
-                              <div className="flex justify-between items-center">
-                                    <span>
-                                          Your company is not verified, please verify your company.{' '}
-                                          <Button type="link" className="p-0 text-blue-400">
-                                                Details
-                                          </Button>
-                                    </span>
-                                    <Button type="link" className="text-blue-400">
-                                          How to verify?
-                                    </Button>
-                              </div>
-                        }
-                        type="warning"
-                        className="mb-0"
-                  /> */}
-
-                  <Layout className="bg-white">
-                        <Sider className="bg-white" width={250}>
-                              <Title level={4} className="px-6 py-4">
-                                    My Account
-                              </Title>
-                              <Menu
-                                    mode="inline"
-                                    defaultSelectedKeys={['account']}
-                                    items={[
-                                          { key: 'account', label: 'Account Information', icon: <UserOutlined /> },
-                                          { key: 'subscription', label: 'Subscription', icon: <CreditCardOutlined /> },
-                                          { key: 'billing', label: 'Billing', icon: <CreditCardOutlined /> },
-                                          { key: 'history', label: 'Payment History', icon: <HistoryOutlined /> },
-                                    ]}
-                              />
-                              <div className="px-6 mt-auto">
-                                    <Button danger type="primary" block className="mt-8">
-                                          Delete Account
-                                    </Button>
-                              </div>
-                        </Sider>
-
+            <div className="min-h-screen ">
+                  <div>
                         <Content className="p-8">
-                              <div className="flex justify-between items-center mb-8">
-                                    <Title level={3} className="m-0">
-                                          Account Information
-                                    </Title>
-                                    {/* <Button type="primary" className="bg-blue-500">
-                                          Switch To Candidate
-                                    </Button> */}
-                              </div>
+                              <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                                    {/* Left Section - Information */}
+                                    <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
+                                          <Title level={4} className="mb-6">Information</Title>
 
-                              <div className="flex gap-8">
-                                    <div className="flex-1">
-                                          <Title level={4}>Information</Title>
-                                          <div className="mb-6 flex items-center gap-4">
-                                                <Avatar size={64} icon={<UserOutlined />} />
-                                                <Button type="link" className="text-blue-400 p-0">
-                                                      Change
-                                                </Button>
-                                          </div>
-
-                                          <Form
-                                                form={form}
-                                                layout="vertical"
-                                                onFinish={handleUpdate}
-                                                initialValues={{ full_name: user.fullName, email: user.email, phone: user.phone }}
-                                          >
-                                                <div className="grid grid-cols-2 gap-4">
-                                                      <Form.Item
-                                                            label="Full Name"
-                                                            name="full_name"
-                                                            required
-                                                      >
-                                                            <Input />
-                                                      </Form.Item>
-
+                                          <div className="flex gap-8 mb-6">
+                                                <div>
+                                                      <ProfilePic />
                                                 </div>
 
-                                                <Form.Item
-                                                      label={
-                                                            <span className="flex items-center gap-2">
-                                                                  Email Address <QuestionCircleOutlined />
-                                                            </span>
-                                                      }
-                                                      name="email"
-                                                      required
+                                                <Form
+                                                      form={profileForm}
+                                                      layout="vertical"
+                                                      onFinish={handleUpdate}
+                                                      className="flex-1"
+                                                      initialValues={{
+                                                            full_name: user?.fullName || user?.name,
+                                                            email: user?.email,
+                                                            phone: user?.phone || workspace?.phone
+                                                      }}
                                                 >
-                                                      <Input />
-                                                </Form.Item>
+                                                      <div className="">
+                                                            <Form.Item
+                                                                  label="Full Name*"
+                                                                  name="full_name"
+                                                                  rules={[{ required: true, message: 'Please input your full name!' }]}
+                                                            >
+                                                                  <Input placeholder="Full name" />
+                                                            </Form.Item>
 
-                                                <Form.Item
-                                                      label="Phone Number"
-                                                      name="phone"
-                                                      required
-                                                >
-                                                      <Input placeholder="Enter phone number" />
-                                                </Form.Item>
 
-                                                <Form.Item>
-                                                      <Button type="primary" htmlType="submit" className="bg-blue-400">
-                                                            Update
-                                                      </Button>
-                                                </Form.Item>
-                                          </Form>
+                                                      </div>
+
+                                                      <Form.Item
+                                                            label={
+                                                                  <span className="flex items-center gap-2">
+                                                                        Email Address* <QuestionCircleOutlined className="text-gray-400" />
+                                                                  </span>
+                                                            }
+                                                            name="email"
+                                                            rules={[
+                                                                  { required: true, message: 'Please input your email!' },
+                                                                  { type: 'email', message: 'Please enter a valid email!' }
+                                                            ]}
+                                                      >
+                                                            <Input disabled placeholder="Email address" />
+                                                      </Form.Item>
+
+                                                      <Form.Item
+                                                            label="Phone Number*"
+                                                            name="phone"
+                                                            rules={[{ required: true, message: 'Please input your phone number!' }]}
+                                                      >
+                                                            <Input placeholder="Enter phone number" />
+                                                      </Form.Item>
+
+                                                      <Form.Item>
+                                                            <Button
+                                                                  type="primary"
+                                                                  htmlType="submit"
+                                                                  className="bg-[#1677ff] hover:bg-[#4096ff]"
+                                                            >
+                                                                  Update
+                                                            </Button>
+                                                      </Form.Item>
+                                                </Form>
+                                          </div>
                                     </div>
 
-                                    <div className="w-96">
-                                          <Title level={4}>Change Password</Title>
+                                    {/* Right Section - Change Password */}
+                                    <div className="bg-white p-6 rounded-lg shadow-sm">
+                                          <Title level={4} className="mb-6">Change Password</Title>
+
                                           <Form
                                                 form={passwordForm}
                                                 layout="vertical"
                                                 onFinish={handlePasswordChange}
                                           >
                                                 <Form.Item
-                                                      label="Current Password"
-                                                      name="currentPassword"
-                                                      required
+                                                      label="Current Password*"
+                                                      name="current_password"
+                                                      rules={[{ required: true, message: 'Please input your current password!' }]}
                                                 >
-                                                      <Input.Password />
+                                                      <Input.Password placeholder="********" />
                                                 </Form.Item>
 
                                                 <Form.Item
-                                                      label="New Password"
-                                                      name="newPassword"
-                                                      required
+                                                      label="New Password*"
+                                                      name="new_password"
+                                                      rules={[{ required: true, message: 'Please input your new password!' }]}
                                                 >
-                                                      <Input.Password />
+                                                      <Input.Password placeholder="********" />
                                                 </Form.Item>
 
                                                 <Form.Item
-                                                      label="Confirm Password"
-                                                      name="confirmPassword"
-                                                      required
+                                                      label="Confirm Password*"
+                                                      name="confirm_password"
+                                                      rules={[
+                                                            { required: true, message: 'Please confirm your password!' },
+                                                            ({ getFieldValue }) => ({
+                                                                  validator(_, value) {
+                                                                        if (!value || getFieldValue('new_password') === value) {
+                                                                              return Promise.resolve();
+                                                                        }
+                                                                        return Promise.reject(new Error('The two passwords do not match!'));
+                                                                  },
+                                                            }),
+                                                      ]}
                                                 >
-                                                      <Input.Password />
+                                                      <Input.Password placeholder="********" />
                                                 </Form.Item>
 
                                                 <Form.Item>
-                                                      <Button type="primary" htmlType="submit" block className="bg-blue-400">
+                                                      <Button
+                                                            type="primary"
+                                                            htmlType="submit"
+                                                            block
+                                                            className="bg-[#1677ff] hover:bg-[#4096ff]"
+                                                      >
                                                             Change Password
                                                       </Button>
                                                 </Form.Item>
 
-                                                <Button type="link" className="p-0 text-blue-400">
+                                                <Button type="link" className="p-0 text-[#1677ff]">
                                                       How to Change Password?
                                                 </Button>
                                           </Form>
                                     </div>
                               </div>
                         </Content>
-                  </Layout>
-            </Layout>
+                  </div>
+            </div>
       );
 }

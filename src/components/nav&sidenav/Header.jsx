@@ -2,10 +2,13 @@ import { useContext } from "react";
 import MyContext from "../../context/Dashboard_context";
 import { Menu } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Kalbela_AuthProvider } from "../../context/MainContext";
+import { Avatar } from "antd";
 
 const Header = () => {
 
       const { open, setOpen, setSearchQuery } = useContext(MyContext);
+      const { user } = useContext(Kalbela_AuthProvider);
       return (
             <header className={`bg-white border-b w-full  sticky top-0 z-10 border-gray-200 `}>
                   <div className="px-4 mx-auto">
@@ -99,16 +102,20 @@ const Header = () => {
                                     </div>
 
                                     {/* User avatar */}
-                                    <Link to={"/admin/profile"}
+                                    <Link
+                                          to="/admin/profile"
                                           type="button"
                                           className="flex items-center max-w-xs rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
                                     >
-                                          <img
-                                                className="object-cover bg-gray-300 rounded-full w-9 h-9"
-                                                src="https://landingfoliocom.imgix.net/store/collection/clarity-dashboard/images/previews/dashboards/1/avatar-male.png"
-                                                alt=""
-                                          />
+                                          <Avatar
+                                                size={36} // Adjust size as needed
+                                                src={user?.profile_picture} // Use profile picture if available
+                                                className="bg-gray-300"
+                                          >
+                                                {!user?.profile_picture && user?.name?.charAt(0)} {/* Show user's initial if no image */}
+                                          </Avatar>
                                     </Link>
+
                               </div>
                         </div>
                   </div>

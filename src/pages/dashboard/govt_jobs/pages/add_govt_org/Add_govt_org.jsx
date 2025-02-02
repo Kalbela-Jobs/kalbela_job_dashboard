@@ -126,7 +126,7 @@ const AddGovtOrgWithTable = () => {
 
       return (
             <div className="p-4">
-                  {/* Button to open modal */}
+
                   <div className='flex gap-4 items-center'>
                         <Link_Button name='Back to Government Jobs' url="/admin/govt-jobs" />
                         <div className="pb-4">

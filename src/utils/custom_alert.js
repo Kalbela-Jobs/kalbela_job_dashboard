@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 
-const sweet_alert = (title, text = "", icon = "success", timer = 2000) => {
+const sweet_alert = (title, text = "", icon = "success", timer = 1000) => {
       Swal.fire({
             title,
             text,

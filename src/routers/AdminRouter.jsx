@@ -31,6 +31,7 @@ import Govt_jobs from "../pages/dashboard/govt_jobs/Govt_jobs";
 import AddEditJobForm from "../pages/dashboard/govt_jobs/pages/add_govt_jobs/Add_govt_jobs";
 import Hero_logo from "../pages/dashboard/configaration/pages/Hero_logo/Hero_logo";
 import AddGovtOrgWithTable from "../pages/dashboard/govt_jobs/pages/add_govt_org/Add_govt_org";
+import SettingsPage from "../pages/dashboard/sittings/Sittings";
 
 const AdminRouter = [
       {
@@ -153,6 +154,10 @@ const AdminRouter = [
       {
             path: "message",
             element: <Private> <Message /></Private>,
+      },
+      {
+            path: "setting",
+            element: <Private> <SettingsPage /></Private>,
       },
 
 ];

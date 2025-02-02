@@ -37,30 +37,37 @@ const Hero_logo = () => {
       const handleAddHeroLogo = async (values) => {
             console.log(values, 'values');
 
-            const logo = await uploadImage(values.companyLogo[0].originFileObj);
-            const data = {
-                  logo,
-                  name: values.companyName
-            };
+            const uploadedLogos = await Promise.all(
+                  values.companyLogo.map(async (file) => {
+                        return await uploadImage(file.originFileObj);
+                  })
+            );
 
-            fetch(`${base_url}/config/hero-logo?token=${user._id}`, {
-                  method: 'POST',
-                  headers: {
-                        'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(data)
-            })
-                  .then(res => res.json())
-                  .then(data => {
-                        if (!data.error) {
-                              sweet_alert("Success", data.message, "success");
-                              setIsModalVisible(false);
-                              refetch();
-                        }
-                        else {
-                              sweet_alert("Error", data.message, "error");
-                        }
-                  });
+            uploadedLogos.forEach((logo) => {
+                  const data = {
+                        logo,
+                        name: values.companyName
+                  };
+
+                  fetch(`${base_url}/config/hero-logo?token=${user._id}`, {
+                        method: 'POST',
+                        headers: {
+                              'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                  })
+                        .then(res => res.json())
+                        .then(data => {
+                              if (!data.error) {
+                                    refetch();
+                              }
+                              else {
+                                    sweet_alert("Error", data.message, "error");
+                              }
+                        });
+            });
+
+            sweet_alert("Success", "Hero logo added successfully!", "success");
             setIsModalVisible(false);
             form.resetFields();
       };
@@ -206,7 +213,7 @@ const Hero_logo = () => {
                                     <Upload
                                           name="logo"
                                           listType="picture"
-                                          maxCount={1}
+                                          maxCount={10}
                                           beforeUpload={() => false} // Prevent auto-upload
                                     >
                                           <Button icon={<UploadOutlined />}>Upload Logo</Button>
