@@ -1,86 +1,104 @@
-
-
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import logo from "../../assets/image.png";
 
 const HomeNav = () => {
       const [expanded, setExpanded] = useState(false);
 
-      const menuItems = [
-            { label: 'Home', link: '/' },
-            { label: 'About', link: '/about' },
-
-      ];
-
       return (
-            <header className="py-4 bg-black sm:py-6">
-                  <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                        <div className="flex items-center justify-between">
-                              <div className="shrink-0">
-                                    <Link to="/" title="" className="flex">
-                                          <img
-                                                className="w-auto h-12"
-                                                src="https://www.brightfuturesoft.com/static/media/logo%20full%20name%20png%202-01%20(1)%20(1).f35f04f782ea6b4a59b2.png"
-                                                alt=""
-                                          />
+            <header className="bg-[#FCF8F1] bg-opacity-30">
+                  <div className="px-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        <div className="flex items-center justify-between h-16 lg:h-20">
+                              {/* Logo */}
+                              <div className="flex-shrink-0">
+                                    <Link to="/" className="flex">
+                                          <img className="w-auto h-10" src={logo} alt="Kalbela Jobs" />
                                     </Link>
                               </div>
 
-
-
-                              <nav className="hidden ml-auto mr-10 space-x-10 md:flex md:items-center md:justify-end lg:space-x-12">
-                                    {menuItems.map((item, index) => (
-                                          <Link
-                                                key={index}
-                                                to={item.link}
-                                                title={item.label}
-                                                className="text-base font-normal text-gray-400 transition-all duration-200 hover:text-white"
+                              {/* Mobile Menu Button */}
+                              <button
+                                    type="button"
+                                    className="inline-flex p-2 text-black transition-all duration-200 rounded-md lg:hidden focus:bg-gray-100 hover:bg-gray-100"
+                                    onClick={() => setExpanded(!expanded)}
+                              >
+                                    {expanded ? (
+                                          <svg
+                                                className="w-6 h-6"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
                                           >
-                                                {item.label}
-                                          </Link>
-                                    ))}
-                              </nav>
+                                                <path
+                                                      strokeLinecap="round"
+                                                      strokeLinejoin="round"
+                                                      strokeWidth={2}
+                                                      d="M6 18L18 6M6 6l12 12"
+                                                />
+                                          </svg>
+                                    ) : (
+                                          <svg
+                                                className="w-6 h-6"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                          >
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
+                                          </svg>
+                                    )}
+                              </button>
 
-                              <div className="relative hidden md:items-center md:justify-center md:inline-flex group">
-                                    <div className="absolute transition-all duration-200 rounded-full -inset-px bg-gradient-to-r from-cyan-500 to-purple-500 group-hover:shadow-lg group-hover:shadow-cyan-500/50"></div>
-                                    <a
-                                          href="#"
-                                          title=""
-                                          className="relative inline-flex items-center justify-center px-6 py-2 text-base font-normal text-white bg-black border border-transparent rounded-full"
-                                          role="button"
-                                    >
-                                          Custom Button
+                              {/* Desktop Navigation */}
+                              <div className="hidden lg:flex lg:items-center lg:justify-center lg:space-x-10">
+                                    <NavLink to="/features" className="text-base text-black transition-all duration-200 hover:text-opacity-80">
+                                          Features
+                                    </NavLink>
+                                    <a href="#" className="text-base text-black transition-all duration-200 hover:text-opacity-80">
+                                          Solutions
                                     </a>
+                                    <a href="#" className="text-base text-black transition-all duration-200 hover:text-opacity-80">
+                                          Resources
+                                    </a>
+                                    <Link to="/pricing" className="text-base text-black transition-all duration-200 hover:text-opacity-80">
+                                          Pricing
+                                    </Link>
                               </div>
+
+                              {/* Join Now Button */}
+                              <Link
+                                    to="/sign-up"
+                                    className="hidden lg:inline-flex items-center justify-center px-5 py-2.5 text-base transition-all duration-200 hover:bg-yellow-300 hover:text-black focus:text-black focus:bg-yellow-300 font-semibold text-white bg-black rounded-full"
+                                    role="button"
+                              >
+                                    Join Now
+                              </Link>
                         </div>
 
+                        {/* Mobile Menu Items */}
                         {expanded && (
-                              <nav>
-                                    <div className="flex flex-col pt-8 pb-4 space-y-6">
-                                          {menuItems.map((item, index) => (
-                                                <Link
-                                                      key={index}
-                                                      to={item.link}
-                                                      title={item.label}
-                                                      className="text-base font-normal text-gray-400 transition-all duration-200 hover:text-white"
-                                                >
-                                                      {item.label}
-                                                </Link>
-                                          ))}
-
-                                          <div className="relative inline-flex items-center justify-center group">
-                                                <div className="absolute transition-all duration-200 rounded-full -inset-px bg-gradient-to-r from-cyan-500 to-purple-500 group-hover:shadow-lg group-hover:shadow-cyan-500/50"></div>
-                                                <a
-                                                      href="#"
-                                                      title=""
-                                                      className="relative inline-flex items-center justify-center w-full px-6 py-2 text-base font-normal text-white bg-black border border-transparent rounded-full"
-                                                      role="button"
-                                                >
-                                                      Custom Button
-                                                </a>
-                                          </div>
-                                    </div>
-                              </nav>
+                              <div className="lg:hidden flex flex-col items-center space-y-4 py-4">
+                                    <NavLink to="/features" className="text-base text-black transition-all duration-200 hover:text-opacity-80">
+                                          Features
+                                    </NavLink>
+                                    <a href="#" className="text-base text-black transition-all duration-200 hover:text-opacity-80">
+                                          Solutions
+                                    </a>
+                                    <a href="#" className="text-base text-black transition-all duration-200 hover:text-opacity-80">
+                                          Resources
+                                    </a>
+                                    <Link to="/pricing" className="text-base text-black transition-all duration-200 hover:text-opacity-80">
+                                          Pricing
+                                    </Link>
+                                    <Link
+                                          to="/sign-up"
+                                          className="inline-flex items-center justify-center px-5 py-2.5 text-base transition-all duration-200 hover:bg-yellow-300 hover:text-black focus:text-black focus:bg-yellow-300 font-semibold text-white bg-black rounded-full"
+                                          role="button"
+                                    >
+                                          Join Now
+                                    </Link>
+                              </div>
                         )}
                   </div>
             </header>
