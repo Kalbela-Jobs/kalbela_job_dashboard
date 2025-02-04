@@ -1,13 +1,16 @@
 
 import { Outlet } from "react-router-dom";
 import HomeNav from "../components/nav&sidenav/HomeNav";
-import HomeFooter from "../components/footer/HomeFooter";
+import Navbar from "../pages/home/pages/components/ui/Navbar/Navbar";
+import Footer from "../pages/home/pages/components/ui/Footer/Footer";
+
 
 const HomeLayout = () => {
       return (
-            <div>
-
+            <div className="bg-gray-900">
+                  <Navbar />
                   <Outlet />
+                  <Footer />
 
             </div>
       );

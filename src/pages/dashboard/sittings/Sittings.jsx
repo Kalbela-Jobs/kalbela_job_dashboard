@@ -71,9 +71,9 @@ const SettingsPage = () => {
                                           <Form.Item
                                                 name="company_name"
                                                 label="Company Name"
-                                                rules={[{ required: true, message: "Please enter your company name" }]}
+                                                rules={[{ required: true,  message: "Please enter your company name" }]}
                                           >
-                                                <Input className="w-full px-4 py-2 border rounded-md" />
+                                                <Input className="w-full read-only px-4 py-2 border rounded-md" />
                                           </Form.Item>
                                           <Form.Item
                                                 name="company_website"
