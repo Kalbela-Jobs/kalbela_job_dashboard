@@ -42,7 +42,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                   for (let index = 0; index < jobFields.length; index++) {
                         const jobData = {
                               title: values[`title_${index}`],
-                              hyperlink: values[`hyperlink_${index}`],
+                              hyperlink: values.hyperlink,
                               organization: JSON.parse(values.org_info),
                               advertisementNo: values.advertisementNo,
                               vacancy: values[`vacancy_${index}`],
@@ -83,8 +83,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
             const isComplete = jobFields.every((field, index) => {
                   const title = currentValues[`title_${index}`]
                   const vacancy = currentValues[`vacancy_${index}`]
-                  const hyperlink = currentValues[`hyperlink_${index}`]
-                  return title && vacancy && hyperlink
+                  return title && vacancy
             })
 
             if (isComplete) {
@@ -120,7 +119,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
 
 
 
-                        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                               <Form.Item
                                     name="org_info"
                                     label="Organization"
@@ -168,23 +167,32 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                               >
                                     <DatePicker disabledDate={disabledDeadlineDates} className="w-full" placeholder="Pick a date" format="DD MMM YYYY hh:mm a" />
                               </Form.Item>
+
+
+                              <Form.Item
+                                    name={`hyperlink`}
+                                    label={`Hyper link`}
+                                    rules={[{ required: true, message: "Please enter hyperlink" }]}
+                              >
+                                    <Input placeholder={`Enter hyperlink`} min={1} className="w-full" />
+                              </Form.Item>
                               <Form.Item
                                     name="document"
                                     label="Upload Document"
-                                    className="w-full "
                                     rules={[{ required: true, message: "Please upload a document" }]}
-                                    extra="Upload a PDF document for the job listing."
                               >
-                                    <Upload className="w-full " maxCount={1} beforeUpload={() => false}>
-                                          <Button icon={<UploadOutlined />}>Choose File</Button>
-                                    </Upload>
+                                    <div>
+                                          <Upload className="w-full" maxCount={1} beforeUpload={() => false}>
+                                                <Button className="w-full" icon={<UploadOutlined />}>Choose File</Button>
+                                          </Upload>
+                                    </div>
                               </Form.Item>
                         </div>
 
 
                         <Divider />
                         {jobFields.map((field, index) => (
-                              <div key={field.key} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                              <div key={field.key} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <Form.Item
                                           name={`title_${index}`}
                                           label={`Title ${index + 1}`}
@@ -199,13 +207,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                                     >
                                           <InputNumber placeholder={`Enter vacancy ${index + 1}`} min={1} className="w-full" />
                                     </Form.Item>
-                                    <Form.Item
-                                          name={`hyperlink_${index}`}
-                                          label={`Hyper link ${index + 1}`}
-                                          rules={[{ required: true, message: "Please enter hyperlink" }]}
-                                    >
-                                          <Input placeholder={`Enter hyperlink ${index + 1}`} min={1} className="w-full" />
-                                    </Form.Item>
+
                               </div>
                         ))}
 

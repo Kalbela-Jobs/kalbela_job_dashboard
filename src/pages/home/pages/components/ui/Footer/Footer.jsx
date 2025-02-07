@@ -189,7 +189,7 @@ const Footer = () => {
                         <div className="flex flex-wrap items-center justify-between">
                               <img
                                     className="h-8 auto md:order-1"
-                                    src="http://localhost:5173/src/assets/logo.png"
+                                    src="https://app.kalbelajobs.com/assets/logo-6t7MlCXd.png"
                                     alt=""
                               />
                               <ul className="flex items-center space-x-3 md:order-3">
@@ -265,7 +265,7 @@ const Footer = () => {
                                     </li>
                               </ul>
                               <p className="w-full mt-8 text-sm text-center text-gray-100 md:mt-0 md:w-auto md:order-2">
-                                    © Copyright 2021, All Rights Reserved by Postcraft
+                                    © Copyright {new Date().getFullYear()}, All Rights Reserved by Kalbela Jobs
                               </p>
                         </div>
                   </div>

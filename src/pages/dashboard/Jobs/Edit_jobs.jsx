@@ -11,7 +11,7 @@ import { format } from "date-fns";
 
 const { Title } = Typography;
 
-const Edit_jobs = ({ data, onClose, refetch }) => {
+const Edit_jobs = ({ data, set_modal, refetch }) => {
 
       console.log(data, 'data');
       const [form] = Form.useForm();
@@ -162,6 +162,7 @@ const Edit_jobs = ({ data, onClose, refetch }) => {
                   .then((data) => {
                         if (!data.error) {
                               refetch();
+                              set_modal(false);
                               sweet_alert("Success", data.message, "success");
                               navigate("/admin/jobs");
                         } else {
@@ -316,6 +317,7 @@ const Edit_jobs = ({ data, onClose, refetch }) => {
                               {isBangladesh && !remote && (
                                     <Form.Item className="w-full" initialValue={data?.location?.division} name="state" label="District" rules={[{ required: true }]}>
                                           <Select
+                                                mode="multiple"
                                                 showSearch
                                                 defaultValue={data?.location?.division}
                                                 filterOption={(input, option) =>

@@ -1,12 +1,16 @@
 
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import NavHeader from '../NavHeader'
 import NavLink from '../NavLink'
 import { Link } from 'react-router-dom'
+import { Kalbela_AuthProvider } from '../../../../../../context/MainContext'
+import { Avatar, Dropdown, Menu } from 'antd'
+import { UserOutlined } from '@ant-design/icons'
 
 const Navbar = () => {
 
       const [state, setState] = useState(false)
+      const { user, loginOut } = useContext(Kalbela_AuthProvider);
       const menuBtnEl = useRef()
 
       const navigation = [
@@ -45,7 +49,7 @@ const Navbar = () => {
                                                 })
                                           }
                                     </ul>
-                                    <div className="gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
+                                    {!user ? <div className="gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                                           <Link to="/sign-in" className="block hover:text-gray-50">
                                                 Sign in
                                           </Link>
@@ -56,6 +60,8 @@ const Navbar = () => {
                                                 </svg>
                                           </NavLink>
                                     </div>
+                                          : <UserMenu loginOut={loginOut} user={user} />
+                                    }
                               </div>
                         </div>
                   </nav>
@@ -64,3 +70,43 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+      ;
+
+const UserMenu = ({ loginOut, user }) => {
+      const menu = (
+            <Menu className="w-48 shadow-md rounded-lg">
+                  <div className="p-3 border-b">
+                        <p className="text-sm font-semibold">{user.name}</p>
+                        <p className="text-xs text-gray-500">{user.email}</p>
+                  </div>
+                  <Menu.Item key="dashboard">
+                        <Link to="/admin">Dashboard</Link>
+                  </Menu.Item>
+                  <Menu.Item key="profile">
+                        <Link to="/admin/profile">Profile</Link>
+                  </Menu.Item>
+                  <Menu.Item key="settings">
+                        <Link to="/admin/settings">Settings</Link>
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item key="logout">
+                        <button onClick={() => loginOut()}>Log out</button>
+                  </Menu.Item>
+            </Menu>
+      );
+
+      return (
+            <div className="flex items-center gap-x-4">
+                  <Dropdown overlay={menu} trigger={["click"]}>
+                        <div className="cursor-pointer">
+                              {user.avatar ? (
+                                    <Avatar src={user.avatar} size={40} />
+                              ) : (
+                                    <Avatar size={40} icon={<UserOutlined />} />
+                              )}
+                        </div>
+                  </Dropdown>
+            </div>
+      );
+};
