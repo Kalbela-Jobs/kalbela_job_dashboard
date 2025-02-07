@@ -284,7 +284,7 @@ const Add_Jobs = () => {
                               </Form.Item>
 
                               <div className="flex space-x-4">
-                                    <Form.Item className="w-full" name="vacancy" label="Number of Vacancies" rules={[{ required: true }]}>
+                                    <Form.Item className="w-full" name="vacancy" label="Number of Vacancies" rules={[{ required: false }]}>
                                           <Input placeholder="Number of Vacancies" type="number" />
                                     </Form.Item>
                                     <Form.Item className="w-full" name="expiry_date" label="Deadline" rules={[{ required: true }]}>
@@ -396,6 +396,7 @@ const Add_Jobs = () => {
                                     {isBangladesh && !remote && (
                                           <Form.Item className="w-full" name="state" label="District" rules={[{ required: true }]}>
                                                 <Select
+                                                      mode="multiple"
                                                       showSearch
                                                       filterOption={(input, option) =>
                                                             option?.label?.toLowerCase().includes(input.toLowerCase())

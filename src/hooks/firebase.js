@@ -3,13 +3,13 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-      apiKey: "AIzaSyAI4yUlQCiVnTIRdXX0kZnnfigsuFRiJ1A",
-      authDomain: "kalbelajobsbd.firebaseapp.com",
-      projectId: "kalbelajobsbd",
-      storageBucket: "kalbelajobsbd.firebasestorage.app",
-      messagingSenderId: "19554497108",
-      appId: "1:19554497108:web:6de3e7d19e260612f4b3c1",
-      measurementId: "G-4LETLJCM01"
+      apiKey: "AIzaSyDAa7je8Dx5PKtBLZX5jnT_VSPbr9px9TQ",
+      authDomain: "auth.kalbelajobs.com",
+      projectId: "kalbela-jobs-bd",
+      storageBucket: "kalbela-jobs-bd.firebasestorage.app",
+      messagingSenderId: "468184987683",
+      appId: "1:468184987683:web:31656c3ffff1fd5c955996",
+      measurementId: "G-EVB5C1613L"
 };
 
 

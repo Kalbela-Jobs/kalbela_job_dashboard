@@ -4,9 +4,10 @@ import VerifyOTP from "../pages/auth/registration/Verify_OTP";
 import WorkspaceAccount from "../pages/auth/registration/Workspace";
 import About from "../pages/home/pages/about/About";
 import Features from "../pages/home/pages/components/ui/Features/Features";
+import Pricing from "../pages/home/pages/components/ui/Pricing/Pricing";
 
 import Home from "../pages/home/pages/home/Home";
-import Pricing from "../pages/home/pages/pricing/Pricing";
+
 
 const HomeRoute = [
       {

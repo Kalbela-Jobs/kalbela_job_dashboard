@@ -14,7 +14,7 @@ export default function Registration() {
       const navigate = useNavigate();
       const [isPasswordVisible, setPasswordVisible] = useState(false);
 
-      const { googleLogin, setUser, setCookie, base_url } = useContext(Kalbela_AuthProvider);
+      const { googleLogin, setUser, setCookie, base_url, } = useContext(Kalbela_AuthProvider);
 
 
       const data_submit = (e) => {
@@ -378,6 +378,7 @@ export default function Registration() {
                                           </div>
                                           <div className="mt-6">
                                                 <button
+                                                      onClick={googleLogin}
                                                       type="button"
                                                       className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold leading-5 text-gray-600 transition-all duration-200 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 hover:bg-gray-50 hover:text-gray-900"
                                                 >

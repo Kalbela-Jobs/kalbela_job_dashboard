@@ -101,52 +101,6 @@ export default function Workspace() {
       });
 
 
-      // const industry = [
-      //       {
-      //             value: 'it',
-      //             label: 'IT',
-      //       },
-      //       {
-      //             value: 'health',
-      //             label: 'Health',
-      //       },
-      //       {
-      //             value: 'education',
-      //             label: 'Education',
-      //       },
-      //       {
-      //             value: 'finance',
-      //             label: 'Finance',
-      //       },
-      //       {
-      //             value: 'construction',
-      //             label: 'Construction',
-      //       },
-      //       {
-      //             value: 'retail',
-      //             label: 'Retail',
-      //       },
-      //       {
-      //             value: 'hospitality',
-      //             label: 'Hospitality',
-      //       },
-      //       {
-      //             value: 'manufacturing',
-      //             label: 'Manufacturing',
-      //       },
-      //       {
-      //             value: 'media',
-      //             label: 'Media & Entertainment',
-      //       },
-      //       {
-      //             value: 'agriculture',
-      //             label: 'Agriculture',
-      //       },
-      //       {
-      //             value: 'others',
-      //             label: 'Others',
-      //       },
-      // ];
 
       const companySize = [
             {

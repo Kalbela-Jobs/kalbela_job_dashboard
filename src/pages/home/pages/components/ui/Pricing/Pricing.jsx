@@ -9,42 +9,43 @@ const Pricing = () => {
             {
                   name: "Basic",
                   desc: "Perfect for small businesses hiring occasionally",
-                  price: 0,
+                  price: 2500,
                   isMostPop: false,
                   features: [
-                        "1 job post per month",
-                        "Access up to 100 candidate profiles",
-                        "Basic applicant tracking",
-                        "Email notifications for applications",
+                        "1 job post within 30 days",
+                        "Unlimited CV viewing",
+                        "AI integrated Algorithm",
+                        "1 Job Boosting",
                         "Standard customer support",
+                        "30 days validity"
                   ],
             },
             {
-                  name: "Startup",
-                  desc: "Ideal for growing businesses with regular hiring needs",
-                  price: 15,
+                  name: "Standard",
+                  desc: "Perfect for small businesses hiring frequently",
+                  price: 6500,
                   isMostPop: true,
                   features: [
-                        "Up to 10 job posts per month",
-                        "Access to 500 candidate profiles",
-                        "Advanced applicant tracking system",
-                        "Automated job recommendations",
+                        "6 job posts within validity period",
+                        "Unlimited CV viewing",
+                        "AI integrated Algorithm",
+                        "Boosting on 3 jobs added",
                         "Priority customer support",
-                        "Resume filtering & keyword search",
+                        "60 days validity",
                   ],
             },
             {
                   name: "Enterprise",
-                  desc: "Designed for large-scale recruitment and HR teams",
-                  price: 50,
+                  desc: "Perfect for large-scale recruitment and HR teams",
+                  price: 10500,
                   isMostPop: false,
                   features: [
                         "Unlimited job posts",
-                        "Access to unlimited candidate profiles",
-                        "AI-powered candidate matching",
-                        "Dedicated account manager",
-                        "Advanced analytics & reporting",
-                        "Custom API integrations",
+                        "Unlimited CV viewing",
+                        "AI integrated Algorithm",
+                        "Boosting on 5 jobs added",
+                        "Priority customer support",
+                        "90 days validity",
                   ],
             },
       ];
@@ -78,7 +79,7 @@ const Pricing = () => {
                                                             {item.name}
                                                       </span>
                                                       <div className='text-gray-50 text-3xl font-semibold'>
-                                                            ${item.price} <span className="text-xl text-gray-400 font-normal">/mo</span>
+                                                            <span className=' text-gray-400 kalpurush'>৳ {" "}</span> {item.price}<span className='text-sm text-gray-400'>{" "}BDT</span>
                                                       </div>
                                                       <p className="text-gray-400">
                                                             {item.desc}
