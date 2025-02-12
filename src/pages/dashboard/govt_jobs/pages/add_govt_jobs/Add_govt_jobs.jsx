@@ -7,6 +7,7 @@ import moment from "moment"
 import { Kalbela_AuthProvider } from "../../../../../context/MainContext"
 import uploadImage from "../../../../../hooks/upload_image"
 import { desc } from "framer-motion/client"
+import JoditEditor, { Jodit } from "jodit-react"
 
 const { Option } = Select
 
@@ -43,6 +44,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                         const jobData = {
                               title: values[`title_${index}`],
                               hyperlink: values.hyperlink,
+                              description: values.description,
                               organization: JSON.parse(values.org_info),
                               advertisementNo: values.advertisementNo,
                               vacancy: values[`vacancy_${index}`],
@@ -51,6 +53,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                               uploadDocument: values.document_url,  // Attach the document URL
                         };
 
+                        console.log(jobData, 'job_data')
                         // Send each job data to the backend
                         const response = await fetch(`${base_url}/jobs/create-govt-jobs`, {
                               method: "POST",
@@ -119,7 +122,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
 
 
 
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-6">
                               <Form.Item
                                     name="org_info"
                                     label="Organization"
@@ -134,7 +137,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                                           }
                                     >
                                           {organizations.map((org) => (
-                                                <Option key={org._id} value={JSON.stringify({ id: org._id, name: org.name, logo: org.logo, description: org.description })}>
+                                                <Option key={org._id} value={JSON.stringify({ id: org._id, name: org.name, logo: org.logo, description: org.description, website: org?.org_website })}>
                                                       <div className="flex items-center gap-2">
                                                             <img src={org.logo || "/placeholder.svg"} alt={org.name} className="w-6 h-6 rounded-full" />
                                                             <span>{org.name}</span>
@@ -149,6 +152,13 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                                     rules={[{ required: true, message: "Please enter advertisement number" }]}
                               >
                                     <Input placeholder="Enter advertisement number" />
+                              </Form.Item>
+                              <Form.Item
+                                    name="publicationDate"
+                                    label="Publication Date"
+                                    rules={[{ required: true, message: "Please enter publication date" }]}
+                              >
+                                    <DatePicker className="w-full" placeholder="Pick a date" format="DD MMM YYYY hh:mm a" />
                               </Form.Item>
 
 
@@ -167,6 +177,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                               >
                                     <DatePicker disabledDate={disabledDeadlineDates} className="w-full" placeholder="Pick a date" format="DD MMM YYYY hh:mm a" />
                               </Form.Item>
+
 
 
                               <Form.Item
@@ -189,6 +200,13 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                               </Form.Item>
                         </div>
 
+                        <Form.Item
+                              name='description'
+                              label='Description'
+                              rules={[{ required: true, message: "Please enter description" }]}
+                        >
+                              <JoditEditor />
+                        </Form.Item>
 
                         <Divider />
                         {jobFields.map((field, index) => (

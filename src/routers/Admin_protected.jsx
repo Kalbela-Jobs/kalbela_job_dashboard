@@ -1,12 +1,13 @@
 import Lottie from "lottie-react";
 import { Kalbela_AuthProvider } from "../context/MainContext";
 import groovyWalkAnimation from "./Loading.json";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 
 const Admin_protected = ({ children }) => {
       const { user, loading } = useContext(Kalbela_AuthProvider)
       const location = useLocation()
+      const navigate = useNavigate()
 
       if (loading) {
             return (
@@ -17,8 +18,14 @@ const Admin_protected = ({ children }) => {
                   </>
             )
       }
+      if (user.role === 'workspace_admin' && !user.workspace?._id) {
+            navigate('/create-workspace', { replace: true });
+      }
+      else {
+            navigate("/admin", { replace: true });
+      }
 
-      if (!loading && user) {
+      if (!loading && user.role === 'workspace_admin' && !user.workspace?._id) {
             return children
       }
 

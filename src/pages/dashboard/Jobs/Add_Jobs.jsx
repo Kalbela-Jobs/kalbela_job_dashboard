@@ -78,7 +78,7 @@ const Add_Jobs = () => {
 
 
 
-      console.log(workspace_data, "workspace_data");
+
 
       const { data: categoryOptions = [], } = useQuery({
             queryKey: ["categoryOptions"],
@@ -92,6 +92,7 @@ const Add_Jobs = () => {
             },
 
       });
+
       const { data: jobTypeOptions = [], } = useQuery({
             queryKey: ["jobTypeOptions"],
             queryFn: async () => {
@@ -112,30 +113,33 @@ const Add_Jobs = () => {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(data),
                   });
-                  const result = await response.json(); // Assuming the API returns a JSON response
-                  return result.data; // Assuming `result.data` contains the full job description string
+
+                  if (!response.ok) throw new Error("Failed to fetch job description");
+
+                  const result = await response.json(); // Assuming API returns a JSON object
+                  return result.data; // Assuming `result.data` contains the full HTML job description
             },
             onSuccess: (data) => {
                   try {
-                        // Parse the job description to extract responsibilities
-                        const responsibilitiesStart = data.indexOf("Responsibilities:");
-                        const requirementsStart = data.indexOf("Requirements:");
-                        console.log("responsibilitiesStart", responsibilitiesStart, requirementsStart);
+                        // Use DOMParser to parse rich-text content
+                        const parser = new DOMParser();
 
-                        // Extract responsibilities and job description
-                        const jobDescription = data.substring(0, responsibilitiesStart).trim();
-                        const responsibilities = data
-                              .substring(responsibilitiesStart + "Responsibilities:".length, requirementsStart)
-                              .trim();
-                        console.log(jobDescription, responsibilities, 'result');
-                        // Set state with extracted data
-                        setJobDescription(jobDescription);
-                        setResponsibilities(responsibilities.split("\n").filter(Boolean)); // Split into array by line and remove empty lines
 
-                        message.success("Job description and responsibilities generated successfully!");
+                        // Set state with extracted content
+                        setJobDescription(data.jobDescription);
+                        setResponsibilities(data.responsibilities);
+                        setBenefit(data.benefits);
+
+                        form.setFieldsValue({
+                              job_description: data.jobDescription,
+                              responsibilities: data.responsibilities,
+                              benefit: data.benefits,
+                        })
+
+                        message.success("Job description, responsibilities, and benefits generated successfully!");
                   } catch (error) {
-                        console.error("Error parsing job description:", error);
-                        message.error("Failed to process the job description.");
+                        console.error("Error processing job description:", error);
+                        message.error("Failed to parse the job description.");
                   }
             },
             onError: () => {
@@ -144,20 +148,45 @@ const Add_Jobs = () => {
       });
 
 
+
+
       const handleGenerateDescription = () => {
-            const jobTitle = form.getFieldValue("job_title");
-            const skills = form.getFieldValue("skills");
-            const companyName = form.getFieldValue("Bright Future Soft");
-            if (jobTitle && skills) {
-                  generateJobDescriptionMutation.mutate({ jobTitle, skills, companyName });
-            } else {
-                  message.warning("Please enter a job title and select skills before generating");
+            let workspace_info = workspace;
+            if (form.getFieldValue("company_data")) {
+                  workspace_info = workspace_data.find(workspace => workspace._id === form.getFieldValue("company_data"))
             }
-      };
+            console.log(workspace_info);
+            const jobTitle = form.getFieldValue("job_title")
+            const skills = form.getFieldValue("skills")
+            const jobType = form.getFieldValue("job_type")
+            const experienceLevel = form.getFieldValue("experience_level")
+            const category = form.getFieldValue("category")
+            const company_info = {
+                  name: workspace_info?.company_name,
+                  logo: workspace_info.logo,
+                  website: workspace_info.company_website,
+                  company_size: workspace_info.company_size,
+                  industry: workspace_info.industry,
+                  about: workspace_info.description,
+                  company_id: workspace_info._id,
+                  company_address: workspace_info?.address ?? "",
+            }
+
+            if (jobTitle && skills) {
+                  generateJobDescriptionMutation.mutate({
+                        jobTitle,
+                        skills,
+                        jobType,
+                        experienceLevel,
+                        category,
+                        company_info,
+                  })
+            } else {
+                  message.warning("Please enter a job title and select skills before generating")
+            }
+      }
 
       const onFinish = async (values) => {
-
-
 
             values?.salary_range && (values.salary_range.currency = 'BDT');
             let workspace_info = workspace;
@@ -260,42 +289,6 @@ const Add_Jobs = () => {
                                           placeholder="Select a company"
                                     />
                               </Form.Item>}
-
-                              <Form.Item name="skills" label="Skills" rules={[{ required: true }]}>
-                                    <Select showSearch options={skills} mode="tags" style={{ width: '100%' }} placeholder="Select or add skills" />
-                              </Form.Item>
-
-                              <div className="flex justify-between items-center mb-4">
-                                    <Title level={4}>Job Description</Title>
-                                    <Button onClick={handleGenerateDescription} loading={generateJobDescriptionMutation.isLoading}>
-                                          Generate with AI
-                                    </Button>
-                              </div>
-
-                              <Form.Item name="job_description" label="Job Description" rules={[{ required: true }]}>
-                                    <ReactQuill theme="snow" value={jobDescription} onChange={setJobDescription} />
-                              </Form.Item>
-
-                              <Form.Item name="responsibilities" label="Responsibilities" rules={[{ required: true }]}>
-                                    <ReactQuill theme="snow" value={responsibilities} onChange={setResponsibilities} />
-                              </Form.Item>
-                              <Form.Item name="benefit" label="Benefits" rules={[{ required: true }]}>
-                                    <ReactQuill theme="snow" value={benefit} onChange={setBenefit} />
-                              </Form.Item>
-
-                              <div className="flex space-x-4">
-                                    <Form.Item className="w-full" name="vacancy" label="Number of Vacancies" rules={[{ required: false }]}>
-                                          <Input placeholder="Number of Vacancies" type="number" />
-                                    </Form.Item>
-                                    <Form.Item className="w-full" name="expiry_date" label="Deadline" rules={[{ required: true }]}>
-                                          <DatePicker disabledDate={(current) => current && current.isBefore(new Date(), "day")} format="DD-MM-YYYY" className="w-full" />
-                                    </Form.Item>
-                                    <Form.Item className="w-full" name="experience_level" label="Experience Level" rules={[{ required: true }]}>
-                                          <Select placeholder="Select an experience level" options={experienceLevelOptions} />
-                                    </Form.Item>
-                              </div>
-
-
                               <div className="flex space-x-4">
                                     <Form.Item className="w-full" name="category" label="Category" rules={[{ required: true }]}>
                                           <Select placeholder="Select a category" showSearch filterOption={(input, option) =>
@@ -339,6 +332,26 @@ const Add_Jobs = () => {
                                     </Form.Item>
 
                               </div>
+
+                              <Form.Item name="skills" label="Skills" rules={[{ required: true }]}>
+                                    <Select showSearch options={skills} mode="tags" style={{ width: '100%' }} placeholder="Select or add skills" />
+                              </Form.Item>
+
+
+                              <div className="flex space-x-4">
+                                    <Form.Item className="w-full" name="vacancy" label="Number of Vacancies" rules={[{ required: false }]}>
+                                          <Input placeholder="Number of Vacancies" type="number" />
+                                    </Form.Item>
+                                    <Form.Item className="w-full" name="expiry_date" label="Deadline" rules={[{ required: true }]}>
+                                          <DatePicker disabledDate={(current) => current && current.isBefore(new Date(), "day")} format="DD-MM-YYYY" className="w-full" />
+                                    </Form.Item>
+                                    <Form.Item className="w-full" name="experience_level" label="Experience Level" rules={[{ required: true }]}>
+                                          <Select placeholder="Select an experience level" options={experienceLevelOptions} />
+                                    </Form.Item>
+                              </div>
+
+
+
 
                               <Form.Item name="salary_negotiable" valuePropName="checked">
                                     <Checkbox onClick={(e) => setIsNegotiable(e.target.checked)}>Salary Negotiable</Checkbox>
@@ -417,6 +430,60 @@ const Add_Jobs = () => {
 
 
 
+                              <div className="flex justify-between items-center mb-4">
+                                    <Title level={4}>Job Description</Title>
+                                    <Button onClick={handleGenerateDescription} loading={generateJobDescriptionMutation.isLoading}>
+                                          Generate with AI
+                                    </Button>
+                              </div>
+
+
+                              <Form.Item name="job_description" label="Job Description" rules={[{ required: true }]}>
+                                    <ReactQuill
+                                          theme="snow"
+                                          value={jobDescription}
+                                          onChange={(value) => {
+                                                setJobDescription(value)
+                                                form.setFieldsValue({ job_description: value })
+                                          }}
+                                    />
+                              </Form.Item>
+
+                              <Form.Item name="responsibilities" label="Responsibilities" rules={[{ required: true }]}>
+                                    <ReactQuill
+                                          theme="snow"
+                                          value={responsibilities}
+                                          onChange={(value) => {
+                                                setResponsibilities(value)
+                                                form.setFieldsValue({ responsibilities: value })
+                                          }}
+                                    />
+                              </Form.Item>
+
+                              <Form.Item name="benefit" label="Benefits" rules={[{ required: true }]}>
+                                    <ReactQuill
+                                          theme="snow"
+                                          value={benefit}
+                                          onChange={(value) => {
+                                                setBenefit(value)
+                                                form.setFieldsValue({ benefit: value })
+                                          }}
+                                    />
+                              </Form.Item>
+
+                              {/* <Form.Item name="job_description" label="Job Description" rules={[{ required: true }]}>
+                                    <ReactQuill theme="snow" value={jobDescription} onChange={setJobDescription} />
+                              </Form.Item>
+
+                              <Form.Item name="responsibilities" label="Responsibilities" rules={[{ required: true }]}>
+                                    <ReactQuill theme="snow" value={responsibilities} onChange={setResponsibilities} />
+                              </Form.Item>
+                              <Form.Item name="benefit" label="Benefits" rules={[{ required: true }]}>
+                                    <ReactQuill theme="snow" value={benefit} onChange={setBenefit} />
+                              </Form.Item> */}
+
+
+
 
                               <div className="flex space-x-4">
 
@@ -456,7 +523,7 @@ const Add_Jobs = () => {
                               </Form.Item>
                         </Form>
                   </Card>
-            </div>
+            </div >
       );
 };
 

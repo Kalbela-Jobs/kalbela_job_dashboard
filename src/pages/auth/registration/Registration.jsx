@@ -1,20 +1,21 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import animation from "../../../assets/animation/log_in.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useContext } from "react";
 import { Kalbela_AuthProvider } from "../../../context/MainContext";
 import { message } from "antd";
 import sweet_alert from "../../../utils/custom_alert";
 import Lottie from "lottie-react";
+import { getRedirectResult } from "firebase/auth";
 
 export default function Registration() {
       const location = useLocation();
       const navigate = useNavigate();
       const [isPasswordVisible, setPasswordVisible] = useState(false);
 
-      const { googleLogin, setUser, setCookie, base_url, } = useContext(Kalbela_AuthProvider);
+      const { handleRedirectResult, googleLogin, setUser, setCookie, base_url, } = useContext(Kalbela_AuthProvider);
 
 
       const data_submit = (e) => {
@@ -51,170 +52,24 @@ export default function Registration() {
                   })
       };
 
-      const handlerGoogleLogin = () => {
-            googleLogin()
-                  .then(() => {
-                        // Always redirect to /admin
-                        navigate('/admin', { replace: true });
-                  })
-                  .catch((error) => {
-                        console.log(error.message);
-                  });
+
+      const handlerGoogleLogin = async () => {
+            await googleLogin();
+      }
+
+
+      const checkRedirect = () => {
+            handleRedirectResult(); // Check for redirect result after login
       };
+      useEffect(() => {
+            checkRedirect();
+      }, []);
 
 
 
 
       return (
-            // <section className="bg-white">
-            //       <div className="grid grid-cols-1 lg:grid-cols-2 h-screen">
-            //             <div className="lg:relative hidden lg:flex items-end px-4 pb-10 pt-60 sm:pb-16 md:justify-center lg:pb-24 bg-gray-50 sm:px-6 lg:px-8">
-            //                   <div className="absolute inset-0">
 
-            //                         <Lottie
-            //                               className="object-cover w-full h-full"
-            //                               animationData={animation}
-            //                         />
-            //                   </div>
-            //                   <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
-            //                   <div className="relative">
-            //                         <div className="w-full max-w-xl xl:w-full xl:mx-auto xl:pr-24 xl:max-w-xl">
-            //                               <h3 className="text-4xl font-bold text-white">
-            //                                     Join 35k+ job seekers & recruiters find your perfect match
-            //                                     today!
-            //                               </h3>
-            //                               <ul className="grid grid-cols-1 mt-10 sm:grid-cols-2 gap-x-8 gap-y-4">
-            //                                     <li className="flex items-center space-x-3">
-            //                                           <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-            //                                                 <svg
-            //                                                       className="w-3.5 h-3.5 text-white"
-            //                                                       xmlns="http://www.w3.org/2000/svg"
-            //                                                       viewBox="0 0 20 20"
-            //                                                       fill="currentColor"
-            //                                                 >
-            //                                                       <path
-            //                                                             fillRule="evenodd"
-            //                                                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-            //                                                             clipRule="evenodd"
-            //                                                       />
-            //                                                 </svg>
-            //                                           </div>
-            //                                           <span className="text-lg font-medium text-white">
-            //                                                 AI Job Matching
-            //                                           </span>
-            //                                     </li>
-            //                                     <li className="flex items-center space-x-3">
-            //                                           <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-            //                                                 <svg
-            //                                                       className="w-3.5 h-3.5 text-white"
-            //                                                       xmlns="http://www.w3.org/2000/svg"
-            //                                                       viewBox="0 0 20 20"
-            //                                                       fill="currentColor"
-            //                                                 >
-            //                                                       <path
-            //                                                             fillRule="evenodd"
-            //                                                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-            //                                                             clipRule="evenodd"
-            //                                                       />
-            //                                                 </svg>
-            //                                           </div>
-            //                                           <span className="text-lg font-medium text-white">
-            //                                                 Resume Builder
-            //                                           </span>
-            //                                     </li>
-            //                                     <li className="flex items-center space-x-3">
-            //                                           <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-            //                                                 <svg
-            //                                                       className="w-3.5 h-3.5 text-white"
-            //                                                       xmlns="http://www.w3.org/2000/svg"
-            //                                                       viewBox="0 0 20 20"
-            //                                                       fill="currentColor"
-            //                                                 >
-            //                                                       <path
-            //                                                             fillRule="evenodd"
-            //                                                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-            //                                                             clipRule="evenodd"
-            //                                                       />
-            //                                                 </svg>
-            //                                           </div>
-            //                                           <span className="text-lg font-medium text-white">
-            //                                                 Job Alerts
-            //                                           </span>
-            //                                     </li>
-            //                                     <li className="flex items-center space-x-3">
-            //                                           <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full">
-            //                                                 <svg
-            //                                                       className="w-3.5 h-3.5 text-white"
-            //                                                       xmlns="http://www.w3.org/2000/svg"
-            //                                                       viewBox="0 0 20 20"
-            //                                                       fill="currentColor"
-            //                                                 >
-            //                                                       <path
-            //                                                             fillRule="evenodd"
-            //                                                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-            //                                                             clipRule="evenodd"
-            //                                                       />
-            //                                                 </svg>
-            //                                           </div>
-            //                                           <span className="text-lg font-medium text-white">
-            //                                                 Advanced Filters
-            //                                           </span>
-            //                                     </li>
-            //                               </ul>
-            //                         </div>
-            //                   </div>
-            //             </div>
-            //             <div className="flex items-center justify-center px-4 py-10 bg-white sm:px-6 lg:px-8 sm:py-16 lg:py-24">
-            //                   <div className="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
-            //                         <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">
-            //                               Sign up to Celebration
-            //                         </h2>
-            //                         <p className="mt-2 text-base text-gray-600">
-            //                               Already have an account?
-            //                               <Link
-            //                                     to="/sign-in"
-            //                                     title=""
-            //                                     className="font-medium text-blue-600 transition-all duration-200 hover:text-blue-700 focus:text-blue-700 hover:underline"
-            //                               >
-            //                                     {" "}
-            //                                     Sign In
-            //                               </Link>
-            //                         </p>
-
-            //                         <div className="mt-3 space-y-3">
-            //                               <button
-            //                                     onClick={handlerGoogleLogin}
-            //                                     type="button"
-            //                                     className="relative inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none"
-            //                               >
-            //                                     <div className="absolute inset-y-0 left-0 p-4">
-            //                                           <img
-            //                                                 className="w-6 h-6 text-[#2563EB]"
-            //                                                 src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
-            //                                                 alt=""
-            //                                           />
-            //                                     </div>
-            //                                     Sign up with Google
-            //                               </button>
-            //                               <button
-            //                                     type="button"
-            //                                     className="relative inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none"
-            //                               >
-            //                                     <div className="absolute inset-y-0 left-0 p-4">
-            //                                           <img
-            //                                                 className="w-6 h-6 text-[#2563EB]"
-            //                                                 src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png"
-            //                                                 alt=""
-            //                                           />
-            //                                     </div>
-            //                                     Sign up with Linkedin
-            //                               </button>
-            //                         </div>
-
-            //                   </div>
-            //             </div>
-            //       </div>
-            // </section>
             <section className="py-12 bg-gray-900 sm:py-16 lg:py-20">
                   <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
                         <div className="grid grid-cols-1 items-center gap-y-12 lg:gap-x-20 lg:grid-cols-2 2xl:gap-x-20">
@@ -378,7 +233,7 @@ export default function Registration() {
                                           </div>
                                           <div className="mt-6">
                                                 <button
-                                                      onClick={googleLogin}
+                                                      onClick={handlerGoogleLogin}
                                                       type="button"
                                                       className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold leading-5 text-gray-600 transition-all duration-200 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 hover:bg-gray-50 hover:text-gray-900"
                                                 >

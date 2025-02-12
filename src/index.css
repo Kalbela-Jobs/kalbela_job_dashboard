@@ -189,3 +189,76 @@
 .font-poppins {
   font-family: "Poppins", sans-serif;
 }
+
+
+.custom-calendar.dark .ant-picker-calendar {
+      background-color: #1f2937;
+      color: white;
+}
+
+.custom-calendar.dark .ant-picker-calendar-header {
+      background-color: #374151;
+}
+
+.custom-calendar.dark .ant-picker-cell {
+      color: #d1d5db;
+}
+
+.custom-calendar.dark .ant-picker-cell-in-view {
+      color: white;
+}
+
+.custom-calendar.dark .ant-picker-cell-selected .ant-picker-cell-inner {
+      background-color: #4f46e5;
+}
+
+.dark-modal .ant-modal-content,
+.dark-modal .ant-modal-header {
+      background-color: #1f2937;
+      color: white;
+}
+
+.dark-modal .ant-modal-title {
+      color: white;
+}
+
+.dark-modal .ant-modal-close-x {
+      color: white;
+}
+
+.shadow-3xl {
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.ant-picker-calendar-date-today {
+      border-color: #4f46e5 !important;
+}
+
+.ant-picker-calendar-date:hover {
+      background-color: rgba(79, 70, 229, 0.1);
+}
+
+.custom-calendar .ant-picker-calendar-date-content {
+      height: 60px;
+}
+
+.custom-calendar.dark .ant-picker-calendar-date:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+}
+
+.ant-popover-inner {
+      border-radius: 8px;
+}
+
+.dark .ant-popover-inner {
+      background-color: #374151;
+}
+
+.dark .ant-popover-title {
+      color: white;
+      border-bottom: 1px solid #4b5563;
+}
+
+.dark .ant-popover-inner-content {
+      color: #d1d5db;
+}

@@ -36,6 +36,7 @@ const AddGovtOrgWithTable = () => {
                   name: values.govtOrgName,
                   description: values.orgDescription,
                   logo: await uploadImage(orgLogo),
+                  org_website: values.org_website,
             };
 
             console.log(newOrganization, 'newOrganization');
@@ -209,6 +210,14 @@ const AddGovtOrgWithTable = () => {
                                     >
                                           <Button icon={<UploadOutlined />}>Upload Logo</Button>
                                     </Upload>
+                              </Form.Item>
+
+                              <Form.Item
+                                    name="org_website"
+                                    label="Govt Organization Website"
+                                    rules={[{ required: false, message: "Please input the government organization website!" }]}
+                              >
+                                    <Input />
                               </Form.Item>
 
                               {/* Submit Button */}

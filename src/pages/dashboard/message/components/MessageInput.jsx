@@ -3,6 +3,8 @@ import EmojiPicker from 'emoji-picker-react';
 import '../style/chat.css';
 import '../style/messenger.css';
 import '../style/sidebar.css';
+import { Delete, Pause, Play, Send, SendHorizontal, Trash } from 'lucide-react';
+import { DeleteColumnOutlined } from '@ant-design/icons';
 
 function MessageInput({ onSendMessage }) {
       const [message, setMessage] = useState('');
@@ -15,20 +17,36 @@ function MessageInput({ onSendMessage }) {
       const recordingInterval = useRef(null);
       const mediaRecorderRef = useRef(null);
 
+      const emojiPickerRef = useRef(null); // Reference for the emoji picker container
+      const emojiButtonRef = useRef(null); // Reference for the emoji button
+
+      // Close emoji picker when clicking outside
       useEffect(() => {
-            return () => {
-                  if (recordingInterval.current) {
-                        clearInterval(recordingInterval.current);
+            const handleClickOutside = (event) => {
+                  if (
+                        emojiPickerRef.current &&
+                        !emojiPickerRef.current.contains(event.target) &&
+                        emojiButtonRef.current &&
+                        !emojiButtonRef.current.contains(event.target)
+                  ) {
+                        setShowEmoji(false);
                   }
+            };
+
+            document.addEventListener('mousedown', handleClickOutside); // Listen for click events
+
+            return () => {
+                  document.removeEventListener('mousedown', handleClickOutside); // Clean up the event listener
             };
       }, []);
 
       const handleSend = () => {
             if (message.trim() || attachments.length > 0 || audioBlob) {
+                  console.log('Sending message:', message, attachments, audioBlob);
                   onSendMessage({
                         text: message,
                         attachments: attachments,
-                        audio: audioBlob
+                        audio: audioBlob,
                   });
                   setMessage('');
                   setAttachments([]);
@@ -66,7 +84,7 @@ function MessageInput({ onSendMessage }) {
                   setIsRecording(true);
                   setRecordingTime(0);
                   recordingInterval.current = setInterval(() => {
-                        setRecordingTime(prev => prev + 1);
+                        setRecordingTime((prev) => prev + 1);
                   }, 1000);
             } catch (error) {
                   console.error('Error accessing microphone:', error);
@@ -76,7 +94,7 @@ function MessageInput({ onSendMessage }) {
       const stopRecording = () => {
             if (mediaRecorderRef.current) {
                   mediaRecorderRef.current.stop();
-                  mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+                  mediaRecorderRef.current.stream.getTracks().forEach((track) => track.stop());
             }
             setIsRecording(false);
             clearInterval(recordingInterval.current);
@@ -90,23 +108,27 @@ function MessageInput({ onSendMessage }) {
 
       const handleFileChange = (e) => {
             const files = Array.from(e.target.files || []);
-            const newAttachments = files.map(file => ({
+            const newAttachments = files.map((file) => ({
                   id: Math.random().toString(),
                   file,
-                  preview: URL.createObjectURL(file)
+                  preview: URL.createObjectURL(file),
             }));
-            setAttachments(prev => [...prev, ...newAttachments]);
+            setAttachments((prev) => [...prev, ...newAttachments]);
       };
 
       const removeAttachment = (id) => {
-            setAttachments(prev => prev.filter(att => att.id !== id));
+            setAttachments((prev) => prev.filter((att) => att.id !== id));
+      };
+
+      const toggleEmojiPicker = () => {
+            setShowEmoji((prev) => !prev);
       };
 
       return (
-            <div className="message-input-container">
+            <div className="message-input-container relative">
                   {attachments.length > 0 && (
                         <div className="attachment-preview">
-                              {attachments.map(att => (
+                              {attachments.map((att) => (
                                     <div key={att.id} className="preview-item">
                                           <img src={att.preview} alt="attachment" />
                                           <button
@@ -121,18 +143,17 @@ function MessageInput({ onSendMessage }) {
                   )}
 
                   {audioBlob && (
-                        <div className="audio-preview">
-                              <audio controls src={URL.createObjectURL(audioBlob)} />
-                              <button onClick={() => setAudioBlob(null)}>Remove</button>
+                        <div className="audio-preview flex gap-2 items-center">
+                              {/* <audio controls src={URL.createObjectURL(audioBlob)} /> */}
+                              <AudioPlayer audioUrl={URL.createObjectURL(audioBlob)} />
+                              <button onClick={() => setAudioBlob(null)}><Trash className='text-gray-300' /></button>
                         </div>
                   )}
 
                   {isRecording ? (
                         <div className="voice-recording">
                               <button className="action-button" onClick={stopRecording}>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                          <rect x="6" y="6" width="12" height="12" />
-                                    </svg>
+                                    <Play />
                               </button>
                               <div className="recording-wave">
                                     {[...Array(20)].map((_, i) => (
@@ -165,8 +186,9 @@ function MessageInput({ onSendMessage }) {
                                           style={{ display: 'none' }}
                                     />
                                     <button
+                                          ref={emojiButtonRef} // Assign ref to emoji button
                                           className="action-button"
-                                          onClick={() => setShowEmoji(!showEmoji)}
+                                          onClick={toggleEmojiPicker}
                                     >
                                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                                 <circle cx="12" cy="12" r="10" />
@@ -175,6 +197,18 @@ function MessageInput({ onSendMessage }) {
                                                 <line x1="15" y1="9" x2="15.01" y2="9" />
                                           </svg>
                                     </button>
+
+                                    {showEmoji && (
+                                          <div className="absolute bottom-12 left-20 z-10" ref={emojiPickerRef}>
+                                                <EmojiPicker
+                                                      onEmojiClick={(emojiObject) => {
+                                                            setMessage((prev) => prev + emojiObject.emoji);
+                                                      }}
+                                                      disableAutoFocus
+                                                      native
+                                                />
+                                          </div>
+                                    )}
                               </div>
 
                               <textarea
@@ -187,10 +221,7 @@ function MessageInput({ onSendMessage }) {
                               />
 
                               <div className="message-actions">
-                                    <button
-                                          className="action-button"
-                                          onClick={startRecording}
-                                    >
+                                    <button className="action-button" onClick={startRecording}>
                                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                                 <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
                                                 <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
@@ -199,27 +230,12 @@ function MessageInput({ onSendMessage }) {
                                           </svg>
                                     </button>
                                     <button
-                                          className="action-button primary"
+                                          className="text-blue-500 !text-xs hover:text-blue-600 bg-gray-600 hover:bg-gray-700 size-8 flex justify-center items-center rounded-full transition-colors"
                                           onClick={handleSend}
                                     >
-                                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <line x1="22" y1="2" x2="11" y2="13" />
-                                                <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                                          </svg>
+                                          <Send className='!text-xs' />
                                     </button>
                               </div>
-                        </div>
-                  )}
-
-                  {showEmoji && (
-                        <div className="emoji-picker-container">
-                              <EmojiPicker
-                                    onEmojiClick={(emojiObject) => {
-                                          setMessage(prev => prev + emojiObject.emoji);
-                                    }}
-                                    disableAutoFocus
-                                    native
-                              />
                         </div>
                   )}
             </div>
@@ -227,3 +243,122 @@ function MessageInput({ onSendMessage }) {
 }
 
 export default MessageInput;
+
+
+const AudioPlayer = ({ audioUrl }) => {
+      const audioRef = useRef(null)
+      const canvasRef = useRef(null)
+      const [isPlaying, setIsPlaying] = useState(false)
+      const [currentTime, setCurrentTime] = useState(0)
+      const [duration, setDuration] = useState(0)
+      const animationRef = useRef()
+
+      // Format time as mm:ss
+      const formatTime = (time) => {
+            const minutes = Math.floor(time / 60)
+            const seconds = Math.floor(time % 60)
+            return `${minutes}:${seconds.toString().padStart(2, "0")}`
+      }
+
+      // Toggle play/pause
+      const togglePlayPause = () => {
+            if (!audioRef.current) return
+
+            if (isPlaying) {
+                  audioRef.current.pause()
+                  cancelAnimationFrame(animationRef.current)
+            } else {
+                  audioRef.current.play()
+                  animationRef.current = requestAnimationFrame(drawWaveform)
+            }
+            setIsPlaying(!isPlaying)
+      }
+
+      // Draw waveform visualization
+      const drawWaveform = () => {
+            if (!audioRef.current || !canvasRef.current) return
+
+            const canvas = canvasRef.current
+            const ctx = canvas.getContext("2d")
+            const audio = audioRef.current
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+            // Draw waveform bars
+            ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
+            const barWidth = 3
+            const barGap = 2
+            const barCount = Math.floor(canvas.width / (barWidth + barGap))
+
+            for (let i = 0; i < barCount; i++) {
+                  // Generate random heights for demo - in real app would use audio analysis
+                  const height = Math.random() * (canvas.height * 0.8) + canvas.height * 0.2
+                  const x = i * (barWidth + barGap)
+                  const y = (canvas.height - height) / 2
+
+                  ctx.fillRect(x, y, barWidth, height)
+            }
+
+            if (!audio.ended) {
+                  animationRef.current = requestAnimationFrame(drawWaveform)
+            } else {
+                  setIsPlaying(false)
+            }
+      }
+
+      // Update time display
+      const handleTimeUpdate = () => {
+            if (!audioRef.current) return
+            setCurrentTime(audioRef.current.currentTime)
+      }
+
+      // Set initial duration
+      const handleLoadedMetadata = () => {
+            if (!audioRef.current) return
+            setDuration(audioRef.current.duration)
+      }
+
+      // Handle audio end
+      const handleEnded = () => {
+            setIsPlaying(false)
+            cancelAnimationFrame(animationRef.current)
+      }
+
+      // Cleanup animation on unmount
+      useEffect(() => {
+            return () => {
+                  if (animationRef.current) {
+                        cancelAnimationFrame(animationRef.current)
+                  }
+            }
+      }, [])
+
+      return (
+            <div className="flex items-center gap-4 px-4 py-2 bg-blue-600 rounded-lg w-fit">
+                  <button
+                        onClick={togglePlayPause}
+                        className="text-white hover:text-white/80 transition-colors"
+                        aria-label={isPlaying ? "Pause" : "Play"}
+                  >
+                        {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
+                  </button>
+
+                  <div className="relative w-40 h-8">
+                        <canvas ref={canvasRef} width={160} height={32} className="absolute inset-0" />
+                  </div>
+
+                  <span className="text-sm text-white min-w-[48px]">
+                        {isPlaying ? formatTime(currentTime) : formatTime(duration)}
+                  </span>
+
+                  <audio
+                        ref={audioRef}
+                        onTimeUpdate={handleTimeUpdate}
+                        onLoadedMetadata={handleLoadedMetadata}
+                        onEnded={handleEnded}
+                        src={audioUrl}
+                  />
+            </div>
+      )
+}

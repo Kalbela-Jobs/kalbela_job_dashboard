@@ -1,13 +1,22 @@
 
 import { Link } from "react-router-dom";
 import Brand from "../Brand";
+import UserMenu from "../Navbar/UserMenu";
+import { useContext } from "react";
+import { Kalbela_AuthProvider } from "../../../../../../context/MainContext";
 
-const NavHeader = ({ onClick, state, menuBtnEl }) => (
-      <div className="flex items-center justify-between py-5 md:block">
+
+const NavHeader = ({ onClick, state, menuBtnEl }) => {
+      const { loginOut, user } = useContext(Kalbela_AuthProvider)
+      return (<div className="flex items-center justify-between py-5 md:block" >
             <Link href="/">
                   <Brand />
             </Link>
-            <div className="md:hidden">
+
+            <div className="md:hidden flex gap-2 items-center">
+                  <div className='lg:hidden block'>
+                        <UserMenu loginOut={loginOut} user={user} />
+                  </div>
                   <button role="button" aria-label="Open the menu" ref={menuBtnEl || null} className="text-gray-400 hover:text-gray-50"
                         onClick={onClick}
                   >
@@ -25,6 +34,7 @@ const NavHeader = ({ onClick, state, menuBtnEl }) => (
                   </button>
             </div>
       </div>
-)
+      )
+}
 
 export default NavHeader

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { Kalbela_AuthProvider } from '../../../../../../context/MainContext'
 import { Avatar, Dropdown, Menu } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
+import UserMenu from './UserMenu'
 
 const Navbar = () => {
 
@@ -28,13 +29,14 @@ const Navbar = () => {
       }, [])
 
       return (
-            <header className='sticky top-0 z-50 bg-gray-900'>
+            <header className='sticky -top-1 z-50 bg-gray-900'>
                   <div className="custom-screen md:hidden">
                         <NavHeader menuBtnEl={menuBtnEl} state={state} onClick={() => setState(!state)} />
                   </div>
-                  <nav className={`pb-2 md:text-sm md:static md:block ${state ? "bg-gray-900 absolute z-20 top-0 inset-x-0 rounded-b-2xl shadow-xl md:bg-gray-900" : "hidden"}`}>
+                  <nav className={`pb-2 md:text-sm md:static md:block ${state ? "bg-gray-900  border-b border-opacity-35 absolute z-20 top-0 inset-x-0 rounded-b-2xl shadow-xl md:bg-gray-900" : "hidden"}`}>
                         <div className="custom-screen items-center md:flex">
                               <NavHeader state={state} onClick={() => setState(!state)} />
+
                               <div className={`flex-1 items-center mt-8 text-gray-300 md:font-medium md:mt-0 md:flex ${state ? 'block' : 'hidden'} `}>
                                     <ul className="flex-1 justify-center items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
                                           {
@@ -60,7 +62,9 @@ const Navbar = () => {
                                                 </svg>
                                           </NavLink>
                                     </div>
-                                          : <UserMenu loginOut={loginOut} user={user} />
+                                          : <div className='hidden lg:block'>
+                                                <UserMenu loginOut={loginOut} user={user} />
+                                          </div>
                                     }
                               </div>
                         </div>
@@ -70,43 +74,3 @@ const Navbar = () => {
 }
 
 export default Navbar
-
-      ;
-
-const UserMenu = ({ loginOut, user }) => {
-      const menu = (
-            <Menu className="w-48 shadow-md rounded-lg">
-                  <div className="p-3 border-b">
-                        <p className="text-sm font-semibold">{user.name}</p>
-                        <p className="text-xs text-gray-500">{user.email}</p>
-                  </div>
-                  <Menu.Item key="dashboard">
-                        <Link to="/admin">Dashboard</Link>
-                  </Menu.Item>
-                  <Menu.Item key="profile">
-                        <Link to="/admin/profile">Profile</Link>
-                  </Menu.Item>
-                  <Menu.Item key="settings">
-                        <Link to="/admin/settings">Settings</Link>
-                  </Menu.Item>
-                  <Menu.Divider />
-                  <Menu.Item key="logout">
-                        <button onClick={() => loginOut()}>Log out</button>
-                  </Menu.Item>
-            </Menu>
-      );
-
-      return (
-            <div className="flex items-center gap-x-4">
-                  <Dropdown overlay={menu} trigger={["click"]}>
-                        <div className="cursor-pointer">
-                              {user.avatar ? (
-                                    <Avatar src={user.avatar} size={40} />
-                              ) : (
-                                    <Avatar size={40} icon={<UserOutlined />} />
-                              )}
-                        </div>
-                  </Dropdown>
-            </div>
-      );
-};

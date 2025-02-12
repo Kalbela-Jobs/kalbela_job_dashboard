@@ -16,8 +16,7 @@ const Single_candidate = () => {
       const { id } = useParams();
       const { base_url } = useContext(Kalbela_AuthProvider);
 
-      console.log("Candidate ID:", id);
-      console.log("Base URL:", base_url);
+
 
       // Fetch candidate data
       const { data, isLoading, error } = useQuery({
@@ -42,6 +41,14 @@ const Single_candidate = () => {
       if (error) {
             return <div>Error: {error.message}</div>;
       }
+
+
+      const user_data = {
+            ...data.user,
+            user_id: data.user_id,
+      }
+
+
 
       const items = [
 
@@ -83,7 +90,7 @@ const Single_candidate = () => {
                               Conversation
                         </span>
                   ),
-                  children: <ConversationTimeline />,
+                  children: <ConversationTimeline candidate={user_data} />,
             },
       ]
 
