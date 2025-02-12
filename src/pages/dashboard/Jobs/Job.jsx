@@ -24,6 +24,7 @@ import {
       DeleteOutlined
 } from '@ant-design/icons'
 import { format, isValid } from "date-fns";
+import { Link } from "react-router-dom";
 
 
 const Job = () => {
@@ -309,7 +310,6 @@ const Job = () => {
                                     </div>
                               </div>
                               <div className="mt-4 flex justify-end">
-                                    {console.log(jobs, 'jobs')}
                                     <Pagination
                                           current={jobs?.current_page ?? 1}
                                           pageSize={pageSize ?? 10}
@@ -370,9 +370,9 @@ export function JobActions({ job, setModal, updateJobs, setDeleteModal }) {
                         </a>
                   </Menu.Item>
                   <Menu.Item key="view_candidates" icon={<EyeOutlined />}>
-                        <a href={`https://kalbelajobs.com/jobs/${job.url}`} target="_blank" rel="noopener noreferrer">
+                        <Link to={`/admin/jobs-candidate/${job.url}`} rel="noopener noreferrer">
                               View Candidates
-                        </a>
+                        </Link>
                   </Menu.Item>
                   <Menu.Divider />
                   <Menu.Item

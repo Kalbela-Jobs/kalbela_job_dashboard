@@ -5,6 +5,7 @@ import WorkspaceAccount from "../pages/auth/registration/Workspace";
 import About from "../pages/home/pages/about/About";
 import Features from "../pages/home/pages/components/ui/Features/Features";
 import Pricing from "../pages/home/pages/components/ui/Pricing/Pricing";
+import FAQ from "../pages/home/pages/faq/FAQ";
 
 import Home from "../pages/home/pages/home/Home";
 
@@ -37,6 +38,9 @@ const HomeRoute = [
       {
             path: 'features',
             element: <Features />
+      }, {
+            path: 'faqs',
+            element: <FAQ />
       }
 ];
 

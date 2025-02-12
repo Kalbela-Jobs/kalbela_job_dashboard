@@ -210,7 +210,7 @@ const Edit_jobs = ({ data, set_modal, refetch }) => {
                         </Form.Item>
 
                         <div className="flex space-x-4">
-                              <Form.Item className="w-full whitespace-nowrap" name="vacancy" label="Number of Vacancies" initialValue={data?.vacancy} rules={[{ required: true }]}>
+                              <Form.Item className="w-full whitespace-nowrap" name="vacancy" label="Number of Vacancies" initialValue={data?.vacancy} rules={[{ required: false }]}>
                                     <Input defaultValue={data?.vacancy} type="number" />
                               </Form.Item>
                               <Form.Item className="w-full" name="expiry_date" label="Deadline" initialValue={format(data?.expiry_date || new Date(), 'yyyy-MM-dd')} rules={[{ required: true }]}>

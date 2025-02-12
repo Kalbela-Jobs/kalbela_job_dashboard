@@ -32,6 +32,10 @@ import AddEditJobForm from "../pages/dashboard/govt_jobs/pages/add_govt_jobs/Add
 import Hero_logo from "../pages/dashboard/configaration/pages/Hero_logo/Hero_logo";
 import AddGovtOrgWithTable from "../pages/dashboard/govt_jobs/pages/add_govt_org/Add_govt_org";
 import SettingsPage from "../pages/dashboard/sittings/Sittings";
+import TodoCalendar from "../pages/dashboard/Todo/Todo";
+import NoteAndDoc from "../pages/dashboard/Todo/Note_and_doc";
+import Job_candidate from "../pages/dashboard/job_candidate/Job_candidate";
+
 
 const AdminRouter = [
       {
@@ -53,6 +57,10 @@ const AdminRouter = [
       {
             path: "jobs",
             element: <Private><Job /></Private>,
+      },
+      {
+            path: "jobs-candidate/:id",
+            element: <Private><Job_candidate /></Private>,
       },
       {
             path: "govt-jobs",
@@ -159,6 +167,14 @@ const AdminRouter = [
             path: "setting",
             element: <Private> <SettingsPage /></Private>,
       },
+      {
+            path: "todo",
+            element: <Private> <TodoCalendar /></Private>,
+      },
+      {
+            path: 'note-and-document',
+            element: <Private> <NoteAndDoc /></Private>
+      }
 
 ];
 

@@ -1,7 +1,7 @@
 export const users = [
-      { id: 1, name: 'John Doe', avatar: 'https://randomuser.me/api/portraits/men/1.jpg' },
-      { id: 2, name: 'Jane Smith', avatar: 'https://randomuser.me/api/portraits/women/2.jpg' },
-      { id: 3, name: 'Bob Johnson', avatar: 'https://randomuser.me/api/portraits/men/3.jpg' },
+      { id: 1, fullName: 'John Doe', profile_picture: 'https://randomuser.me/api/portraits/men/1.jpg' },
+      { id: 2, fullName: 'Jane Smith', profile_picture: 'https://randomuser.me/api/portraits/women/2.jpg' },
+      { id: 3, fullName: 'Bob Johnson', profile_picture: 'https://randomuser.me/api/portraits/men/3.jpg' },
 ];
 
 export const initialMessages = [

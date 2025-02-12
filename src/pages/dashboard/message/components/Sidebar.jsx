@@ -3,14 +3,16 @@ import '../style/chat.css';
 import '../style/messenger.css';
 import '../style/sidebar.css';
 
-function Sidebar({ users, onSelectUser, selectedUser, messages }) {
+function Sidebar({ users, onSelectUser, selectedUser }) {
       const [searchQuery, setSearchQuery] = useState('');
       const [activeFilter, setActiveFilter] = useState('all');
 
+      console.log(users, "users");
+
       const filteredUsers = users.filter(user =>
-            user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            messages[user.id]?.some(msg =>
-                  msg.content.toLowerCase().includes(searchQuery.toLowerCase())
+            user.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            user?.lastMessage?.split('\n').some(msg =>
+                  msg.toLowerCase().includes(searchQuery.toLowerCase())
             )
       );
 
@@ -18,7 +20,7 @@ function Sidebar({ users, onSelectUser, selectedUser, messages }) {
             <div className="sidebar-container text-white ">
                   <div className="message-header">
                         <h1 className="message-count ">Messages ({users.length})</h1>
-                        <div className="message-filters">
+                        <div className="py-2">
                               {['all', 'unread', 'groups', 'archived'].map(filter => (
                                     <button
                                           key={filter}
@@ -29,7 +31,7 @@ function Sidebar({ users, onSelectUser, selectedUser, messages }) {
                                     </button>
                               ))}
                         </div>
-                        <div className="search-container">
+                        <div className="">
                               <input
                                     type="text"
                                     placeholder="Search messages..."
@@ -37,36 +39,32 @@ function Sidebar({ users, onSelectUser, selectedUser, messages }) {
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                               />
-                              <svg className="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
-                              </svg>
+
                         </div>
                   </div>
 
                   <div className="chat-list mt-4">
                         {filteredUsers.map((user) => {
-                              const userMessages = messages[user.id];
-                              const lastMessage = userMessages ? userMessages[userMessages.length - 1] : null;
-                              const isSelected = selectedUser.id === user.id;
+                              const isSelected = selectedUser?.user_id === user?.user_id;
 
                               return (
                                     <div
-                                          key={user.id}
+                                          key={user.user_id}
                                           className={`chat-item ${isSelected ? 'selected' : ''}`}
                                           onClick={() => onSelectUser(user)}
                                     >
                                           <img
-                                                src={user.avatar}
-                                                alt={user.name}
+                                                src={user.profile_picture}
+                                                alt={user.fullName}
                                                 className="avatar "
                                                 style={{ width: 40, height: 40, borderRadius: '50%' }}
                                           />
                                           <div className="chat-item-content group">
                                                 <div className="chat-item-header">
-                                                      <span className="chat-name  group-hover:text-black ">{user.name}</span>
-                                                      {lastMessage && (
+                                                      <span className="chat-name  group-hover:text-black ">{user.fullName}</span>
+                                                      {user.lastMessage && (
                                                             <span className="chat-time">
-                                                                  {new Date(lastMessage.timestamp).toLocaleTimeString([], {
+                                                                  {new Date(user.lastMessageTime).toLocaleTimeString([], {
                                                                         hour: '2-digit',
                                                                         minute: '2-digit'
                                                                   })}
@@ -74,7 +72,7 @@ function Sidebar({ users, onSelectUser, selectedUser, messages }) {
                                                       )}
                                                 </div>
                                                 <div className="chat-preview">
-                                                      {lastMessage ? lastMessage.content.split('\n')[0] : 'No messages yet'}
+                                                      {user.lastMessage ? user.lastMessage.split('\n')[0] : 'No messages yet'}
                                                 </div>
                                           </div>
                                     </div>
