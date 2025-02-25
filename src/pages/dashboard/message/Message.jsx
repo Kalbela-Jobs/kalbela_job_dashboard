@@ -7,6 +7,7 @@ import Sidebar from './components/Sidebar.jsx';
 import ChatArea from './components/ChatArea.jsx';
 import { Kalbela_AuthProvider } from '../../../context/MainContext.jsx';
 import { useQuery } from '@tanstack/react-query';
+import upload_audio from '../../../hooks/upload_audio.js';
 
 function Message() {
 
@@ -61,7 +62,6 @@ function Message() {
                   audio: message.audio ? await upload_audio(message.audio) : null,
                   timestamp: new Date().toISOString(),
             };
-
             fetch(`${base_url}/chat/add-new-chat?token=${user._id}`, {
                   method: "POST",
                   headers: {

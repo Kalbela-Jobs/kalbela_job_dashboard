@@ -34,6 +34,7 @@ export const experienceLevelOptions = [
 
 export const salaryTypeOptions = [
       { value: "hourly", label: "Hourly" },
+      { value: "daily", label: "Daily" },
       { value: "monthly", label: "Monthly" },
       { value: "yearly", label: "Yearly" },
       { value: "project-based", label: "Project-Based" },

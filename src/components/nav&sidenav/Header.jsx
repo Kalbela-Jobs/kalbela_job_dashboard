@@ -18,7 +18,7 @@ const Header = () => {
                                     onClick={() => setOpen(!open)}
                               />
 
-                              <div className="flex-1 hidden max-w-xs ml-40 mr-auto lg:block">
+                              {/* <div className="flex-1 hidden max-w-xs ml-40 mr-auto lg:block">
                                     <label htmlFor="" className="sr-only">
                                           Search
                                     </label>
@@ -48,7 +48,7 @@ const Header = () => {
                                                 placeholder="Type to search"
                                           />
                                     </div>
-                              </div>
+                              </div> */}
 
                               {/* Right side icons */}
                               <div className="flex items-center justify-end ml-auto space-x-6">

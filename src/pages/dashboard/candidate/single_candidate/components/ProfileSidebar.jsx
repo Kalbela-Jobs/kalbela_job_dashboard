@@ -26,17 +26,21 @@ const statusesRequiringNotes = ["Rejected", "Interview", "Offered"];
 
 export default function ProfileSidebar({ data }) {
 
-      const { base_url } = useContext(Kalbela_AuthProvider);
+      console.log(data);
+
+      const { base_url, user } = useContext(Kalbela_AuthProvider);
       const [status, setStatus] = useState(data.status);
       const [isModalVisible, setIsModalVisible] = useState(false);
       const [note, setNote] = useState('');
       const [tempStatus, setTempStatus] = useState('');
+
 
       useEffect(() => {
             setStatus(data.status);
       }, [data.status]);
 
       const handleStatusChange = (newStatus) => {
+            console.log(newStatus, 'newStatus');
             if (statusesRequiringNotes.includes(newStatus)) {
                   setTempStatus(newStatus);
                   setIsModalVisible(true);
@@ -48,11 +52,12 @@ export default function ProfileSidebar({ data }) {
                               'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                              status: tempStatus,
+                              status: newStatus,
                         }),
                   }).then((res) => res.json())
                         .then((data) => {
                               if (!data.error) {
+                                    handleSendMessage(newStatus);
                                     sweet_alert("Success", data.message, "success");
                               }
                               else {
@@ -63,10 +68,19 @@ export default function ProfileSidebar({ data }) {
             }
       };
 
+      const handleModalCancel = () => {
+            setIsModalVisible(false);
+            setNote('');
+      };
+
+      const stripHtml = (html) => {
+            let doc = new DOMParser().parseFromString(html, "text/html");
+            return doc.body.textContent || "";
+      };
+
       const handleModalOk = () => {
             setStatus(tempStatus);
             setIsModalVisible(false);
-
             fetch(`${base_url}/employer/update?candidate_id=${data._id}`, {
                   method: 'PUT',
                   headers: {
@@ -74,10 +88,11 @@ export default function ProfileSidebar({ data }) {
                   },
                   body: JSON.stringify({
                         status: tempStatus,
-                        note: note,
                   }),
             }).then((res) => res.json())
                   .then((data) => {
+                        handleSendMessage(tempStatus);
+                        handleSendNote(note);
                         if (!data.error) {
                               sweet_alert("Success", data.message, "success");
                         }
@@ -89,9 +104,54 @@ export default function ProfileSidebar({ data }) {
 
       };
 
-      const handleModalCancel = () => {
-            setIsModalVisible(false);
-            setNote('');
+
+
+      const handleSendMessage = async (status) => {
+
+            const newMessage = {
+                  to: data.user_id,
+                  sender: user._id,
+                  content: `Your job application has been changed to ${status}`,
+                  timestamp: new Date().toISOString(),
+            };
+
+            fetch(`${base_url}/chat/add-new-chat?token=${user._id}`, {
+                  method: "POST",
+                  headers: {
+                        "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(newMessage),
+            })
+                  .then((res) => res.json())
+                  .then((data) => {
+
+                  });
+
+
+      };
+
+      const handleSendNote = async (note) => {
+
+            const newMessage = {
+                  to: data.user_id,
+                  sender: user._id,
+                  content: note,
+                  timestamp: new Date().toISOString(),
+            };
+
+            fetch(`${base_url}/chat/add-new-chat?token=${user._id}`, {
+                  method: "POST",
+                  headers: {
+                        "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(newMessage),
+            })
+                  .then((res) => res.json())
+                  .then((data) => {
+
+                  });
+
+
       };
 
 

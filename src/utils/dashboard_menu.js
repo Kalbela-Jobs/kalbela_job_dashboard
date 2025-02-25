@@ -13,68 +13,68 @@ export const nav_items = [
       {
             title: "Dashboard",
             icon: Home,
-            link: "dashboard",
+            link: "/admin/dashboard",
       },
       {
             title: "Category",
             icon: List,
-            link: "category",
+            link: "/admin/category",
       },
       {
             title: "Job Type",
             icon: List,
-            link: "job-type",
+            link: "/admin/job-type",
       },
       {
             title: "Career Resources",
             icon: List,
-            link: "career-resources",
+            link: "/admin/career-resources",
       },
 
       {
             title: "Configuration",
             icon: List,
-            link: "configuration",
+            link: "/admin/configuration",
       },
       {
             title: "Jobs",
             icon: Briefcase,
-            link: "jobs",
+            link: "/admin/jobs",
       },
       {
             title: "Govt Jobs",
             icon: List,
-            link: "govt-jobs",
+            link: "/admin/govt-jobs",
       },
       // {
       //       title: "Bank/BIMA/NGO",
       //       icon: List,
-      //       link: "bank-bima-ngo",
+      //       link: "/admin/bank-bima-ngo",
       // },
       {
             title: "Candidates",
             icon: Users,
-            link: "candidates",
+            link: "/admin/candidates",
       },
       {
             title: "Hr Management",
             icon: Users,
-            link: "hr-management",
+            link: "/admin/hr-management",
       },
       {
             title: "Organization",
             icon: Users,
-            link: "organization",
+            link: "/admin/organization",
       },
       {
             title: "Setting",
             icon: Settings,
-            link: "setting",
+            link: "/admin/setting",
       },
       {
             title: "Evaluation",
             icon: GraduationCap,
-            link: "evaluation",
+            link: "/admin/evaluation",
       },
 ];
 
