@@ -205,10 +205,10 @@ export default function ProfileSidebar({ data }) {
                               })}</p>
                         </div>
 
-                        <div className="space-y-1 items-center flex gap-2">
+                        {/* <div className="space-y-1 items-center flex gap-2">
                               <label className="text-sm text-gray-500">Rate</label>
                               <Rate defaultValue={0} />
-                        </div>
+                        </div> */}
 
                         {data?.user?.social_media && <div className="space-y-1">
                               <label className="text-sm text-gray-500">Social Profiles</label>
