@@ -23,6 +23,7 @@ const Add_Jobs = () => {
       const [negotiableNote, setNegotiableNote] = useState("");
       const [remote, setRemote] = useState(false);
       const [cv_email_sent, setCvEmailSent] = useState(false);
+      const [whatsapp_cv, setWhatsapp_cv] = useState(false);
       const navigate = useNavigate();
 
       const [selectedCountry, setSelectedCountry] = useState("Bangladesh"); // Default country is Bangladesh
@@ -485,7 +486,7 @@ const Add_Jobs = () => {
 
 
 
-                              <div className="flex space-x-4">
+                              <div className="flex  space-x-4">
 
                                     <Form.Item
                                           className=" w-full"
@@ -494,15 +495,33 @@ const Add_Jobs = () => {
                                           rules={[{ required: false }]}
                                     >
                                           <Upload beforeUpload={() => false} multiple={false} className="w-full">
-                                                <Button icon={<UploadOutlined />} block className="w-full">
+                                                <Button style={{ width: 500, height: 36 }} icon={<UploadOutlined />} block className="w-full">
                                                       Click to Upload
                                                 </Button>
                                           </Upload>
                                     </Form.Item>
+                                    <Form.Item className="w-full" name="whatsapp_cv" label="Job Seeker's CV Sent via whatsapp?" valuePropName="checked">
+                                          <Checkbox className="border w-full py-1.5 px-4 rounded" onClick={(e) => setWhatsapp_cv(e.target.checked)}>Yes, CV sent via whatsapp</Checkbox>
+                                    </Form.Item>
+
+
                                     <Form.Item className="w-full" name="cvEmailSent" label="Job Seeker's CV Sent via Email?" valuePropName="checked">
                                           <Checkbox className="border w-full py-1.5 px-4 rounded" onClick={(e) => setCvEmailSent(e.target.checked)}>Yes, CV sent via email</Checkbox>
                                     </Form.Item>
 
+
+                              </div>
+                              <div className="flex space-x-4">
+                                    {whatsapp_cv && (
+                                          <Form.Item
+                                                className="w-full"
+                                                name="whatsapp_number"
+                                                label="Enter your Whatsapp Number"
+                                                rules={[{ required: true, message: 'Please provide the whatsapp number' }]}
+                                          >
+                                                <Input placeholder="+8801XXXXXXXXX" />
+                                          </Form.Item>
+                                    )}
                                     {cv_email_sent && (
                                           <Form.Item
                                                 className="w-full"
@@ -514,7 +533,6 @@ const Add_Jobs = () => {
                                           </Form.Item>
                                     )}
                               </div>
-
 
                               <Form.Item>
                                     <Button type="primary" htmlType="submit" className="w-full">

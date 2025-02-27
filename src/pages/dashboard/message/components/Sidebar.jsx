@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../style/chat.css';
 import '../style/messenger.css';
 import '../style/sidebar.css';
+import { Avatar } from 'antd';
 
 function Sidebar({ users, onSelectUser, selectedUser }) {
       const [searchQuery, setSearchQuery] = useState('');
@@ -46,6 +47,7 @@ function Sidebar({ users, onSelectUser, selectedUser }) {
                   <div className="chat-list mt-4">
                         {filteredUsers.map((user) => {
                               const isSelected = selectedUser?.user_id === user?.user_id;
+                              const hasHTML = /<\/?[a-z][\s\S]*>/i.test(user.lastMessage);
 
                               return (
                                     <div
@@ -53,12 +55,14 @@ function Sidebar({ users, onSelectUser, selectedUser }) {
                                           className={`chat-item ${isSelected ? 'selected' : ''}`}
                                           onClick={() => onSelectUser(user)}
                                     >
-                                          <img
-                                                src={user.profile_picture}
+                                          <Avatar
+                                                src={user.profile_picture || undefined} // Ensures fallback works properly
                                                 alt={user.fullName}
-                                                className="avatar "
-                                                style={{ width: 40, height: 40, borderRadius: '50%' }}
-                                          />
+                                                className="avatar"
+                                                style={{ width: 45, height: 45, borderRadius: "50%" }}
+                                          >
+                                                {!user.profile_picture && user.fullName?.charAt(0)} {/* Show first letter if no image */}
+                                          </Avatar>
                                           <div className="chat-item-content group">
                                                 <div className="chat-item-header">
                                                       <span className="chat-name  group-hover:text-black ">{user.fullName}</span>
@@ -72,7 +76,12 @@ function Sidebar({ users, onSelectUser, selectedUser }) {
                                                       )}
                                                 </div>
                                                 <div className="chat-preview">
-                                                      {user.lastMessage ? user.lastMessage.split('\n')[0] : 'No messages yet'}
+
+                                                      {hasHTML ? (
+                                                            <span dangerouslySetInnerHTML={{ __html: user.lastMessage }} />
+                                                      ) : (
+                                                            user.lastMessage ? user.lastMessage.split(' ').slice(0, 5).join(' ') : 'No messages yet'
+                                                      )}
                                                 </div>
                                           </div>
                                     </div>

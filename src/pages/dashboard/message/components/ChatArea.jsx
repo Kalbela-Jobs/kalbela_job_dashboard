@@ -6,7 +6,7 @@ import '../style/sidebar.css';
 import { Pause, Play } from 'lucide-react';
 import { ReloadOutlined } from '@ant-design/icons';
 import { Kalbela_AuthProvider } from '../../../../context/MainContext';
-import { Image } from 'antd';
+import { Avatar, Image } from 'antd';
 
 function ChatArea({ messages, selectedUser, onSendMessage, candidate, refetch, isLoading }) {
 
@@ -29,12 +29,14 @@ function ChatArea({ messages, selectedUser, onSendMessage, candidate, refetch, i
                   <div className="community-header">
                         <div className="community-info">
                               {candidate?.fullName ? (
-                                    <img
-                                          src={candidate.profile_picture}
-                                          alt={candidate?.fullName}
-                                          className="community-avatar"
-                                          style={{ objectFit: 'cover' }}
-                                    />
+                                    <Avatar
+                                          src={candidate.profile_picture || undefined} // Ensures fallback works properly
+                                          alt={candidate.fullName}
+                                          className="avatar"
+                                          style={{ width: 50, height: 50, borderRadius: "10%" }}
+                                    >
+                                          {!candidate.profile_picture && candidate.fullName?.charAt(0)} {/* Show first letter if no image */}
+                                    </Avatar>
                               ) : (
                                     <div className="community-avatar ">
                                           {getInitials(selectedUser?.name)}
@@ -67,12 +69,17 @@ function ChatArea({ messages, selectedUser, onSendMessage, candidate, refetch, i
                   </div>
 
                   <div className="messages-container h-20 overflow-y-auto">
-                        {Array.isArray(messages) && messages?.map((message) => (
-                              <div
+                        {Array.isArray(messages) && messages?.map((message) => {
+                              const hasHTML = /<\/?[a-z][\s\S]*>/i.test(message.content);
+                              return (<div
                                     key={message._id}
                                     className={`message-bubble ${message.sender === user?._id ? 'sent' : 'received'}`}
                               >
-                                    {message.content}
+                                    {hasHTML ? (
+                                          <span dangerouslySetInnerHTML={{ __html: message.content }} />
+                                    ) : (
+                                          <span>{message.content}</span>
+                                    )}
                                     {message.attachments?.map((att, i) => (
                                           <div>
                                                 <Image
@@ -110,8 +117,9 @@ function ChatArea({ messages, selectedUser, onSendMessage, candidate, refetch, i
                                                 </div>
                                           )}
                                     </div>
-                              </div>
-                        ))}
+                              </div>)
+                        }
+                        )}
                         <div ref={messagesEndRef} />
                   </div>
 

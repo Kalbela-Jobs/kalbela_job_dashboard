@@ -1,154 +1,192 @@
 import { useContext, useState } from "react";
-import { Kalbela_AuthProvider } from "../../../context/MainContext";
 import { useQuery } from "@tanstack/react-query";
-import { User } from "lucide-react";
-import { Table, Input, Pagination, Spin } from "antd";
+import { UserOutlined, DownloadOutlined, FileExcelOutlined, FilePdfOutlined } from '@ant-design/icons';
 import { Link, useParams } from "react-router-dom";
+import { Table, Input, Button, Space, Spin, Checkbox, Tag, Avatar, Typography, Row, Col } from "antd";
+import { Kalbela_AuthProvider } from "../../../context/MainContext";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
-const Job_candidate = () => {
-      const { base_url, workspace } = useContext(Kalbela_AuthProvider);
+const { Title } = Typography;
+const { Search } = Input;
+
+const JobCandidate = () => {
+      const { base_url } = useContext(Kalbela_AuthProvider);
       const { id } = useParams();
 
-      // State for pagination and search
+      // State for pagination, search, and filters
       const [searchTerm, setSearchTerm] = useState("");
       const [currentPage, setCurrentPage] = useState(1);
       const [pageSize, setPageSize] = useState(10);
+      const [ratings, setRatings] = useState([]);
+      const [hideStatus, setHideStatus] = useState([]);
 
-      // Fetch data
-      const { data: candidates = {}, isLoading, error, refetch } = useQuery({
-            queryKey: ["job_candidates", searchTerm, currentPage, pageSize],
+      // Fetch candidates data
+      const { data: candidates = {}, isLoading, refetch } = useQuery({
+            queryKey: ["job_candidates", searchTerm, currentPage, pageSize, ratings, hideStatus],
             queryFn: async () => {
                   const res = await fetch(
-                        `${base_url}/employer/candidate-by-job?job_slug=${id}&page=${currentPage}&limit=${pageSize}&search=${searchTerm}`
+                        `${base_url}/employer/candidate-by-job?job_slug=${id}&page=${currentPage}&limit=${pageSize}&search=${searchTerm}&ratings=${ratings.join(",")}&hideStatus=${hideStatus.join(",")}`
                   );
                   const data = await res.json();
                   return data.data;
             },
-            enabled: !!id, // Only fetch if workspace ID exists
+            enabled: !!id,
       });
 
+      console.log(candidates);
 
-      console.log(candidates, "candidates");
-
-      // Handle search
-      const handleSearch = (e) => {
-            setSearchTerm(e.target.value);
+      const handleSearch = (value) => {
+            setSearchTerm(value);
             setCurrentPage(1);
             refetch();
       };
 
-      // Handle pagination change
       const handlePageChange = (page, pageSize) => {
             setCurrentPage(page);
             setPageSize(pageSize);
             refetch();
       };
 
-      // Define table columns
+      const handleRatingChange = (checkedValues) => {
+            setRatings(checkedValues);
+            setCurrentPage(1);
+            refetch();
+      };
+
+      const handleStatusChange = (checkedValues) => {
+            setHideStatus(checkedValues);
+            setCurrentPage(1);
+            refetch();
+      };
+
+      const downloadExcel = () => {
+            if (!candidates || !candidates.candidates) return;
+
+            // Extract candidate data
+            const candidateData = candidates.candidates.map(candidate => ({
+                  Email: candidate.user_email,
+                  Phone: candidate.user_phone_number,
+                  Position: candidate.job_slug,
+                  Resume_url: candidate.resume_url,
+                  Status: candidate.status,
+                  Expected_salary: candidate.expected_salary,
+                  Apply_date: new Date(candidate.created_at).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                  })
+            }));
+
+            // Create worksheet and workbook
+            const worksheet = XLSX.utils.json_to_sheet(candidateData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Candidates");
+
+            // Generate Excel file
+            const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+            const data = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            saveAs(data, "candidates.xlsx");
+      };
+
+      const downloadPDF = () => {
+            // Implement PDF download logic here
+            console.log("Downloading PDF");
+      };
+
       const columns = [
             {
                   title: "Customer",
                   dataIndex: "full_name",
                   key: "full_name",
                   render: (text, record) => (
-                        <div className="flex items-center">
-                              {record?.profile_image ? (
-                                    <img
-                                          className="w-8 h-8 rounded-full mr-3"
-                                          src={record.profile_image}
-                                          alt={text}
-                                    />
-                              ) : (
-                                    <User className="size-8 p-2 border rounded mr-3" />
-                              )}
+                        <Space>
+                              <Avatar src={record.profile_image} icon={<UserOutlined />} />
                               {text}
-                        </div>
+                        </Space>
                   ),
             },
+            { title: "Email", dataIndex: "user_email", key: "user_email" },
+            { title: "Phone", dataIndex: "user_phone_number", key: "user_phone_number" },
             {
-                  title: "Email",
-                  dataIndex: "user_email",
-                  key: "user_email",
-            },
-            {
-                  title: "Phone",
-                  dataIndex: "user_phone_number",
-                  key: "user_phone_number",
-            },
-            {
-                  title: "Join Date",
+                  title: "Apply Date",
                   dataIndex: "created_at",
                   key: "created_at",
-                  render: (date) =>
-                        new Date(date).toLocaleDateString("en-US", {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                        }),
+                  render: (date) => new Date(date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                  }),
             },
+
             {
                   title: "Status",
                   dataIndex: "status",
                   key: "status",
                   render: (status) => (
-                        <span className="px-2 py-1 text-green-700 bg-green-100 rounded">
-                              {status}
-                        </span>
+                        <Tag color={status === "selected" ? "green" : "volcano"}>
+                              {status.toUpperCase()}
+                        </Tag>
                   ),
             },
             {
                   title: "Actions",
                   key: "actions",
                   render: (_, record) => (
-                        <Link
-                              to={`/admin/candidate/${record._id}`}
-                              className="px-3 py-2 text-sm text-gray-700 bg-gray-100 border border-gray-300 rounded-md shadow-sm hover:bg-indigo-600 hover:text-white transition-all duration-200"
-                        >
-                              View Profile
+                        <Link to={`/admin/candidate/${record._id}`}>
+                              <Button type="primary" size="small">
+                                    View Profile
+                              </Button>
                         </Link>
                   ),
             },
       ];
 
       return (
-            <div className="p-6 bg-white rounded-md shadow-md">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">Candidates List</h2>
+            <div style={{ padding: 24, background: '#fff', borderRadius: 8, boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)' }}>
+                  <Row justify="space-between" align="middle" style={{ marginBottom: 16 }}>
+                        <Col>
+                              <Title level={2}>Candidates List</Title>
+                        </Col>
+                        <Col>
+                              <Space>
+                                    <Button icon={<FileExcelOutlined />} onClick={downloadExcel}>
+                                          Excel
+                                    </Button>
+                                    <Button icon={<FilePdfOutlined />} onClick={downloadPDF}>
+                                          PDF
+                                    </Button>
+                              </Space>
+                        </Col>
+                  </Row>
 
-                  {/* Search Input */}
-                  <Input.Search
-                        placeholder="Search candidates..."
-                        allowClear
-                        value={searchTerm}
-                        onChange={handleSearch}
-                        className="w-full max-w-md mb-4"
+                  <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+                        <Col xs={24} sm={12} md={8} lg={6}>
+                              <Search
+                                    placeholder="Search candidates..."
+                                    allowClear
+                                    enterButton="Search"
+                                    size="large"
+                                    onSearch={handleSearch}
+                              />
+                        </Col>
+                  </Row>
+
+                  <Table
+                        columns={columns}
+                        dataSource={candidates.candidates}
+                        rowKey="_id"
+                        loading={isLoading}
+                        pagination={{
+                              current: currentPage,
+                              pageSize: pageSize,
+                              total: candidates?.pagination?.total,
+                              onChange: handlePageChange,
+                              showSizeChanger: true,
+                        }}
                   />
-
-                  {/* Table */}
-                  {isLoading ? (
-                        <div className="flex justify-center py-10">
-                              <Spin size="large" />
-                        </div>
-                  ) : (
-                        <Table
-                              columns={columns}
-                              dataSource={candidates.candidates}
-                              pagination={false} // Using custom pagination
-                              rowKey="_id"
-                        />
-                  )}
-
-                  {/* Pagination */}
-                  <div className="flex justify-center mt-6">
-                        <Pagination
-                              current={currentPage}
-                              pageSize={pageSize}
-                              onChange={handlePageChange}
-                              total={candidates?.pagination?.total} // Replace with actual total count from API if available
-                              showSizeChanger
-                        />
-                  </div>
             </div>
       );
 };
 
-export default Job_candidate;
+export default JobCandidate;

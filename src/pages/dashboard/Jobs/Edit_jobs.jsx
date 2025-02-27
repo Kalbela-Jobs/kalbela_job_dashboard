@@ -27,6 +27,7 @@ const Edit_jobs = ({ data, set_modal, refetch }) => {
       const [isLoadingCountries, setIsLoadingCountries] = useState(false);
       const isBangladesh = selectedCountry === "Bangladesh";
       const [cv_email_sent, setCvEmailSent] = useState(data?.cvEmailSent);
+      const [whatsapp_cv, setWhatsapp_cv] = useState(data?.whatsapp_cv);
 
       const { data: divisions = [], isLoading: isDivisionsLoading } = useQuery({
             queryKey: ["divisions"],
@@ -340,6 +341,21 @@ const Edit_jobs = ({ data, set_modal, refetch }) => {
                               <Form.Item className="w-full" name="attachment" label="Attachment" rules={[{ required: false }]}>
                                     <Input type="file" />
                               </Form.Item>
+                              <Form.Item defaultValue={data?.whatsapp_cv} className="w-full" name="whatsapp_cv" label="Job Seeker's CV Sent via whatsapp?" valuePropName="checked">
+                                    <Checkbox defaultChecked={data?.whatsapp_cv} className="border w-full py-1.5 px-4 rounded" onClick={(e) => setWhatsapp_cv(e.target.checked)}>Yes, CV sent via whatsapp</Checkbox>
+                              </Form.Item>
+
+                              {whatsapp_cv && (
+                                    <Form.Item
+                                          initialValue={data?.whatsapp_number}
+                                          className="w-full"
+                                          name="whatsapp_number"
+                                          label="Enter your Whatsapp Number"
+                                          rules={[{ required: true, message: 'Please provide the whatsapp number' }]}
+                                    >
+                                          <Input placeholder="+8801XXXXXXXXX" />
+                                    </Form.Item>
+                              )}
                               <Form.Item defaultValue={data?.cv_email_sent} className="w-full" name="cvEmailSent" label="Job Seeker's CV Sent via Email?" valuePropName="checked">
                                     <Checkbox defaultChecked={data?.cv_email_sent} className="border w-full py-1.5 px-4 rounded" onClick={(e) => setCvEmailSent(e.target.checked)}>Yes, CV sent via email</Checkbox>
                               </Form.Item>

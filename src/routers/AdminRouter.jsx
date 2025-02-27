@@ -159,10 +159,7 @@ const AdminRouter = [
             path: "profile",
             element: <Private> <Workspace_profile /></Private>,
       },
-      {
-            path: "message",
-            element: <Private> <Message /></Private>,
-      },
+      
       {
             path: "setting",
             element: <Private> <SettingsPage /></Private>,

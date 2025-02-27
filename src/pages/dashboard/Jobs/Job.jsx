@@ -13,6 +13,7 @@ import {
       Pagination
 } from 'antd'
 import moment from 'moment'; // Added import for moment
+import * as XLSX from "xlsx";
 const { RangePicker } = DatePicker;
 
 import {
@@ -79,7 +80,7 @@ const Job = () => {
             enabled: !!(workspace?._id || user.role === "supper_admin"),
       });
 
-      console.log(jobs, 'jobs');
+
 
 
 
@@ -132,6 +133,14 @@ const Job = () => {
             setPage(newPage);
             setPageSize(newPageSize);
       };
+
+      const download_excel_formate = () => {
+            const filteredJobs = jobs?.jobs
+            const worksheet = XLSX.utils.json_to_sheet(filteredJobs);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Jobs");
+            XLSX.writeFile(workbook, "Jobs.xlsx");
+      }
 
       return (
             <div>
@@ -202,6 +211,7 @@ const Job = () => {
                                           className=" py-3"
                                           onChange={(dates) => setDateRange(dates)}
                                     />
+                                    <Button style={{ width: 200, height: 50 }} onClick={() => download_excel_formate()}>Download Excel</Button>
                               </div>
                               <div className="flex flex-col mt-4 ">
                                     <div className="overflow-x-auto ">

@@ -7,7 +7,7 @@ import Link_Button from '../../../components/small_component/Link_Button';
 import { useQuery } from '@tanstack/react-query';
 import { Kalbela_AuthProvider } from '../../../context/MainContext';
 import sweet_alert from '../../../utils/custom_alert';
-import AddGovtOrgWithTable from './pages/add_govt_org/Add_govt_org';
+import EditGovtJobs from './pages/add_govt_jobs/Edit_govt_jobs';
 
 
 const { Content } = Layout;
@@ -28,24 +28,12 @@ const Govt_jobs = () => {
       });
 
       // const [jobs, setJobs] = useState([]);
-      const [editingJob, setEditingJob] = useState(null);
+      const [editingJob, setEditingJob] = useState(false);
       const [viewingJob, setViewingJob] = useState(null);
 
 
 
-      const handleEditJob = (job) => {
-            fetch(`${base_url}/jobs/update?job_id=${job._id}`, {
-                  method: 'PUT',
-                  headers: {
-                        'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(job),
-            }).then(res => res.json())
-                  .then(data => {
-                        setEditingJob(null);
-                  });
-            setEditingJob(null);
-      };
+
 
       const handleDeleteJob = (id) => {
             fetch(`${base_url}/jobs/delete-govt-jobs?job_id=${id}`, {
@@ -74,10 +62,13 @@ const Govt_jobs = () => {
                               <Link_Button name='Government Organizations' url="/admin/govt-jobs/govt-organizations" />
                         </div>
                         <Title level={2} className="mb-8">Government Jobs</Title>
-                        {editingJob && <AddEditJobForm
-                              onSubmit={editingJob && handleEditJob}
-                              initialValues={editingJob}
-                        />}
+                        {editingJob &&
+                              <EditGovtJobs
+                                    data={editingJob}
+                                    onClose={() => setEditingJob(null)}
+                                    base_url={base_url}
+                              />
+                        }
                         {/* <AddGovtOrgWithTable /> */}
                         <JobsTable
                               jobs={jobs}
@@ -89,7 +80,7 @@ const Govt_jobs = () => {
                   </Content>
             </Layout>
       );
-};
 
+}
 
 export default Govt_jobs;
