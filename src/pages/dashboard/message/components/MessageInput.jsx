@@ -3,8 +3,8 @@ import EmojiPicker from 'emoji-picker-react';
 import '../style/chat.css';
 import '../style/messenger.css';
 import '../style/sidebar.css';
-import { Delete, Pause, Play, Send, SendHorizontal, Trash } from 'lucide-react';
-import { DeleteColumnOutlined } from '@ant-design/icons';
+import { Pause, Play, Send, Trash } from 'lucide-react';
+
 
 function MessageInput({ onSendMessage }) {
       const [message, setMessage] = useState('');
