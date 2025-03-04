@@ -19,7 +19,6 @@ import Organization_management from "../pages/dashboard/organization/Organizatio
 import Profile from "../pages/dashboard/profile/Profile";
 import Workspace_profile from "../pages/dashboard/profile/Workspace_profile";
 
-
 import Private from "./Private";
 import Config from "../pages/dashboard/configaration/Config";
 import Skills from "../pages/dashboard/configaration/pages/skills/Skills";
@@ -35,144 +34,298 @@ import SettingsPage from "../pages/dashboard/sittings/Sittings";
 import TodoCalendar from "../pages/dashboard/Todo/Todo";
 import NoteAndDoc from "../pages/dashboard/Todo/Note_and_doc";
 import Job_candidate from "../pages/dashboard/job_candidate/Job_candidate";
-
+import All_candidate from "../pages/dashboard/all_candite_manage/All_candidate";
 
 const AdminRouter = [
-      {
-            path: "",
-            element: (
-                  <Private>
-                        <Dashboard />
-                  </Private>
-            ),
-      },
-      {
-            path: "dashboard",
-            element: (
-                  <Private>
-                        <Dashboard />
-                  </Private>
-            ),
-      },
-      {
-            path: "jobs",
-            element: <Private><Job /></Private>,
-      },
-      {
-            path: "jobs-candidate/:id",
-            element: <Private><Job_candidate /></Private>,
-      },
-      {
-            path: "govt-jobs",
-            element: <Private><Govt_jobs /></Private>,
-      },
-      {
-            path: "govt-jobs/add",
-            element: <Private><AddEditJobForm /></Private>,
-      },
-      {
-            path: "govt-jobs/govt-organizations",
-            element: <Private><AddGovtOrgWithTable /></Private>,
-      },
-      {
-            path: "jobs/add-job",
-            element: <Private> <Add_Jobs /></Private>,
-      },
-      {
-            path: "category",
-            element: <Private> <Category /></Private>,
-      },
-      {
-            path: "category/add-category",
-            element: <Private> <Add_Category /></Private>,
-      }, {
-            path: 'job-type',
-            element: <Private> <Job_type /></Private>
-      },
-      {
-            path: 'job-type/add-job-type',
-            element: <Private> <Add_job_type /></Private>
-      }, {
-            path: 'career-resources/category',
-            element: <Private> <Career_resources_category /></Private>
-      },
-      {
-            path: 'career-resources/category/add-career-resources',
-            element: <Private> <Add_career_resources_category /></Private>
-      },
-      {
-            path: 'career-resources',
-            element: <Private> <Career_resources /></Private>
-      },
-      {
-            path: 'career-resources/add-career-resources',
-            element: <Private> <Add_career_resources /></Private>
-      },
-      {
-            path: 'configuration',
-            element: <Private> <Config /></Private>
-      },
-      {
-            path: 'configuration/skills',
-            element: <Private> <Skills /></Private>
-      },
-      {
-            path: 'configuration/positions',
-            element: <Private> <Position /></Private>
-      },
-      {
-            path: 'configuration/locations',
-            element: <Private> <Location /></Private>
-      },
-      {
-            path: 'configuration/industry',
-            element: <Private> <Industry /></Private>
-      },
-      {
-            path: 'configuration/departments',
-            element: <Private> <Department /></Private>
-      },
-      {
-            path: 'configuration/hero-logo',
-            element: <Private> <Hero_logo /></Private>
-      },
-      {
-            path: 'candidates',
-            element: <Private> <Candidate /></Private>
-      },
-      {
-            path: 'candidate/:id',
-            element: <Private> <Single_candidate /></Private>
-      }, {
-            path: 'hr-management',
-            element: <Private> <Hr_management /></Private>
-      },
-      {
-            path: 'hr-management/add-hr',
-            element: <Private> <Add_new_hr /></Private>
-      },
-      {
-            path: "organization",
-            element: <Private> <Organization_management /></Private>,
-      },
-      {
-            path: "profile",
-            element: <Private> <Workspace_profile /></Private>,
-      },
-      
-      {
-            path: "setting",
-            element: <Private> <SettingsPage /></Private>,
-      },
-      {
-            path: "todo",
-            element: <Private> <TodoCalendar /></Private>,
-      },
-      {
-            path: 'note-and-document',
-            element: <Private> <NoteAndDoc /></Private>
-      }
+  {
+    path: "",
+    element: (
+      <Private>
+        <Dashboard />
+      </Private>
+    ),
+  },
+  {
+    path: "dashboard",
+    element: (
+      <Private>
+        <Dashboard />
+      </Private>
+    ),
+  },
+  {
+    path: "jobs",
+    element: (
+      <Private>
+        <Job />
+      </Private>
+    ),
+  },
+  {
+    path: "jobs-candidate/:id",
+    element: (
+      <Private>
+        <Job_candidate />
+      </Private>
+    ),
+  },
+  {
+    path: "govt-jobs",
+    element: (
+      <Private>
+        <Govt_jobs />
+      </Private>
+    ),
+  },
+  {
+    path: "govt-jobs/add",
+    element: (
+      <Private>
+        <AddEditJobForm />
+      </Private>
+    ),
+  },
+  {
+    path: "govt-jobs/govt-organizations",
+    element: (
+      <Private>
+        <AddGovtOrgWithTable />
+      </Private>
+    ),
+  },
+  {
+    path: "jobs/add-job",
+    element: (
+      <Private>
+        {" "}
+        <Add_Jobs />
+      </Private>
+    ),
+  },
+  {
+    path: "category",
+    element: (
+      <Private>
+        {" "}
+        <Category />
+      </Private>
+    ),
+  },
+  {
+    path: "category/add-category",
+    element: (
+      <Private>
+        {" "}
+        <Add_Category />
+      </Private>
+    ),
+  },
+  {
+    path: "job-type",
+    element: (
+      <Private>
+        {" "}
+        <Job_type />
+      </Private>
+    ),
+  },
+  {
+    path: "job-type/add-job-type",
+    element: (
+      <Private>
+        {" "}
+        <Add_job_type />
+      </Private>
+    ),
+  },
+  {
+    path: "career-resources/category",
+    element: (
+      <Private>
+        {" "}
+        <Career_resources_category />
+      </Private>
+    ),
+  },
+  {
+    path: "career-resources/category/add-career-resources",
+    element: (
+      <Private>
+        {" "}
+        <Add_career_resources_category />
+      </Private>
+    ),
+  },
+  {
+    path: "career-resources",
+    element: (
+      <Private>
+        {" "}
+        <Career_resources />
+      </Private>
+    ),
+  },
+  {
+    path: "career-resources/add-career-resources",
+    element: (
+      <Private>
+        {" "}
+        <Add_career_resources />
+      </Private>
+    ),
+  },
+  {
+    path: "configuration",
+    element: (
+      <Private>
+        {" "}
+        <Config />
+      </Private>
+    ),
+  },
+  {
+    path: "configuration/skills",
+    element: (
+      <Private>
+        {" "}
+        <Skills />
+      </Private>
+    ),
+  },
+  {
+    path: "configuration/positions",
+    element: (
+      <Private>
+        {" "}
+        <Position />
+      </Private>
+    ),
+  },
+  {
+    path: "configuration/locations",
+    element: (
+      <Private>
+        {" "}
+        <Location />
+      </Private>
+    ),
+  },
+  {
+    path: "configuration/industry",
+    element: (
+      <Private>
+        {" "}
+        <Industry />
+      </Private>
+    ),
+  },
+  {
+    path: "configuration/departments",
+    element: (
+      <Private>
+        {" "}
+        <Department />
+      </Private>
+    ),
+  },
+  {
+    path: "configuration/hero-logo",
+    element: (
+      <Private>
+        {" "}
+        <Hero_logo />
+      </Private>
+    ),
+  },
+  {
+    path: "candidates",
+    element: (
+      <Private>
+        {" "}
+        <Candidate />
+      </Private>
+    ),
+  },
+  {
+    path: "candidate/:id",
+    element: (
+      <Private>
+        {" "}
+        <Single_candidate />
+      </Private>
+    ),
+  },
+  {
+    path: "hr-management",
+    element: (
+      <Private>
+        {" "}
+        <Hr_management />
+      </Private>
+    ),
+  },
+  {
+    path: "hr-management/add-hr",
+    element: (
+      <Private>
+        {" "}
+        <Add_new_hr />
+      </Private>
+    ),
+  },
+  {
+    path: "organization",
+    element: (
+      <Private>
+        {" "}
+        <Organization_management />
+      </Private>
+    ),
+  },
+  {
+    path: "profile",
+    element: (
+      <Private>
+        {" "}
+        <Workspace_profile />
+      </Private>
+    ),
+  },
 
+  {
+    path: "setting",
+    element: (
+      <Private>
+        {" "}
+        <SettingsPage />
+      </Private>
+    ),
+  },
+  {
+    path: "todo",
+    element: (
+      <Private>
+        {" "}
+        <TodoCalendar />
+      </Private>
+    ),
+  },
+  {
+    path: "note-and-document",
+    element: (
+      <Private>
+        <NoteAndDoc />
+      </Private>
+    ),
+  },
+  {
+    path: "all-candidates",
+    element: (
+      <Private>
+        <All_candidate />
+      </Private>
+    ),
+  },
 ];
 
 export default AdminRouter;
