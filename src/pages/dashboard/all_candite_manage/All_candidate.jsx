@@ -5,7 +5,7 @@ import { Kalbela_AuthProvider } from "../../../context/MainContext";
 
 import { useQuery } from "@tanstack/react-query";
 import { useContext, useState } from "react";
-import { Input, Pagination } from "antd";
+import { Button, Input, message, Pagination, Switch } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Trash2 } from "lucide-react";
 
@@ -15,6 +15,7 @@ const All_candidate = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCon, setSelectedCon] = useState(null);
 
   // const pageSize = 10;
   const [pageSize, setPageSize] = useState(10);
@@ -34,7 +35,7 @@ const All_candidate = () => {
     },
   });
 
-  console.log(allCandidates, "allCandidates");
+  // console.log(selectedCon, "allCandidates");
 
   const deleteFunction = async (candidate_id) => {
     try {
@@ -57,12 +58,50 @@ const All_candidate = () => {
     }
   };
 
+  // status update function
+  const updateStatus = async (candidate) => {
+    console.log("no check", candidate);
+
+    try {
+      const res = await fetch(
+        `${base_url}/admin/update-candidate?token=${user?._id}&candidate_id=${
+          candidate?._id
+        }&status=${!candidate?.company_status}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            company_status: !candidate?.company_status,
+          }),
+        }
+      );
+      const result = await res.json();
+      if (!result.error) {
+        refetch();
+        message.success(result.message);
+        if (selectedCon && selectedCon?._id === candidate?._id) {
+          setSelectedCon({
+            ...candidate,
+            company_status: !candidate?.company_status,
+          });
+        }
+      } else {
+        message.error(result.message);
+      }
+    } catch (error) {
+      message.error("An error occurred");
+    }
+  };
+
   // table headings data here
   const tableHeadings = [
     { id: "Avatar", label: "Avatar", align: "left" },
     { id: "name", label: "Name", align: "left" },
     { id: "email", label: "Email", align: "left" },
     { id: "date", label: "Date", align: "left" },
+    { id: "status", label: "Status", align: "left" },
     { id: "action", label: "Action", align: "right" },
   ];
 
@@ -98,7 +137,10 @@ const All_candidate = () => {
               <tbody className="divide-y divide-gray-200">
                 {allCandidates?.candidates?.map((candidate) => (
                   <tr key={candidate?.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td
+                      onClick={() => setSelectedCon(candidate)}
+                      className="px-6 py-4 whitespace-nowrap"
+                    >
                       {candidate?.profile_picture ? (
                         <img
                           src={candidate?.profile_picture || "/placeholder.svg"}
@@ -111,7 +153,10 @@ const All_candidate = () => {
                         </div>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                    <td
+                      onClick={() => setSelectedCon(candidate)}
+                      className="px-6 py-4 text-blue-500  whitespace-nowrap font-medium hover:underline cursor-pointer"
+                    >
                       {candidate?.fullName}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-500">
@@ -125,11 +170,19 @@ const All_candidate = () => {
                         day: "2-digit",
                       }).format(candidate?.createdAt)}
                     </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                      <Switch
+                        onChange={() => {
+                          updateStatus(candidate);
+                        }}
+                        checked={candidate?.company_status}
+                        checkedChildren="Statused"
+                        unCheckedChildren="Status"
+                      />
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button
-                        onClick={() => setDeleteModal(candidate?._id)}
-                        className="text-red-600 hover:text-red-900 focus:outline-none"
-                      >
+                      <button className="text-red-600 hover:text-red-900 focus:outline-none">
                         <Trash2 className="h-5 w-5" />
                         <span className="sr-only">Delete</span>
                       </button>
@@ -174,6 +227,95 @@ const All_candidate = () => {
             set_modal={setDeleteModal}
             delete_function={deleteFunction}
             modal={deleteModal}
+          />
+        )}
+
+        {/* Candidate Details Modal */}
+        {selectedCon && (
+          <Modal_Component
+            title="Candidate  Details"
+            modal={!!selectedCon}
+            set_modal={setSelectedCon}
+            JSX={
+              <div className="p-4 space-y-4">
+                {/* Logo */}
+
+                <div className="flex justify-start">
+                  {selectedCon?.profile_picture ? (
+                    <img
+                      src={selectedCon?.profile_picture || "/placeholder.svg"}
+                      alt={`${selectedCon?.fullName}'`}
+                      className="h-10 w-10 rounded-full"
+                    />
+                  ) : (
+                    <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-semibold">
+                      {selectedCon?.fullName?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+                {/* Organization Info */}
+                <p>
+                  <strong>Name :</strong> {selectedCon?.fullName}
+                </p>
+                <p>
+                  <strong>Title :</strong> {selectedCon?.title || "N/A"}
+                </p>
+                <p>
+                  <strong>Role :</strong> {selectedCon?.role || "N/A"}
+                </p>
+
+                <p>
+                  <strong>Date_of_birth :</strong>
+                  <span className="pl-1">
+                    {selectedCon?.date_of_birth
+                      ? new Intl.DateTimeFormat("en-US", {
+                          timeZone: "Asia/Dhaka",
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                        }).format(new Date(selectedCon.date_of_birth))
+                      : "N/A"}
+                  </span>
+                </p>
+
+                <p>
+                  <strong>Email :</strong> {selectedCon?.email || "N/A"}
+                </p>
+
+                <p>
+                  <strong>Number :</strong> {selectedCon?.phone_number || "N/A"}
+                </p>
+
+                <p>
+                  <strong>Created At :</strong>
+                  <span className="pl-1">
+                    {new Intl.DateTimeFormat("en-US", {
+                      timeZone: "Asia/Dhaka",
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    }).format(selectedCon?.createdAt)}
+                  </span>
+                </p>
+
+                <p>
+                  <strong>Number :</strong> {selectedCon?.phone_number || "N/A"}
+                </p>
+
+                <p>
+                  <strong>Languages :</strong>
+                  <span className="pl-1">
+                    {selectedCon?.languages?.length > 0
+                      ? selectedCon.languages.map((lang, index) => (
+                          <Button key={index} type="default" className="mr-2">
+                            {lang}
+                          </Button>
+                        ))
+                      : "N/A"}
+                  </span>
+                </p>
+              </div>
+            }
           />
         )}
       </div>
