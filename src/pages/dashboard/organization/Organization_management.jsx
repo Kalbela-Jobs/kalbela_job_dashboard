@@ -177,11 +177,11 @@ import Delete_Modal from "../../../components/common/Delete_Modal";
 import Modal_Component from "../../../components/common/Modal_Component";
 import sweet_alert from "../../../utils/custom_alert";
 import { Kalbela_AuthProvider } from "../../../context/MainContext";
-
 import { useQuery } from "@tanstack/react-query";
 import { useContext, useState } from "react";
 import { Table, Input, Button, Pagination, Switch, message } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import Workspace from "../../auth/registration/Workspace";
 
 const OrganizationManagement = () => {
   const { user, base_url } = useContext(Kalbela_AuthProvider);
@@ -190,7 +190,9 @@ const OrganizationManagement = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrg, setSelectedOrg] = useState(null); // State to store selected organization
-  console.log(selectedOrg, "selectedOrg");
+  const [workspaceModal, setWorkspaceModal] = useState(null);
+
+  // console.log(selectedOrg, "selectedOrg");
   // const pageSize = 10;
   const [pageSize, setPageSize] = useState(10);
 
@@ -325,13 +327,24 @@ const OrganizationManagement = () => {
   return (
     <div className="py-4 bg-white">
       <div className="px-4 sm:px-6 lg:px-8">
-        <Input
-          placeholder="Search organizations"
-          prefix={<SearchOutlined />}
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-          className="mb-4"
-        />
+        <div className="flex justify-between items-center gap-6 mb-4">
+          <div className="flex-1">
+            <Input
+              placeholder="Search organizations"
+              prefix={<SearchOutlined />}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              className="mb-4"
+            />
+          </div>
+
+          <div
+            onClick={() => setWorkspaceModal(true)}
+            className="-mt-4 flex items-center shrink-0"
+          >
+            <Button> Add new workspace</Button>
+          </div>
+        </div>
 
         <Table
           columns={columns}
@@ -476,6 +489,22 @@ const OrganizationManagement = () => {
                     </ul>
                   </div>
                 )}
+              </div>
+            }
+          />
+        )}
+
+        {/* // right  WorkSpace side modal for modal component */}
+
+        {workspaceModal && (
+          <Modal_Component
+            title="Workspace Details"
+            modal={!!workspaceModal}
+            controlWidth="true"
+            set_modal={setWorkspaceModal}
+            JSX={
+              <div className="border border-gray-200 rounded py-10">
+                <Workspace />
               </div>
             }
           />
