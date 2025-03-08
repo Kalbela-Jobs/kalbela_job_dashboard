@@ -4,7 +4,7 @@ const Modal_Component = ({ modal, set_modal, JSX, title, controlWidth }) => {
   return (
     <div
       className={`fixed z-40 top-0 ${
-        controlWidth ? "left-60" : "left-0"
+        controlWidth ? "lg:left-60" : "left-0"
       } right-0  flex h-full min-h-screen items-center justify-center p-10  bg-black bg-opacity-40 px-4 py-5 ${
         modal ? "block" : "hidden"
       }`}

@@ -182,6 +182,7 @@ import { useContext, useState } from "react";
 import { Table, Input, Button, Pagination, Switch, message } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Workspace from "../../auth/registration/Workspace";
+import HrModal from "../../../components/common/HrModal";
 
 const OrganizationManagement = () => {
   const { user, base_url } = useContext(Kalbela_AuthProvider);
@@ -338,6 +339,9 @@ const OrganizationManagement = () => {
             />
           </div>
 
+          <div className="-mt-4 flex items-center shrink-0">
+            <HrModal />
+          </div>
           <div
             onClick={() => setWorkspaceModal(true)}
             className="-mt-4 flex items-center shrink-0"
