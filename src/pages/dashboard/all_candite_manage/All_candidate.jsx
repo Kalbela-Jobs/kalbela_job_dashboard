@@ -8,6 +8,7 @@ import { useContext, useState } from "react";
 import { Button, Input, message, Pagination, Switch } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Trash2 } from "lucide-react";
+import HrModal from "../../../components/common/HrModal";
 
 const All_candidate = () => {
   const { user, base_url } = useContext(Kalbela_AuthProvider);
