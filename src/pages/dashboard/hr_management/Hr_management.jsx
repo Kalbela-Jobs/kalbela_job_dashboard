@@ -11,11 +11,11 @@ const Hr_management = () => {
       const [delete_modal, set_delete_modal] = useState(false);
 
       const { data: workspace_hr = [], isLoading, refetch } = useQuery({
-            queryKey: ["workspace-hr", workspace._id],
+            queryKey: ["workspace-hr", workspace?._id],
 
             queryFn: async () => {
                   const res = await fetch(
-                        `${base_url}/workspace/workspace-hr?workspace_id=${workspace._id}`
+                        `${base_url}/workspace/workspace-hr?workspace_id=${workspace?._id}`
                   );
                   const data = await res.json();
                   return data.data;

@@ -8,7 +8,8 @@ const upload_audio = async (file) => {
             const formData = new FormData();
             formData.append("audio", file);
 
-            const url = `https://server.kalbelajobs.com/api/v1/image/upload-audio`;
+            const url = `http://localhost:5005/api/v1/image/upload-audio`;
+            // const url = `https://server.kalbelajobs.com/api/v1/image/upload-audio`;
             const response = await fetch(url, {
                   method: "PUT",
                   body: formData,

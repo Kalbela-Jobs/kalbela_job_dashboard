@@ -262,3 +262,7 @@
 .dark .ant-popover-inner-content {
       color: #d1d5db;
 }
+
+.jodit-status-bar-link{
+      display: none;
+}

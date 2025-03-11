@@ -20,7 +20,6 @@ const Add_Jobs = () => {
       const [responsibilities, setResponsibilities] = useState("");
       const [benefit, setBenefit] = useState("");
       const [isNegotiable, setIsNegotiable] = useState(false);
-      const [negotiableNote, setNegotiableNote] = useState("");
       const [remote, setRemote] = useState(false);
       const [cv_email_sent, setCvEmailSent] = useState(false);
       const [whatsapp_cv, setWhatsapp_cv] = useState(false);
@@ -382,7 +381,7 @@ const Add_Jobs = () => {
 
                               {/* when it is negotiable than show here negotiable note  */}
                               {isNegotiable && <Form.Item name="negotiable_note" label="Negotiable Note">
-                                    <ReactQuill theme="snow" value={negotiableNote} onChange={setNegotiableNote} />
+                                    <Input.TextArea rows={2} placeholder="Enter negotiable note" />
                               </Form.Item>}
 
 

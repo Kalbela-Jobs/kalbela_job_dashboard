@@ -8,6 +8,7 @@ import ChatArea from './components/ChatArea.jsx';
 import { Kalbela_AuthProvider } from '../../../context/MainContext.jsx';
 import { useQuery } from '@tanstack/react-query';
 import upload_audio from '../../../hooks/upload_audio.js';
+import uploadImage from '../../../hooks/upload_image.js';
 
 function Message() {
 

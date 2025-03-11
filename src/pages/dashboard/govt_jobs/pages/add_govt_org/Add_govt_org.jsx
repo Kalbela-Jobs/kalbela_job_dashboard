@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Modal, Form, Input, Upload, Button, Table, Popconfirm } from "antd";
 import { ContainerFilled, UploadOutlined } from "@ant-design/icons";
 import uploadImage from "../../../../../hooks/upload_image";
@@ -10,6 +10,7 @@ import Link_Button from "../../../../../components/small_component/Link_Button";
 const AddGovtOrgWithTable = () => {
 
       const { base_url, user } = useContext(Kalbela_AuthProvider)
+      const [editData, setEditData] = useState(null);
       const { data: organizations = [], isLoading, refetch } = useQuery({
             queryKey: ["workspace-hr"],
 
@@ -25,8 +26,25 @@ const AddGovtOrgWithTable = () => {
       console.log(organizations, 'organizations');
 
       const [isModalVisible, setIsModalVisible] = useState(false);
+      const [isEditModalVisible, setIsEditModalVisible] = useState(false);
       const [form] = Form.useForm();
+      const [editForm] = Form.useForm();
 
+      useEffect(() => {
+            if (editData) {
+                  editForm.setFieldsValue({
+                        govtOrgName: editData.name,
+                        orgDescription: editData.description,
+                        org_website: editData.org_website,
+                        govtOrgLogo: editData.logo ? [{
+                              uid: '-1',
+                              name: 'logo.png',
+                              status: 'done',
+                              url: editData.logo,
+                        }] : [],
+                  });
+            }
+      }, [editData, editForm]);
 
       // Handle form submission to add new organization
       const handleAddIndustry = async (values) => {
@@ -55,6 +73,39 @@ const AddGovtOrgWithTable = () => {
                               refetch();
                               form.resetFields();
                               setIsModalVisible(false);
+                        } else {
+                              sweet_alert("Error", data.message, "error");
+                        }
+                  });
+      };
+
+      // Handle form submission to edit organization
+      const handleEditIndustry = async (values) => {
+            const orgLogo = values.govtOrgLogo?.[0]?.originFileObj;
+            const updatedOrganization = {
+                  name: values.govtOrgName,
+                  description: values.orgDescription,
+                  logo: orgLogo ? await uploadImage(orgLogo) : editData.logo,
+                  org_website: values.org_website,
+            };
+
+            console.log(updatedOrganization, 'updatedOrganization');
+
+            fetch(`${base_url}/workspace/update-govt-org?govt_org_id=${editData._id}`, {
+                  method: "PUT",
+                  headers: {
+                        "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(updatedOrganization),
+            })
+                  .then((res) => res.json())
+                  .then((data) => {
+                        if (!data.error) {
+                              sweet_alert("Success", data.message, "success");
+                              refetch();
+                              editForm.resetFields();
+                              setIsEditModalVisible(false);
+                              setEditData(null);
                         } else {
                               sweet_alert("Error", data.message, "error");
                         }
@@ -113,14 +164,20 @@ const AddGovtOrgWithTable = () => {
                   title: "Actions",
                   key: "actions",
                   render: (_, record) => (
-                        <Popconfirm
-                              title="Are you sure to delete this organization?"
-                              onConfirm={() => handleDelete(record._id)}
-                              okText="Yes"
-                              cancelText="No"
-                        >
-                              <Button danger>Delete</Button>
-                        </Popconfirm>
+                        <div className="flex gap-2">
+                              <Button type="primary" onClick={() => {
+                                    setEditData(record);
+                                    setIsEditModalVisible(true);
+                              }}>Edit</Button>
+                              <Popconfirm
+                                    title="Are you sure to delete this organization?"
+                                    onConfirm={() => handleDelete(record._id)}
+                                    okText="Yes"
+                                    cancelText="No"
+                              >
+                                    <Button danger>Delete</Button>
+                              </Popconfirm>
+                        </div>
                   ),
             },
       ];
@@ -155,7 +212,6 @@ const AddGovtOrgWithTable = () => {
                                     <span className="text-sm font-medium transition-all capitalize group-hover:ms-4"> Add Govt Organization </span>
                               </button>
                         </div>
-                        {/* <Link_Button name='Add Govt Organization' onClick={() => setIsModalVisible(true)} /> */}
                   </div>
 
 
@@ -224,6 +280,72 @@ const AddGovtOrgWithTable = () => {
                               <Form.Item>
                                     <Button type="primary" htmlType="submit" className="bg-blue-500 hover:bg-blue-600">
                                           Add Govt Organization
+                                    </Button>
+                              </Form.Item>
+                        </Form>
+                  </Modal>
+
+                  {/* Modal for editing organization */}
+                  <Modal
+                        title="Edit Government Organization"
+                        visible={isEditModalVisible}
+                        onCancel={() => setIsEditModalVisible(false)}
+                        footer={null}
+                  >
+                        <Form form={editForm} onFinish={handleEditIndustry} layout="vertical">
+                              {/* Govt Organization Name */}
+                              <Form.Item
+                                    name="govtOrgName"
+                                    label="Govt Organization Name"
+                                    rules={[{ required: true, message: "Please input the government organization name!" }]}
+                              >
+                                    <Input />
+                              </Form.Item>
+
+                              {/* Govt Organization Description */}
+                              <Form.Item
+                                    name="orgDescription"
+                                    label="Organization Description"
+                                    rules={[{ required: true, message: "Please input the organization description!" }]}
+                              >
+                                    <Input.TextArea rows={4} placeholder="Enter multi-line text here" />
+                              </Form.Item>
+
+                              {/* Govt Organization Logo */}
+                              <Form.Item
+                                    name="govtOrgLogo"
+                                    label="Govt Organization Logo"
+                                    valuePropName="fileList"
+                                    getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
+                                    initialValue={editData?.logo ? [{
+                                          uid: '-1',
+                                          name: 'logo.png',
+                                          status: 'done',
+                                          url: editData.logo,
+                                    }] : []}
+                              >
+                                    <Upload
+                                          name="logo"
+                                          listType="picture"
+                                          maxCount={1}
+                                          beforeUpload={() => false} // Prevent auto-upload
+                                    >
+                                          <Button icon={<UploadOutlined />}>Upload Logo</Button>
+                                    </Upload>
+                              </Form.Item>
+
+                              <Form.Item
+                                    name="org_website"
+                                    label="Govt Organization Website"
+                                    rules={[{ required: false, message: "Please input the government organization website!" }]}
+                              >
+                                    <Input />
+                              </Form.Item>
+
+                              {/* Submit Button */}
+                              <Form.Item>
+                                    <Button type="primary" htmlType="submit" className="bg-blue-500 hover:bg-blue-600">
+                                          Update Govt Organization
                                     </Button>
                               </Form.Item>
                         </Form>

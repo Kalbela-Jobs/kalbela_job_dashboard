@@ -18,6 +18,79 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
       const navigate = useNavigate()
       const { base_url, user } = useContext(Kalbela_AuthProvider)
 
+      const config = {
+            buttons: [
+                  "bold",
+                  "italic",
+                  "underline",
+                  "strikethrough",
+                  "|",
+                  "font",
+                  "fontsize",
+                  "brush",
+                  "|",
+                  "paragraph",
+                  "align",
+                  "|",
+                  "ul",
+                  "ol",
+                  "indent",
+                  "outdent",
+                  "|",
+                  "link",
+                  "image",
+                  "table",
+                  "|",
+                  "undo",
+                  "redo",
+            ],
+            buttonsMD: [
+                  "bold",
+                  "italic",
+                  "underline",
+                  "strikethrough",
+                  "|",
+                  "font",
+                  "fontsize",
+                  "brush",
+                  "|",
+                  "paragraph",
+                  "align",
+                  "|",
+                  "ul",
+                  "ol",
+                  "indent",
+                  "outdent",
+                  "|",
+                  "link",
+                  "image",
+                  "table",
+                  "|",
+                  "undo",
+                  "redo",
+            ],
+            buttonsSM: [
+                  "bold",
+                  "italic",
+                  "underline",
+                  "|",
+                  "font",
+                  "brush",
+                  "|",
+                  "align",
+                  "ul",
+                  "ol",
+                  "|",
+                  "link",
+                  "image",
+                  "|",
+                  "undo",
+                  "redo",
+            ],
+            buttonsXS: ["bold", "italic", "|", "font", "brush", "|", "ul", "ol", "|", "link", "image"],
+            removeButtons: ["source", "fullsize", "about", "dots", "print", "preview"],
+            height: 300,
+      }
       // Fetch organizations
       const { data: organizations = [], isLoading } = useQuery({
             queryKey: ["organizations"],
@@ -35,6 +108,10 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                   const documentUrl = await uploadImage(values.document.file);  // Upload image and get URL
                   values.document_url = documentUrl;  // Set the document URL to the form data
             }
+            if (values.banner?.file) {
+                  const bannerUrl = await uploadImage(values.banner.file);  // Upload image and get URL
+                  values.banner_url = bannerUrl;  // Set the banner URL to the form data
+            }
 
             try {
                   console.log(values);
@@ -51,6 +128,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                               applicationStartDate: values.applicationStartDate,
                               applicationDeadline: values.applicationDeadline,
                               uploadDocument: values.document_url,  // Attach the document URL
+                              banner_url: values.banner_url,  // Attach the banner URL
                         };
 
                         console.log(jobData, 'job_data')
@@ -120,10 +198,9 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                         <h2 className="text-2xl font-bold mb-4">Job Details</h2>
                         <Divider />
 
-
-
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-6">
+                        <div className='flex gap-4'>
                               <Form.Item
+                                    className="w-full"
                                     name="org_info"
                                     label="Organization"
                                     rules={[{ required: true, message: "Please select an organization" }]}
@@ -147,6 +224,21 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                                     </Select>
                               </Form.Item>
                               <Form.Item
+                                    name="banner"
+                                    label="Upload Banner"
+                                    rules={[{ required: true, message: "Please upload a banner" }]}
+                              >
+                                    <div>
+                                          <Upload className="w-full" maxCount={1} beforeUpload={() => false}>
+                                                <Button className="w-full" icon={<UploadOutlined />}>Upload Banner</Button>
+                                          </Upload>
+                                    </div>
+                              </Form.Item>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-6">
+
+                              <Form.Item
                                     name="advertisementNo"
                                     label="Advertisement No"
                                     rules={[{ required: true, message: "Please enter advertisement number" }]}
@@ -158,7 +250,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                                     label="Publication Date"
                                     rules={[{ required: true, message: "Please enter publication date" }]}
                               >
-                                    <DatePicker className="w-full" placeholder="Pick a date" format="DD MMM YYYY hh:mm a" />
+                                    <DatePicker className="w-full" placeholder="Pick a date" format="DD MMM YYYY" />
                               </Form.Item>
 
 
@@ -205,7 +297,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                               label='Description'
                               rules={[{ required: true, message: "Please enter description" }]}
                         >
-                              <JoditEditor />
+                              <JoditEditor config={config} />
                         </Form.Item>
 
                         <Divider />

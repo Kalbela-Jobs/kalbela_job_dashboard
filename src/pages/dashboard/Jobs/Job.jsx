@@ -32,7 +32,8 @@ const Job = () => {
       const [modal, set_modal] = useState(false);
       const [search_value, set_search_value] = useState("");
       const [delete_modal, set_delete_modal] = useState(false);
-      const [statusFilter, setStatusFilter] = useState("");
+      const [statusFilter, setStatusFilter] = useState("")
+      const [expiredFilter, setExpiredFilter] = useState("")
       const [featured, set_featured] = useState("");
       const [dateRange, setDateRange] = useState([null, null]);
       const [sort_order, set_sort_order] = useState("desc");
@@ -42,7 +43,7 @@ const Job = () => {
       const { base_url, workspace, user } = useContext(Kalbela_AuthProvider);
 
       const { data: jobs = [], isLoading, error, refetch } = useQuery({
-            queryKey: ["workspace-jobs", workspace?._id, user.role, statusFilter, dateRange, search_value, sort_order, featured, page, pageSize],
+            queryKey: ["workspace-jobs", workspace?._id, user.role, statusFilter, dateRange, search_value, sort_order, featured, page, pageSize, expiredFilter],
             queryFn: async () => {
                   let url = `${base_url}/jobs/${user.role === "supper_admin" ? 'get-all-jobs' : 'workspace-jobs'}`;
                   if (workspace?._id && user.role !== "supper_admin") {
@@ -66,6 +67,9 @@ const Job = () => {
                   }
                   if (statusFilter) {
                         url += `${url.includes('?') ? '&' : '?'}status=${statusFilter}`;
+                  }
+                  if (expiredFilter) {
+                        url += `${url.includes('?') ? '&' : '?'}expired=${expiredFilter}`;
                   }
                   if (dateRange && dateRange[0] && dateRange[1]) { //Updated dateRange check
                         url += `${url.includes('?') ? '&' : '?'}start_date=${dateRange[0].toISOString()}&end_date=${dateRange[1].toISOString()}`;
@@ -184,6 +188,16 @@ const Job = () => {
                                           <Select.Option value="true">Active</Select.Option>
                                           <Select.Option value="false">Inactive</Select.Option>
                                     </Select>
+                                    <Select
+
+                                          style={{ width: 200, height: 50 }}
+                                          placeholder="Filter by Expired"
+                                          onChange={(value) => setExpiredFilter(value)}
+                                    >
+                                          <Select.Option selected value='false' >Active</Select.Option>
+                                          <Select.Option value='true' >Expired</Select.Option>
+                                    </Select>
+
                                     <Select
 
                                           style={{ width: 200, height: 50 }}

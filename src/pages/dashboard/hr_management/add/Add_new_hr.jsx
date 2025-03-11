@@ -23,7 +23,7 @@ const Add_new_hr = () => {
                   name,
                   email,
                   password,
-                  company_id: workspace._id,
+                  company_id: workspace?._id || "",
                   role: role,
                   permission: selected_permission
             }
@@ -49,7 +49,6 @@ const Add_new_hr = () => {
       };
 
       const handlePermission = (selectedOptions) => {
-            // Extract the 'value' from the selected options
             const selectedValues = selectedOptions.map(option => option.value);
             set_selected_permission(selectedValues);  // Update the state with the selected values
       };
