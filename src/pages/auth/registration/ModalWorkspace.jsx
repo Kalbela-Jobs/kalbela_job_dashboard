@@ -5,6 +5,7 @@ import {
   EnvironmentOutlined,
   LinkOutlined,
 } from "@ant-design/icons";
+import "./modalWokspace.css";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useQuery } from "@tanstack/react-query";
@@ -16,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 const { Title } = Typography;
 const { Content } = Layout;
 
-export default function Workspace({ controlWidth }) {
+export default function ModalWorkspace({ controlWidth }) {
   const { user, base_url, setWorkspace, setUser, setCookie } =
     useContext(Kalbela_AuthProvider);
   const [select_package, setSelectPackage] = useState(null);
@@ -199,61 +200,20 @@ export default function Workspace({ controlWidth }) {
   };
 
   return (
-    <Layout className="relative py-12 overflow-hidden bg-black sm:py-16 lg:py-20 xl:py-24">
-      <div className="absolute top-0 left-0 -translate-x-48 -translate-y-36">
-        <svg
-          className="blur-3xl filter"
-          style={{ filter: "blur(64px)" }}
-          width={756}
-          height={202}
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M434.095 21.875c185.823 0 321.414-55.288 321.414 9.929S268.41 201.855 82.588 201.855c-185.822 0 0-104.834 0-170.051 0-65.217 165.685-9.929 351.507-9.929Z"
-            fill="url(#b)"
-          />
-          <defs>
-            <linearGradient
-              id="b"
-              x1={0}
-              y1="201.855"
-              x2="8.923"
-              y2="-28.873"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop
-                offset="0%"
-                style={{ stopColor: "var(--color-cyan-500)" }}
-              />
-              <stop
-                offset="100%"
-                style={{ stopColor: "var(--color-purple-500)" }}
-              />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-      <div className="absolute inset-0">
-        <img
-          className="object-cover w-full h-full opacity-50"
-          src="https://landingfoliocom.imgix.net/store/collection/dusk/images/noise.png"
-          alt=""
-        />
-      </div>
+    <div className="relative py-12 overflow-hidden bg-white sm:py-16 lg:py-20 xl:py-24">
       <div className="relative px-4 mx-auto max-w-7xl sm:px-6 bg-white lg:px-8">
         <div className="">
-          <h2 className="text-3xl font-normal text-black sm:text-4xl lg:text-5xl xl:text-6xl">
+          <h2 className="text-[24px] font-semibold text-black sm:text-4xl lg:text-5xl xl:text-6xl">
             Create your workspace
           </h2>
-          <p className="mt-4 text-base font-normal text-gray-400 sm:text-lg">
+          <p className="mt-4 text-base font-normal text-gray-800 sm:text-lg">
             We're here to help you with your hiring needs.
           </p>
         </div>
         <div className="grid grid-cols-1 mt-12 sm:mt-16 lg:mt-20 lg:grid-cols-6 lg:gap-x-24 gap-y-12">
           <div className="space-y-8 lg:space-y-12 lg:col-span-2 lg:order-last">
             <div className="mt-6">
-              <p className="text-base font-bold text-gray-100">
+              <p className="text-base font-bold text-gray-800">
                 Choose Package
               </p>
               <div
@@ -288,10 +248,10 @@ export default function Workspace({ controlWidth }) {
                     <div className="px-4 py-5">
                       <div className="flex items-start">
                         <div className="ml-4">
-                          <p className="text-sm capitalize font-bold group-hover:text-gray-900 text-gray-100">
+                          <p className="text-sm capitalize font-bold group-hover:text-gray-900 ">
                             {item?.name}
                           </p>
-                          <p className="mt-1 text-sm font-medium hover:text-gray-900 text-gray-100">
+                          <p className="mt-1 text-sm font-medium hover:text-gray-900 ">
                             {item?.description}
                           </p>
                         </div>
@@ -310,7 +270,7 @@ export default function Workspace({ controlWidth }) {
               <div>
                 <label
                   htmlFor="companyName"
-                  className="text-base font-normal text-white"
+                  className="text-base font-normal text-black"
                 >
                   Your company name <span className="text-red-500">*</span>
                 </label>
@@ -322,14 +282,14 @@ export default function Workspace({ controlWidth }) {
                     id="companyName"
                     placeholder="Enter your company name"
                     onChange={handleCompanyNameChange}
-                    className="block w-full px-5 py-4 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                    className="block w-full px-5 py-4 text-base font-normal text-black placeholder-gray-500 bg-white border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                   />
                 </div>
               </div>
               <div>
                 <label
                   htmlFor="companyWebsite"
-                  className="text-base font-normal text-white"
+                  className="text-base font-normal text-black"
                 >
                   Company Uniq ID <span className="text-red-500">*</span>
                 </label>
@@ -341,12 +301,12 @@ export default function Workspace({ controlWidth }) {
                     placeholder="Enter your company uniq id"
                     value={companyWebsite}
                     onChange={handleCompanyWebsiteChange}
-                    className="block w-full px-5 py-4 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                    className="block w-full px-5 py-4 text-base font-normal text-black placeholder-gray-500 bg-white border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                   />
                 </div>
               </div>
               <div>
-                <label htmlFor="" className="text-base font-normal text-white">
+                <label htmlFor="" className="text-base font-normal text-black">
                   Company logo <span className="text-red-500">*</span>
                 </label>
                 <div className="mt-2">
@@ -355,12 +315,12 @@ export default function Workspace({ controlWidth }) {
                     required
                     name="logo"
                     id="logo"
-                    className="block w-full px-5 py-3 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                    className="block w-full px-5 py-3 text-base font-normal text-black placeholder-gray-500 bg-white border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                   />
                 </div>
               </div>
               <div>
-                <label htmlFor="" className="text-base font-normal text-white">
+                <label htmlFor="" className="text-base font-normal text-black">
                   Trade License Copy
                 </label>
                 <div className="mt-2">
@@ -368,12 +328,12 @@ export default function Workspace({ controlWidth }) {
                     type="file"
                     name="license"
                     id="license"
-                    className="block w-full px-5 py-3 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                    className="block w-full px-5 py-3 text-base font-normal text-black placeholder-gray-500 bg-white border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                   />
                 </div>
               </div>
               <div>
-                <label htmlFor="" className="text-base font-normal text-white">
+                <label htmlFor="" className="text-base font-normal text-black">
                   Company size <span className="text-red-500">*</span>
                 </label>
                 <div className="mt-2">
@@ -381,7 +341,7 @@ export default function Workspace({ controlWidth }) {
                     name="company_size"
                     required
                     id="company_size"
-                    className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                    className="block w-full py-4 pl-5 pr-10 text-base font-normal text-black placeholder-gray-500 bg-white border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                   >
                     <option value="">Select company size</option>
                     {companySize.map((item, index) => (
@@ -395,7 +355,7 @@ export default function Workspace({ controlWidth }) {
               <div className="sm:col-span-1">
                 <label
                   htmlFor="website"
-                  className="text-base font-normal text-white"
+                  className="text-base font-normal text-black"
                 >
                   Company Website
                 </label>
@@ -404,21 +364,21 @@ export default function Workspace({ controlWidth }) {
                     type="url"
                     id="website"
                     placeholder="Enter your company website"
-                    className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                    className="block w-full py-4 pl-5 pr-10 text-base font-normal text-black placeholder-gray-500 bg-white border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                   />
                 </div>
               </div>
               <div className="sm:col-span-2">
-                <label htmlFor="" className="text-base font-normal text-white">
+                <label htmlFor="" className="text-base font-normal text-black">
                   What industry do you work in?{" "}
                   <span className="text-red-500">*</span>
                 </label>
-                <div className="mt-2">
+                <div className="mt-2 ">
                   <Select
                     required
                     name="industry"
                     id="industry"
-                    className="custom-select !border-opacity-20 block w-full"
+                    className="custom-select bgColor !border-opacity-20 block  w-full"
                     placeholder="Select industry"
                     dropdownClassName="custom-dropdown"
                     showSearch
@@ -427,7 +387,7 @@ export default function Workspace({ controlWidth }) {
                       <Option
                         key={item.name}
                         value={item.name}
-                        className="text-white"
+                        className="text-black"
                       >
                         {item.name}
                       </Option>
@@ -454,7 +414,7 @@ export default function Workspace({ controlWidth }) {
               <div className="sm:col-span-1">
                 <label
                   htmlFor="contactNumber"
-                  className="text-base font-normal text-white"
+                  className="text-base font-normal text-black"
                 >
                   Company Contact Number <span className="text-red-500">*</span>
                 </label>
@@ -465,14 +425,14 @@ export default function Workspace({ controlWidth }) {
                     id="contactNumber"
                     defaultValue={"+880"}
                     placeholder="Enter your company contact number"
-                    className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                    className="block w-full py-4 pl-5 pr-10 text-base font-normal text-black placeholder-gray-500 bg-white border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                   />
                 </div>
               </div>
               <div className="sm:col-span-1">
                 <label
                   htmlFor="email"
-                  className="text-base font-normal text-white"
+                  className="text-base font-normal text-black"
                 >
                   Company Email Address <span className="text-red-500">*</span>
                 </label>
@@ -482,14 +442,14 @@ export default function Workspace({ controlWidth }) {
                     type="email"
                     id="email"
                     placeholder="Enter your company email address"
-                    className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                    className="block w-full py-4 pl-5 pr-10 text-base font-normal text-black placeholder-gray-500 bg-white border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                   />
                 </div>
               </div>
               <div className="sm:col-span-2">
                 <label
                   htmlFor="address"
-                  className="text-base font-normal text-white"
+                  className="text-base font-normal text-black"
                 >
                   Company Address <span className="text-red-500">*</span>
                 </label>
@@ -500,12 +460,12 @@ export default function Workspace({ controlWidth }) {
                     id="address"
                     name="address"
                     placeholder="Enter your company address"
-                    className="block w-full py-4 pl-5 pr-10 text-base font-normal text-white placeholder-gray-500 bg-black border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                    className="block w-full py-4 pl-5 pr-10 text-base font-normal text-black placeholder-gray-500 bg-white border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
                   />
                 </div>
               </div>
               <div className="sm:col-span-2">
-                <label htmlFor="" className="text-base font-normal text-white">
+                <label htmlFor="" className="text-base font-normal text-black">
                   Company Description
                 </label>
                 <div className="mt-2">
@@ -529,6 +489,6 @@ export default function Workspace({ controlWidth }) {
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 }
