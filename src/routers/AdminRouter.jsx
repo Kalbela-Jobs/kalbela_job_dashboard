@@ -35,6 +35,7 @@ import TodoCalendar from "../pages/dashboard/Todo/Todo";
 import NoteAndDoc from "../pages/dashboard/Todo/Note_and_doc";
 import Job_candidate from "../pages/dashboard/job_candidate/Job_candidate";
 import All_candidate from "../pages/dashboard/all_candite_manage/All_candidate";
+import GraphChats from "../pages/dashboard/GraphChats/GraphChats";
 
 const AdminRouter = [
   {
@@ -323,6 +324,15 @@ const AdminRouter = [
     element: (
       <Private>
         <All_candidate />
+      </Private>
+    ),
+  },
+
+  {
+    path: "graphChats",
+    element: (
+      <Private>
+        <GraphChats />
       </Private>
     ),
   },
