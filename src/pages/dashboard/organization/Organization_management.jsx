@@ -184,7 +184,6 @@ import { SearchOutlined } from "@ant-design/icons";
 import Workspace from "../../auth/registration/Workspace";
 import HrModal from "../../../components/common/HrModal";
 import ModalWorkspace from "../../auth/registration/ModalWorkspace";
-
 const OrganizationManagement = () => {
   const { user, base_url } = useContext(Kalbela_AuthProvider);
   const [modal, setModal] = useState(false);
@@ -193,6 +192,7 @@ const OrganizationManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrg, setSelectedOrg] = useState(null); // State to store selected organization
   const [workspaceModal, setWorkspaceModal] = useState(null);
+  const [editWorkspace, setEditWorkspace] = useState(null);
 
   // console.log(selectedOrg, "selectedOrg");
   // const pageSize = 10;
@@ -330,7 +330,7 @@ const OrganizationManagement = () => {
         priority ? priority.charAt(0).toUpperCase() + priority.slice(1) : "",
     },
     {
-      title: "Actions",
+      title: <span className="flex justify-center text-center">Actions</span>,
       key: "actions",
       render: (_, record) => (
         <div className="flex justify-center items-center space-x-4">
@@ -344,6 +344,8 @@ const OrganizationManagement = () => {
             Remove
           </Button>
           <HrModal workspace={record} />
+
+          <Button onClick={() => setEditWorkspace(true)}>Edit</Button>
         </div>
       ),
     },
@@ -560,14 +562,25 @@ const OrganizationManagement = () => {
         )}
 
         {/* // right  WorkSpace side modal for modal component */}
-
         <Modal
           title="Add New Workspace"
           footer={null}
-          width={1080}
-          open={workspaceModal} // Control visibility using `open`
-          onCancel={() => setWorkspaceModal(false)} // Close when clicking outside
-          className="lg:ml-[265px]"
+          width={830}
+          open={workspaceModal}
+          onCancel={() => setWorkspaceModal(false)}
+          className="flex items-center justify-center"
+        >
+          <ModalWorkspace />
+        </Modal>
+
+        {/* // right Edit WorkSpace side modal for modal component */}
+        <Modal
+          title="Edit New Workspace"
+          footer={null}
+          width={830}
+          open={editWorkspace}
+          onCancel={() => setEditWorkspace(false)}
+          className="flex items-center justify-center"
         >
           <ModalWorkspace controlWidth="true" />
         </Modal>

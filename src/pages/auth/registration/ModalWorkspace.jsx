@@ -200,68 +200,70 @@ export default function ModalWorkspace({ controlWidth }) {
   };
 
   return (
-    <div className="relative py-12 overflow-hidden bg-white sm:py-16 lg:py-20 xl:py-24">
-      <div className="relative px-4 mx-auto max-w-7xl sm:px-6 bg-white lg:px-8">
+    <div className=" py-12  bg-white sm:py-16 lg:py-20 xl:py-24">
+      <div className=" px-4 sm:px-6 bg-white ">
         <div className="">
           <h2 className="text-[24px] font-semibold text-black sm:text-4xl lg:text-5xl xl:text-6xl">
-            Create your workspace
+            {controlWidth ? "  Edit your workspace" : "  Create your workspace"}
           </h2>
           <p className="mt-4 text-base font-normal text-gray-800 sm:text-lg">
             We're here to help you with your hiring needs.
           </p>
         </div>
-        <div className="grid grid-cols-1 mt-12 sm:mt-16 lg:mt-20 lg:grid-cols-6 lg:gap-x-24 gap-y-12">
-          <div className="space-y-8 lg:space-y-12 lg:col-span-2 lg:order-last">
-            <div className="mt-6">
-              <p className="text-base font-bold text-gray-800">
-                Choose Package
-              </p>
-              <div
-                className={`${
-                  controlWidth
-                    ? "grid grid-cols-2 gap-4 mt-5 lg:grid-cols-1 "
-                    : "grid grid-cols-1 gap-4 mt-5 sm:grid-cols-2 "
-                }`}
-              >
-                {packages.map((item, index) => (
-                  <div
-                    onClick={() => setSelectPackage(item)}
-                    key={item._id}
-                    className="relative overflow-hidden transition-all duration-200 bg-gray-500 bg-opacity-25 border border-gray-200 cursor-pointer rounded-xl hover:border-gray-400 hover:bg-gray-50 border-opacity-15 opacity-60 group"
-                  >
-                    {select_package?._id === item?._id && (
-                      <div className="absolute top-0 right-0 p-2">
-                        <svg
-                          className="w-6 h-6 text-green-500"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                    )}
-                    <div className="px-4 py-5">
-                      <div className="flex items-start">
-                        <div className="ml-4">
-                          <p className="text-sm capitalize font-bold group-hover:text-gray-900 ">
-                            {item?.name}
-                          </p>
-                          <p className="mt-1 text-sm font-medium hover:text-gray-900 ">
-                            {item?.description}
-                          </p>
+        <div
+          className={`grid grid-cols-1 mt-12 sm:mt-16 lg:mt-20 ${
+            controlWidth ? "" : "lg:grid-cols-6"
+          } lg:gap-x-24 gap-y-12`}
+        >
+          {controlWidth ? (
+            ""
+          ) : (
+            <div className="space-y-8 lg:space-y-12 lg:col-span-2 lg:order-last">
+              <div className="mt-6">
+                <p className="text-base font-bold text-gray-800">
+                  Choose Package
+                </p>
+                <div className="grid grid-cols-2 gap-4 mt-5 lg:grid-cols-1 ">
+                  {packages.map((item, index) => (
+                    <div
+                      onClick={() => setSelectPackage(item)}
+                      key={item._id}
+                      className="relative overflow-hidden transition-all duration-200 bg-gray-500 bg-opacity-25 border border-gray-200 cursor-pointer rounded-xl hover:border-gray-400 hover:bg-gray-50 border-opacity-15 opacity-60 group"
+                    >
+                      {select_package?._id === item?._id && (
+                        <div className="absolute top-0 right-0 p-2">
+                          <svg
+                            className="w-6 h-6 text-green-500"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                      <div className="px-4 py-5">
+                        <div className="flex items-start">
+                          <div className="ml-4">
+                            <p className="text-sm capitalize font-bold group-hover:text-gray-900 ">
+                              {item?.name}
+                            </p>
+                            <p className="mt-1 text-sm font-medium hover:text-gray-900 ">
+                              {item?.description}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
           <div className="lg:col-span-4">
             <form
               onSubmit={create_workspace}
@@ -275,15 +277,23 @@ export default function ModalWorkspace({ controlWidth }) {
                   Your company name <span className="text-red-500">*</span>
                 </label>
                 <div className="mt-2">
-                  <input
-                    type="text"
-                    required
-                    defaultValue={companyName}
-                    id="companyName"
-                    placeholder="Enter your company name"
-                    onChange={handleCompanyNameChange}
-                    className="block w-full px-5 py-4 text-base font-normal text-black placeholder-gray-500 bg-white border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
-                  />
+                  {controlWidth ? (
+                    <input
+                      type="text"
+                      readOnly
+                      value="Digital Solutions" // Use `value` instead of `defaultValue`
+                      className="block w-full px-5 py-4 text-base font-normal text-black placeholder-gray-500 bg-white border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      required
+                      value={companyName} // Use `value` to make it controlled
+                      placeholder="Enter your company name"
+                      onChange={handleCompanyNameChange}
+                      className="block w-full px-5 py-4 text-base font-normal text-black placeholder-gray-500 bg-white border border-gray-800 rounded-md focus:border-white focus:ring-white focus:ring-1"
+                    />
+                  )}
                 </div>
               </div>
               <div>
