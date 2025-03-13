@@ -8,8 +8,8 @@ const uploadImage = async (file) => {
             const formData = new FormData();
             formData.append("image", file);
 
-            const url = `http://localhost:5005/api/v1/image/upload-image`;
-            // const url = `https://server.kalbelajobs.com/api/v1/image/upload-image`;
+            // const url = `http://localhost:5005/api/v1/image/upload-image`;
+            const url = `https://server.kalbelajobs.com/api/v1/image/upload-image`;
             const response = await fetch(url, {
                   method: "PUT",
                   body: formData,
