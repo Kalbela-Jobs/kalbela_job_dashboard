@@ -27,9 +27,7 @@ const ViewJobModal = ({ job, onClose }) => {
         <Descriptions.Item label="Organization Description">
           {job?.organization?.description}
         </Descriptions.Item>
-        <Descriptions.Item label="Advertisement No">
-          {job?.advertisementNo}
-        </Descriptions.Item>
+        
         <Descriptions.Item label="Vacancy">{job?.vacancy}</Descriptions.Item>
         <Descriptions.Item label="Application Start Date">
           {new Date(job?.applicationStartDate).toDateString()}
