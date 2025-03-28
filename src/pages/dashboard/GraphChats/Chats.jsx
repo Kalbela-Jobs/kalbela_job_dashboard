@@ -16,11 +16,59 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useContext } from "react";
+import { Kalbela_AuthProvider } from "../../../context/MainContext";
+import { useQuery } from "@tanstack/react-query";
+import Candidatess from "./Candidatess";
+import { Button, Modal, Pagination } from "antd";
 
 const Chats = () => {
   const [timeRange, setTimeRange] = useState("month");
 
   // Dummy data for sales over time
+
+  const { base_url, workspace, user } = useContext(Kalbela_AuthProvider);
+
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  const {
+    data: jobs = [],
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["workspace-jobs", workspace?._id, user.role, page, pageSize],
+    queryFn: async () => {
+      let url = `${base_url}/jobs/${
+        user.role === "supper_admin" ? "get-all-jobs" : "workspace-jobs"
+      }`;
+
+      if (workspace?._id && user.role !== "supper_admin") {
+        url += `?workspace_id=${workspace._id}`;
+      }
+
+      url += `${url.includes("?") ? "&" : "?"}page=${page}`;
+      url += `${
+        url.includes("?") ? "&" : "?"
+      }page_size=${pageSize}&limit=${pageSize}`;
+
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error("Failed to fetch jobs");
+      }
+      const data = await res.json();
+      return data.data || [];
+    },
+    enabled: !!(workspace?._id || user.role === "supper_admin"),
+  });
+
+  const handlePageChange = (newPage, newPageSize) => {
+    console.log(newPage, newPageSize);
+    setPage(newPage);
+    setPageSize(newPageSize);
+  };
+  console.log("checked22999999999", jobs?.jobs);
   const salesData = {
     week: [
       { name: "Mon", sales: 4000, profit: 2400 },
@@ -56,24 +104,17 @@ const Chats = () => {
   };
 
   // Dummy data for product categories
-  const categoryData = [
-    { name: "Electronics", value: 400 },
-    { name: "Clothing", value: 300 },
-    { name: "Home & Kitchen", value: 300 },
-    { name: "Books", value: 200 },
-    { name: "Sports", value: 100 },
-  ];
 
   // Dummy data for traffic sources
   const trafficData = [
-    { name: "Direct", value: 40 },
-    { name: "Organic Search", value: 30 },
-    { name: "Paid Search", value: 15 },
-    { name: "Social Media", value: 10 },
-    { name: "Referral", value: 5 },
+    { name: "Direct", total: 50 },
+    { name: "Direct", total: 50 },
   ];
 
-  // Dummy data for customer demographics
+  const [storeUrl, setStoreUrl] = useState(null);
+  // console.log("store Url", storeUrl);
+
+  // Dummy data for customer demographics dummy Data
   const demographicsData = [
     { name: "18-24", male: 20, female: 30 },
     { name: "25-34", male: 30, female: 40 },
@@ -84,6 +125,35 @@ const Chats = () => {
 
   // Colors for pie charts
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
+  const [openChart, setOpenChart] = useState(null);
+  const CustomTooltip = ({ active, payload, datas }) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      return (
+        <div className="bg-white p-4 pt-2 mt-6 shadow-md rounded-md border z-50 border-gray-500 ">
+          <p className="text-sm font-semibold">
+            {datas?.job_title?.slice(0, 22) + "..."}
+          </p>
+          <p className="text-sm font-semibold">
+            Applications: {datas?.applications_count}
+          </p>
+          <p className="text-sm font-semibold">
+            Salary Type : {datas?.salary_type}
+          </p>
+          <div className="flex justify-center gap-2 items-center">
+            <h3 className="text-sm font-semibold"> Age Range :</h3>
+            <p className="text-xs font-semibold">
+              min ({datas?.age_range?.min}) -
+            </p>
+            <p className="text-xs  font-semibold">
+              max ({datas?.age_range?.min})
+            </p>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="w-full mx-auto space-y-5">
@@ -127,76 +197,73 @@ const Chats = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          {/* Traffic Sources */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="p-6">
-              <h2 className="text-xl font-bold text-gray-800">
-                Traffic Sources
-              </h2>
-              <p className="text-sm text-gray-500">
-                Where your customers come from
-              </p>
-            </div>
-            <div className="px-6 pb-6">
-              <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={trafficData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, percent }) =>
-                        `${name}: ${(percent * 100).toFixed(0)}%`
-                      }
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {trafficData.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-          </div>
+        <h2 className="text-black text-2xl mt-3 mb-1 font-bold">
+          Jobs Reviews
+        </h2>
 
-          {/* Customer Demographics */}
-          <div className="col-span-1 md:col-span-2 bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="p-6">
-              <h2 className="text-xl font-bold text-gray-800">
-                Customer Demographics
-              </h2>
-              <p className="text-sm text-gray-500">
-                Age and gender distribution
-              </p>
-            </div>
-            <div className="px-6 pb-6">
-              <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={demographicsData}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="male" name="Male" fill="#8884d8" />
-                    <Bar dataKey="female" name="Female" fill="#82ca9d" />
-                  </BarChart>
-                </ResponsiveContainer>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+          {/*  Jobs Reviews */}
+          {jobs?.jobs?.map((job, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+              onClick={() => setStoreUrl(job?.url)}
+            >
+              <div className="p-6">
+                <h2 className="text-xl font-bold text-gray-800">
+                  {job?.job_title.slice(0, 22) + "..."}
+                </h2>
+              </div>
+              <div className="px-6 pb-6">
+                <div className="h-60">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart onClick={() => setOpenChart(true)}>
+                      <Pie
+                        data={trafficData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="total"
+                      >
+                        {trafficData.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip content={<CustomTooltip />} datas={job} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
+        </div>
+
+        <Modal
+          title="Chart "
+          footer={null}
+          open={openChart}
+          onCancel={() => setOpenChart(false)}
+          className="flex items-center justify-center"
+        >
+          <Candidatess itemUrl={storeUrl} />
+        </Modal>
+
+        <div className="mt-4 flex justify-center">
+          <Pagination
+            current={jobs?.current_page ?? 1}
+            pageSize={pageSize ?? 10}
+            total={jobs?.total_jobs ?? 0}
+            showSizeChanger
+            defaultCurrent={3}
+            // showTotal={(total) => `Total ${total} items`}
+            onChange={handlePageChange}
+            // onShowSizeChange={handlePageChange}
+          />
         </div>
       </div>
     </div>
