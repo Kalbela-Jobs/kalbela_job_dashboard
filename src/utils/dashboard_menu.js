@@ -67,7 +67,7 @@ export const nav_items = [
     link: "/admin/organization",
   },
   {
-    title: "Job Sicker",
+    title: "Job Seeker",
     icon: Users,
     link: "/admin/all-candidates",
   },
