@@ -213,6 +213,7 @@ const OrganizationManagement = () => {
     },
   });
 
+  //only check
   const deleteFunction = async (data) => {
     try {
       const res = await fetch(
