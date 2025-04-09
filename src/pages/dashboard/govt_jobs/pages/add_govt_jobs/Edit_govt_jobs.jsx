@@ -18,6 +18,8 @@ import JoditEditor from "jodit-react";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 import uploadImage from "../../../../../hooks/upload_image";
+import TextArea from "antd/es/input/TextArea";
+import dayjs from "dayjs";
 
 const styles = `
   .upload-list-inline .ant-upload-list-item {
@@ -37,6 +39,8 @@ const EditGovtJobs = ({ data, onClose, base_url }) => {
       const [publicationDate, setPublicationDate] = useState(
             data?.publicationDate ? moment(data.publicationDate) : null
       );
+
+      console.log(job, 'job');
 
       const config = {
             buttons: [
@@ -236,6 +240,8 @@ const EditGovtJobs = ({ data, onClose, base_url }) => {
                   logo: selectedOrg.logo,
                   description: selectedOrg.description,
                   website: selectedOrg?.org_website,
+                  banner: selectedOrg?.org_banner,
+
             })
             : null;
 
@@ -255,38 +261,25 @@ const EditGovtJobs = ({ data, onClose, base_url }) => {
                         width={800}
                   >
                         <Form form={form} layout="vertical" onFinish={handleEditJob}>
-                              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                              <div className='flex gap-4'>
                                     <Form.Item
+                                          className="w-full"
                                           name="org_info"
                                           label="Organization"
-                                          rules={[
-                                                { required: true, message: "Please select an organization" },
-                                          ]}
+                                          rules={[{ required: true, message: "Please select an organization" }]}
                                     >
                                           <Select
                                                 placeholder="Select an organization"
+                                                loading={isLoading}
                                                 showSearch
-                                                optionFilterProp="children"
+                                                filterOption={(input, option) =>
+                                                      option?.value && JSON.parse(option.value)?.name?.toLowerCase().includes(input.toLowerCase())
+                                                }
                                           >
                                                 {organizations.map((org) => (
-                                                      <Option
-                                                            key={org._id}
-                                                            value={JSON.stringify({
-                                                                  id: org._id,
-                                                                  name: org.name,
-                                                                  logo: org.logo,
-                                                                  description: org.description,
-                                                                  website: org?.org_website,
-                                                            })}
-                                                      >
+                                                      <Option key={org._id} value={JSON.stringify({ id: org._id, name: org.name, logo: org.logo, description: org.description, website: org?.org_website, banner: org?.banner })}>
                                                             <div className="flex items-center gap-2">
-                                                                  <img
-                                                                        src={org?.logo || "/placeholder.svg"}
-                                                                        alt={org?.name}
-                                                                        width={24}
-                                                                        height={24}
-                                                                        className="rounded-full"
-                                                                  />
+                                                                  <img src={org.logo || "/placeholder.svg"} alt={org.name} className="w-6 h-6 rounded-full" />
                                                                   <span>{org.name}</span>
                                                             </div>
                                                       </Option>
@@ -294,21 +287,16 @@ const EditGovtJobs = ({ data, onClose, base_url }) => {
                                           </Select>
                                     </Form.Item>
 
-                                   
+                              </div>
+                              <Form.Item
+                                    name='description'
+                                    label='Description'
+                                    rules={[{ required: true, message: "Please enter description" }]}
+                              >
+                                    <TextArea placeholder="Enter description" />
+                              </Form.Item>
 
-                                    <Form.Item
-                                          name="publicationDate"
-                                          label="Publication Date"
-                                          rules={[
-                                                { required: false, message: "Please enter publication date" },
-                                          ]}
-                                    >
-                                          <DatePicker
-                                                className="w-full"
-                                                placeholder="Pick a date"
-                                                format="DD MMM YYYY hh:mm a"
-                                          />
-                                    </Form.Item>
+                              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
 
                                     <Form.Item
                                           name="applicationStartDate"
@@ -318,7 +306,8 @@ const EditGovtJobs = ({ data, onClose, base_url }) => {
                                           <DatePicker
                                                 className="w-full"
                                                 placeholder="Pick a date"
-                                                format="DD MMM YYYY hh:mm a"
+                                                format="DD MMM YYYY hh:mm A"
+                                                showTime={{ defaultValue: dayjs("10:00", "HH:mm") }}
                                           />
                                     </Form.Item>
 
@@ -331,87 +320,64 @@ const EditGovtJobs = ({ data, onClose, base_url }) => {
                                                 disabledDate={disabledDeadlineDates}
                                                 className="w-full"
                                                 placeholder="Pick a date"
-                                                format="DD MMM YYYY hh:mm a"
+                                                format="DD MMM YYYY hh:mm A"
+                                                showTime={{ defaultValue: dayjs("17:00", "HH:mm") }}
                                           />
                                     </Form.Item>
 
+
                                     <Form.Item
-                                          name="hyperlink"
-                                          label="Hyperlink"
+                                          name={`hyperlink`}
+                                          label={`Hyper link`}
                                           rules={[{ required: true, message: "Please enter hyperlink" }]}
                                     >
-                                          <Input placeholder="Enter hyperlink" />
+                                          <Input placeholder={`Enter hyperlink`} min={1} className="w-full" />
                                     </Form.Item>
-
                                     <Form.Item
-                                          name="document"
-                                          label="Upload Document"
-                                          rules={[{ required: false, message: "Please upload a document" }]}
+                                          name="pdf"
+                                          label="Upload Document PDF"
+                                          valuePropName="fileList"
+                                          getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
+                                          rules={[
+                                                {
+                                                      required: true,
+                                                      message: "Please upload a document PDF!",
+                                                },
+                                          ]}
                                     >
                                           <Upload
+                                                name="pdf"
+                                                listType="picture"
                                                 maxCount={1}
-                                                fileList={fileList}
-                                                onChange={handleFileChange}
-                                                beforeUpload={() => false}
-                                                className="upload-list-inline"
+                                                beforeUpload={() => false} // Prevent auto-upload
                                           >
-                                                <Button
-                                                      icon={<UploadOutlined />}
-                                                      className="bg-blue-500 text-white hover:bg-blue-600"
-                                                >
-                                                      Choose File
-                                                </Button>
+                                                <Button icon={<UploadOutlined />}>Upload Document PDF</Button>
                                           </Upload>
                                     </Form.Item>
-                              </div>
 
-                              {fileList.length > 0 && fileList[0].url && (
-                                    <div className="mt-4">
-                                          <h4 className="text-sm font-medium mb-2">
-                                                Current Document Preview:
-                                          </h4>
-                                          <div className="border rounded p-4">
-                                                <a
-                                                      href={fileList[0].url}
-                                                      target="_blank"
-                                                      rel="noopener noreferrer"
-                                                      className="text-blue-500 hover:underline"
-                                                >
-                                                      View Current Document
-                                                </a>
-                                          </div>
-                                    </div>
-                              )}
-
-                              <Form.Item
-                                    name="description"
-                                    label="Description"
-                                    initialValue={job?.description}
-                                    rules={[{ required: true, message: "Please enter description" }]}
-                              >
-                                    <JoditEditor config={config} />
-                              </Form.Item>
-
-                              <Divider />
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <Form.Item
-                                          name="title"
-                                          label="Job Title"
-                                          rules={[{ required: true, message: "Please enter job title" }]}
+                                          name="image"
+                                          label="Upload Document Image"
+                                          valuePropName="fileList"
+                                          getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
+                                          rules={[
+                                                {
+                                                      required: true,
+                                                      message: "Please upload a document image!",
+                                                },
+                                          ]}
                                     >
-                                          <Input placeholder="Enter job title" />
+                                          <Upload
+                                                name="image"
+                                                listType="picture"
+                                                maxCount={1}
+                                                beforeUpload={() => false} // Prevent auto-upload
+                                          >
+                                                <Button icon={<UploadOutlined />}>Upload Document Image</Button>
+                                          </Upload>
                                     </Form.Item>
-                                    <Form.Item
-                                          name="vacancy"
-                                          label="Vacancy"
-                                          rules={[{ required: true, message: "Please enter vacancy" }]}
-                                    >
-                                          <InputNumber
-                                                min={1}
-                                                className="w-full"
-                                                placeholder="Enter vacancy"
-                                          />
-                                    </Form.Item>
+
+
                               </div>
                               <div className="flex justify-end gap-2 mt-4">
                                     <Button
