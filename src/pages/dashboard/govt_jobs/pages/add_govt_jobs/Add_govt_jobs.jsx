@@ -120,7 +120,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                   >
                         <div className="flex items-center justify-between">
                               <h2 className="text-2xl font-bold mb-4">Job Details</h2>
-                              <Link_Button name="Create New Job Type" url="/admin/govt-jobs/govt-organizations" />
+                              <Link_Button name="Create New Job" url="/admin/govt-jobs/govt-organizations" />
                         </div>
                         <Divider />
 

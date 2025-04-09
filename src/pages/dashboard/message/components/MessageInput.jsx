@@ -182,7 +182,7 @@ function MessageInput({ onSendMessage }) {
                                           ref={fileInputRef}
                                           onChange={handleFileChange}
                                           multiple
-                                          accept="image/*"
+                                          accept="image/*, .pdf"
                                           style={{ display: 'none' }}
                                     />
                                     <button
