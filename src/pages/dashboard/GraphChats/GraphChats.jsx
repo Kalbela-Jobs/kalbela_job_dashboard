@@ -7,6 +7,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { Kalbela_AuthProvider } from "../../../context/MainContext";
 import { Pagination } from "antd";
 import { format, isValid } from "date-fns";
+import Salary_Expectation from "./components/Salary_Expectation";
 
 const GraphChats = () => {
       const { base_url, workspace, user } = useContext(Kalbela_AuthProvider);
@@ -54,8 +55,7 @@ const GraphChats = () => {
                         url += `${url.includes("?") ? "&" : "?"}page=${page}`;
                   }
                   if (pageSize) {
-                        url += `${url.includes("?") ? "&" : "?"
-                              }page_size=${pageSize}&limit=${pageSize}`;
+                        url += `${url.includes("?") ? "&" : "?"}limit=${pageSize}`;
                   }
 
                   if (featured) {
@@ -101,6 +101,9 @@ const GraphChats = () => {
             return isValid(date) ? format(date, "dd MMM yyyy") : "Invalid Date";
       }, []);
 
+
+
+
       return (
             <div className="min-h-screen bg-gray-100 p-4" >
                   <div className="">
@@ -126,7 +129,7 @@ const GraphChats = () => {
                                                 </div>
                                           </div>
 
-                                          <div className="lg:grid grid-cols-4 gap-4 p-4">
+                                          <div className="lg:grid grid-cols-6 gap-4 p-4">
                                                 <div className="col-span-1">
                                                       <TriangleChart value={job.applications_count} label="applications" percentages={[40, 30, 30]} />
                                                 </div>
@@ -134,12 +137,22 @@ const GraphChats = () => {
                                                       <DonutChart percentages={[70, 30]} colors={["#4299e1", "#ebf5ff"]} label="Filled" value="70%" />
                                                 </div>
                                                 <div className="col-span-1">
+                                                      <Salary_Expectation value="20%" />
+                                                </div>
+                                                <div className="col-span-1">
                                                       <CircleMetric value="100%" />
+                                                </div>
+
+                                                <div className="col-span-1">
+                                                      <div className="h-full flex flex-col justify-center space-y-4">
+                                                            <MetricCard icon="chart" value={job.view_count ?? 0} label="Views" />
+                                                            <MetricCard icon="user" value={job.view_count ?? 0} label="Yet to View" />
+                                                      </div>
                                                 </div>
                                                 <div className="col-span-1">
                                                       <div className="h-full flex flex-col justify-center space-y-4">
-                                                            <MetricCard icon="chart" value="0" label="Charts" />
-                                                            <MetricCard icon="user" value="0" label="Subscribers" />
+                                                            <MetricCard icon="chart" value="0" label="Shortlisted" />
+
                                                       </div>
                                                 </div>
                                           </div>

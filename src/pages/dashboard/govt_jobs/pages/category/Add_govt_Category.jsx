@@ -7,7 +7,8 @@ import sweet_alert from "../../../../../utils/custom_alert";
 import { useQuery } from "@tanstack/react-query";
 import Link_Button from "../../../../../components/small_component/Link_Button";
 
-const AddGovtOrgWithTable = () => {
+const Add_govt_Category = () => {
+
       const { base_url, user } = useContext(Kalbela_AuthProvider);
       const [editData, setEditData] = useState(null);
       const {
@@ -18,13 +19,13 @@ const AddGovtOrgWithTable = () => {
             queryKey: ["workspace-hr"],
 
             queryFn: async () => {
-                  const res = await fetch(`${base_url}/workspace/get-all-govt-org`);
+                  const res = await fetch(`${base_url}/category/get-all-govt-category`);
                   const data = await res.json();
                   return data.data;
             },
       });
 
-      console.log(organizations, "organizations");
+
 
       const [isModalVisible, setIsModalVisible] = useState(false);
       const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -53,20 +54,16 @@ const AddGovtOrgWithTable = () => {
 
       // Handle form submission to add new organization
       const handleAddIndustry = async (values) => {
-            const orgLogo = values.govtOrgLogo?.[0]?.originFileObj;
-            const banner = values.banner?.[0]?.originFileObj;
+            const orgLogo = values.categoryLogo?.[0]?.originFileObj;
             const newOrganization = {
                   key: Date.now(), // unique key
-                  name: values.govtOrgName,
-                  description: values.orgDescription,
+                  name: values.categoryName,
                   logo: await uploadImage(orgLogo),
-                  org_website: values.org_website,
-                  banner: await uploadImage(banner),
             };
 
             console.log(newOrganization, "newOrganization");
 
-            fetch(`${base_url}/workspace/create-govt-org`, {
+            fetch(`${base_url}/category/create-govt-category`, {
                   method: "POST",
                   headers: {
                         "Content-Type": "application/json",
@@ -88,19 +85,15 @@ const AddGovtOrgWithTable = () => {
 
       // Handle form submission to edit organization
       const handleEditIndustry = async (values) => {
-            const orgLogo = values.govtOrgLogo?.[0]?.originFileObj;
-            const banner = values.govtOrgBanner?.[0]?.originFileObj;
+            const orgLogo = values.categoryLogo?.[0]?.originFileObj;
             const updatedOrganization = {
-                  name: values.govtOrgName,
-                  description: values.orgDescription,
+                  name: values.categoryName,
                   logo: orgLogo ? await uploadImage(orgLogo) : editData.logo,
-                  org_website: values.org_website,
-                  banner: banner ? await uploadImage(banner) : editData.banner,
             };
 
             console.log(updatedOrganization, "updatedOrganization");
 
-            fetch(`${base_url}/workspace/update-govt-org?govt_org_id=${editData._id}`, {
+            fetch(`${base_url}/category/update-govt-category?govt_category_id=${editData._id}`, {
                   method: "PUT",
                   headers: {
                         "Content-Type": "application/json",
@@ -123,7 +116,7 @@ const AddGovtOrgWithTable = () => {
 
       // Handle delete organization
       const handleDelete = (key) => {
-            fetch(`${base_url}/workspace/delete-govt-org?govt_org_id=${key}`, {
+            fetch(`${base_url}/category/delete-govt-category?govt_category_id=${key}`, {
                   method: "DELETE",
                   headers: {
                         "Content-Type": "application/json",
@@ -160,16 +153,6 @@ const AddGovtOrgWithTable = () => {
                   key: "name",
 
             },
-            {
-                  title: "Description",
-                  dataIndex: "description",
-                  key: "description",
-
-                  render: (description) => (
-                        <p className="whitespace-pre-wrap">{description?.split(" ").slice(0, 15).join(" ") + "..."}</p>
-                  ), // Handles multi-line text
-            },
-
             {
                   title: "Actions",
                   key: "actions",
@@ -225,7 +208,7 @@ const AddGovtOrgWithTable = () => {
 
                                     <span className="text-sm font-medium transition-all capitalize group-hover:ms-4">
                                           {" "}
-                                          Add Govt Organization{" "}
+                                          Add Govt Category
                                     </span>
                               </button>
                         </div>
@@ -242,7 +225,7 @@ const AddGovtOrgWithTable = () => {
 
                   {/* Modal for adding organization */}
                   <Modal
-                        title="Add Government Organization"
+                        title="Add Government Category"
                         visible={isModalVisible}
                         onCancel={() => setIsModalVisible(false)}
                         footer={null}
@@ -250,36 +233,23 @@ const AddGovtOrgWithTable = () => {
                         <Form form={form} onFinish={handleAddIndustry} layout="vertical">
                               {/* Govt Organization Name */}
                               <Form.Item
-                                    name="govtOrgName"
-                                    label="Govt Organization Name"
+                                    name="categoryName"
+                                    label="Category Name"
                                     rules={[
                                           {
                                                 required: true,
-                                                message: "Please input the government organization name!",
+                                                message: "Please input the category name!",
                                           },
                                     ]}
                               >
                                     <Input />
                               </Form.Item>
 
-                              {/* Govt Organization Description */}
-                              <Form.Item
-                                    name="orgDescription"
-                                    label="Organization Description"
-                                    rules={[
-                                          {
-                                                required: true,
-                                                message: "Please input the organization description!",
-                                          },
-                                    ]}
-                              >
-                                    <Input.TextArea rows={4} placeholder="Enter multi-line text here" />
-                              </Form.Item>
 
-                              {/* Govt Organization Logo */}
+
                               <Form.Item
-                                    name="govtOrgLogo"
-                                    label="Govt Organization Logo"
+                                    name="categoryLogo"
+                                    label="Govt Category Logo"
                                     valuePropName="fileList"
                                     getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
                                     rules={[
@@ -299,41 +269,6 @@ const AddGovtOrgWithTable = () => {
                                     </Upload>
                               </Form.Item>
 
-                              {/* Govt Organization Banner */}
-                              <Form.Item
-                                    name="banner"
-                                    label="Govt Organization Banner"
-                                    valuePropName="fileList"
-                                    getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
-                                    rules={[
-                                          {
-                                                required: true,
-                                                message: "Please upload the government organization banner!",
-                                          },
-                                    ]}
-                              >
-                                    <Upload
-                                          name="banner"
-                                          listType="picture"
-                                          maxCount={1}
-                                          beforeUpload={() => false} // Prevent auto-upload
-                                    >
-                                          <Button icon={<UploadOutlined />}>Upload Banner</Button>
-                                    </Upload>
-                              </Form.Item>
-
-                              <Form.Item
-                                    name="org_website"
-                                    label="Govt Organization Website"
-                                    rules={[
-                                          {
-                                                required: false,
-                                                message: "Please input the government organization website!",
-                                          },
-                                    ]}
-                              >
-                                    <Input />
-                              </Form.Item>
 
                               {/* Submit Button */}
                               <Form.Item>
@@ -342,7 +277,7 @@ const AddGovtOrgWithTable = () => {
                                           htmlType="submit"
                                           className="bg-blue-500 hover:bg-blue-600"
                                     >
-                                          Add Govt Organization
+                                          Add Govt Category
                                     </Button>
                               </Form.Item>
                         </Form>
@@ -358,8 +293,8 @@ const AddGovtOrgWithTable = () => {
                         <Form form={editForm} onFinish={handleEditIndustry} layout="vertical">
                               {/* Govt Organization Name */}
                               <Form.Item
-                                    name="govtOrgName"
-                                    label="Govt Organization Name"
+                                    name="categoryName"
+                                    label="Category Name"
                                     rules={[
                                           {
                                                 required: true,
@@ -367,27 +302,12 @@ const AddGovtOrgWithTable = () => {
                                           },
                                     ]}
                               >
-                                    <Input />
+                                    <Input defaultValue={editData?.name} />
                               </Form.Item>
 
-
                               <Form.Item
-                                    name="orgDescription"
-                                    label="Organization Description"
-                                    rules={[
-                                          {
-                                                required: true,
-                                                message: "Please input the organization description!",
-                                          },
-                                    ]}
-                              >
-                                    <Input.TextArea rows={4} placeholder="Enter multi-line text here" />
-                              </Form.Item>
-
-
-                              <Form.Item
-                                    name="govtOrgLogo"
-                                    label="Govt Organization Logo"
+                                    name="categoryLogo"
+                                    label="Govt Category Logo"
                                     valuePropName="fileList"
                                     getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
                                     initialValue={
@@ -413,46 +333,7 @@ const AddGovtOrgWithTable = () => {
                                     </Upload>
                               </Form.Item>
 
-                              <Form.Item
-                                    name="govtOrgBanner"
-                                    label="Govt Organization Banner"
-                                    valuePropName="fileList"
-                                    getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
-                                    initialValue={
-                                          editData?.banner
-                                                ? [
-                                                      {
-                                                            uid: "-1",
-                                                            name: "banner.png",
-                                                            status: "done",
-                                                            url: editData.banner,
-                                                      },
-                                                ]
-                                                : []
-                                    }
-                              >
-                                    <Upload
-                                          name="banner"
-                                          listType="picture"
-                                          maxCount={1}
-                                          beforeUpload={() => false} // Prevent auto-upload
-                                    >
-                                          <Button icon={<UploadOutlined />}>Upload Banner</Button>
-                                    </Upload>
-                              </Form.Item>
 
-                              <Form.Item
-                                    name="org_website"
-                                    label="Govt Organization Website"
-                                    rules={[
-                                          {
-                                                required: false,
-                                                message: "Please input the government organization website!",
-                                          },
-                                    ]}
-                              >
-                                    <Input />
-                              </Form.Item>
 
                               {/* Submit Button */}
                               <Form.Item>
@@ -468,6 +349,8 @@ const AddGovtOrgWithTable = () => {
                   </Modal>
             </div>
       );
+
+
 };
 
-export default AddGovtOrgWithTable;
+export default Add_govt_Category;
