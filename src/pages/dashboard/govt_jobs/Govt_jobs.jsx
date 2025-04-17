@@ -28,6 +28,8 @@ const Govt_jobs = () => {
             },
       });
 
+      console.log(jobs);
+
       // const [jobs, setJobs] = useState([]);
       const [editingJob, setEditingJob] = useState(false);
       const [viewingJob, setViewingJob] = useState(null);
@@ -59,6 +61,10 @@ const Govt_jobs = () => {
                                     name="Government Organizations"
                                     url="/admin/govt-jobs/govt-organizations"
                               />
+                              <Link_Button
+                                    name="Government Categories"
+                                    url="/admin/govt-jobs/add-govt-category"
+                              />
                         </div>
                         <Title level={2} className="mb-8">
                               Government Jobs
@@ -72,7 +78,7 @@ const Govt_jobs = () => {
                         )}
                         {/* <AddGovtOrgWithTable /> */}
                         <JobsTable
-                              jobs={jobs}
+                              jobs={jobs?.jobs ?? []}
                               onEdit={setEditingJob}
                               onDelete={handleDeleteJob}
                               onView={setViewingJob}
