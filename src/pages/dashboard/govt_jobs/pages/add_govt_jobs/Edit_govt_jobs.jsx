@@ -140,6 +140,15 @@ const EditGovtJobs = ({ data, onClose, base_url }) => {
             },
       });
 
+      const { data: categories = [], isLoading: isLoadingCategories } = useQuery({
+            queryKey: ["categories_org"],
+            queryFn: async () => {
+                  const res = await fetch(`${base_url}/category/get-all-govt-category`);
+                  const data = await res.json();
+                  return data.data;
+            },
+      });
+
       useEffect(() => {
             form.setFieldsValue({
                   ...data,
@@ -183,11 +192,19 @@ const EditGovtJobs = ({ data, onClose, base_url }) => {
                   organization = data.organization;
             }
 
+            let category;
+            try {
+                  category = JSON.parse(input_value.category);
+            } catch (error) {
+                  category = data.category;
+            }
+
             const value = {
                   title: input_value.title,
                   hyperlink: input_value.hyperlink,
                   description: input_value.description,
                   organization: organization,
+                  category: category,
                   advertisementNo: input_value.advertisementNo,
                   vacancy: input_value.vacancy,
                   applicationStartDate: input_value.applicationStartDate.toISOString(),
@@ -281,6 +298,30 @@ const EditGovtJobs = ({ data, onClose, base_url }) => {
                                                             <div className="flex items-center gap-2">
                                                                   <img src={org.logo || "/placeholder.svg"} alt={org.name} className="w-6 h-6 rounded-full" />
                                                                   <span>{org.name}</span>
+                                                            </div>
+                                                      </Option>
+                                                ))}
+                                          </Select>
+                                    </Form.Item>
+                                    <Form.Item
+                                          className="w-full"
+                                          name="category"
+                                          label="Category"
+                                          rules={[{ required: true, message: "Please select a category" }]}
+                                    >
+                                          <Select
+                                                placeholder="Select a category"
+                                                loading={isLoadingCategories}
+                                                showSearch
+                                                filterOption={(input, option) =>
+                                                      option?.value && JSON.parse(option.value)?.name?.toLowerCase().includes(input.toLowerCase())
+                                                }
+                                          >
+                                                {categories.map((category) => (
+                                                      <Option key={category._id} value={JSON.stringify({ id: category._id, name: category.name, logo: category.logo, description: category.description, website: category?.org_website, banner: category?.banner })}>
+                                                            <div className="flex items-center gap-2">
+                                                                  <img src={category.logo || "/placeholder.svg"} alt={category.name} className="w-6 h-6 rounded-full" />
+                                                                  <span>{category.name}</span>
                                                             </div>
                                                       </Option>
                                                 ))}
