@@ -11,7 +11,6 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Add_new_hr from "../pages/dashboard/hr_management/add/Add_new_hr";
 import Hr_management from "../pages/dashboard/hr_management/Hr_management";
 import Add_job_type from "../pages/dashboard/job_type/add/Add_job_type";
-import Job_type from "../pages/dashboard/job_type/Job_Type";
 import Add_Jobs from "../pages/dashboard/Jobs/Add_Jobs";
 import Job from "../pages/dashboard/Jobs/Job";
 import Message from "../pages/dashboard/message/Message";
@@ -37,6 +36,7 @@ import Job_candidate from "../pages/dashboard/job_candidate/Job_candidate";
 import All_candidate from "../pages/dashboard/all_candite_manage/All_candidate";
 import GraphChats from "../pages/dashboard/GraphChats/GraphChats";
 import Add_govt_Category from "../pages/dashboard/govt_jobs/pages/category/Add_govt_Category";
+import Job_type from "../pages/dashboard/job_type/Job_type";
 
 const AdminRouter = [
       {

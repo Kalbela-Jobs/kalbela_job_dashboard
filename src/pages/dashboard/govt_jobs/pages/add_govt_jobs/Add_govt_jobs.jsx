@@ -21,12 +21,21 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
       const navigate = useNavigate()
       const { base_url, user } = useContext(Kalbela_AuthProvider)
 
-      console.log(form.getFieldsValue(), 'form');
+
       // Fetch organizations
       const { data: organizations = [], isLoading } = useQuery({
             queryKey: ["organizations"],
             queryFn: async () => {
                   const res = await fetch(`${base_url}/workspace/get-all-govt-org`)
+                  const data = await res.json()
+                  return data.data
+            },
+      })
+
+      const { data: categories = [], isLoading: isLoadingCategories } = useQuery({
+            queryKey: ["categories_org"],
+            queryFn: async () => {
+                  const res = await fetch(`${base_url}/category/get-all-govt-category`)
                   const data = await res.json()
                   return data.data
             },
@@ -46,6 +55,7 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                               title: values[`title_${index}`],
                               hyperlink: values.hyperlink,
                               description: values.description,
+                              category: JSON.parse(values.category),
                               organization: JSON.parse(values.org_info),
                               vacancy: values[`vacancy_${index}`],
                               applicationStartDate: values.applicationStartDate,
@@ -144,6 +154,31 @@ const AddEditJobForm = ({ initialValues, isEditing = false }) => {
                                                       <div className="flex items-center gap-2">
                                                             <img src={org.logo || "/placeholder.svg"} alt={org.name} className="w-6 h-6 rounded-full" />
                                                             <span>{org.name}</span>
+                                                      </div>
+                                                </Option>
+                                          ))}
+                                    </Select>
+                              </Form.Item>
+
+                              <Form.Item
+                                    className="w-full"
+                                    name="category"
+                                    label="Category"
+                                    rules={[{ required: true, message: "Please select a category" }]}
+                              >
+                                    <Select
+                                          placeholder="Select a category"
+                                          loading={isLoadingCategories}
+                                          showSearch
+                                          filterOption={(input, option) =>
+                                                option?.value && JSON.parse(option.value)?.name?.toLowerCase().includes(input.toLowerCase())
+                                          }
+                                    >
+                                          {categories.map((category) => (
+                                                <Option key={category._id} value={JSON.stringify({ id: category._id, name: category.name, logo: category.logo, description: category.description, website: category?.org_website, banner: category?.banner })}>
+                                                      <div className="flex items-center gap-2">
+                                                            <img src={category.logo || "/placeholder.svg"} alt={category.name} className="w-6 h-6 rounded-full" />
+                                                            <span>{category.name}</span>
                                                       </div>
                                                 </Option>
                                           ))}
