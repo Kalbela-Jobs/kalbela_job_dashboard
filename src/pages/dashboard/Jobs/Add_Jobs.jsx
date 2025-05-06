@@ -63,6 +63,8 @@ const Add_Jobs = () => {
             },
       });
 
+      console.log(user.role);
+
       const { data: workspace_data = [], isLoading, refetch } = useQuery({
             queryKey: ["workspace_data", user.role === "supper_admin"],
 
