@@ -13,6 +13,7 @@ const Category = () => {
       const { user, base_url, } = useContext(Kalbela_AuthProvider);
       const [modal, set_modal] = useState(false);
       const [delete_modal, set_delete_modal] = useState(false);
+      const [search, setSearch] = useState("");
 
 
       const { data: categories = [], isLoading, refetch } = useQuery({
@@ -53,6 +54,16 @@ const Category = () => {
                                     <div>
                                           <p className="text-xl font-bold text-gray-900">Category List</p>
                                     </div>
+                                    {/* Need to Search  */}
+                                    <div className="w-full max-w-sm">
+                                          <input
+                                                onChange={(e) => setSearch(e.target.value)}
+                                                type="text"
+                                                placeholder="Search..."
+                                                className="w-full rounded border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200"
+                                          />
+                                    </div>
+
 
                               </div>
                               {isLoading ? <>Loading</> : <div className="flex flex-col mt-4 lg:mt-8">
@@ -83,7 +94,7 @@ const Category = () => {
                                                       <tbody>
 
 
-                                                            {categories.map((category) => <tr className="bg-gray-50">
+                                                            {categories.filter((category) => category.name.toLowerCase().includes(search.toLowerCase())).map((category) => <tr className="bg-gray-50">
 
                                                                   <td className=" px-4 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
                                                                         <img className="w-10  h-10 border border-gray-500 rounded object-fit border-opacity-20" src={category.image} alt={category.name} />
