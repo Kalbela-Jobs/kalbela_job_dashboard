@@ -1,0 +1,52 @@
+name: Kalbela Jobs Dashboard Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install -f
+
+      - name: Build Vite React Project
+        run: npm run build
+
+      - name: Delete old dist folder on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: 195.35.20.127
+          username: root
+          password: '@M4d4cISJiLA3Dk#'
+          script: |
+            rm -rf /var/www/kalbela_job_dashboard/dist
+
+      - name: Deploy dist folder via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 195.35.20.127
+          username: root
+          password: '@M4d4cISJiLA3Dk#'
+          source: "dist"
+          target: "/var/www/kalbela_job_dashboard/"
+
+      - name: Upload public assets
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 195.35.20.127
+          username: root
+          password: '@M4d4cISJiLA3Dk#'
+          source: "public"
+          target: "/var/www/kalbela_job_dashboard/"
