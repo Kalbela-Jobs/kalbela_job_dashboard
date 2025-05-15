@@ -20,20 +20,6 @@ Kalbela Jobs Frontend is a user-friendly platform designed to help job seekers f
 
 Follow the steps below to deploy the project to the server:
 
-### 1. Transfer Files to the Server
-Use the following command to securely copy the project files to the server:
-
-```bash
-scp -r dist munna@120.50.6.150:/var/www/kalbela_job_dashboard
-```
-
-### 2. Server Password
-
-Use the following password when prompted:
-
-```bash
-connect with team leader
-```
 
 ---
 
